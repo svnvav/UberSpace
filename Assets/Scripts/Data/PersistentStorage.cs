@@ -9,7 +9,7 @@ namespace Catlike.ObjectManagement
 
         private void Awake()
         {
-            _savePath = Path.Combine(Application.persistentDataPath, "saveFile");
+            _savePath = Path.Combine(Application.persistentDataPath, "GameSave");
         }
         
         public void Save (PersistableObject o, int version) {
