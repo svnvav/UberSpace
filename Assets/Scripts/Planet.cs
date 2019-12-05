@@ -41,5 +41,21 @@ namespace Svnvav.UberSpace
         }
         
         #endregion
+        
+        public void Recycle ()
+        {
+            OriginFactory.Reclaim(this);
+        }
+
+
+        public override void Save(GameDataWriter writer)
+        {
+            base.Save(writer);
+        }
+
+        public override void Load(GameDataReader reader)
+        {
+            base.Load(reader);
+        }
     }
 }
