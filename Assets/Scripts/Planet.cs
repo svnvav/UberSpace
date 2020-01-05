@@ -7,6 +7,8 @@ namespace Svnvav.UberSpace
     public class Planet : PersistableObject
     {
         [SerializeField] private List<RaceOnPlanet> _races;
+        [SerializeField] private Vector3 _velocity;
+        
 
         #region Factory
         
@@ -41,6 +43,11 @@ namespace Svnvav.UberSpace
         }
         
         #endregion
+
+        public void Initialize(Vector3 velocity)
+        {
+            _velocity = velocity;
+        }
         
         public void Recycle ()
         {
