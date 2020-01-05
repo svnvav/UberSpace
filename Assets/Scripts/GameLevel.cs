@@ -29,9 +29,9 @@ namespace Svnvav.UberSpace
         public override void Save(GameDataWriter writer)
         {
             writer.Write(_levelObjects.Length);
-            foreach (var _persistentObject in _levelObjects)
+            foreach (var levelObject in _levelObjects)
             {
-                _persistentObject.Save(writer);
+                levelObject.Save(writer);
             }
         }
 

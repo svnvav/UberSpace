@@ -11,6 +11,8 @@ namespace Svnvav.UberSpace
     public class GameController : PersistableObject
     {
         public static GameController Instance { get; private set; }
+        
+        const int saveVersion = 1;
 
         [SerializeField] private PlanetFactory _planetFactory;
         [SerializeField] private PersistentStorage _storage;
@@ -40,20 +42,35 @@ namespace Svnvav.UberSpace
             }
 #endif
 
-            StartCoroutine(LoadLevel(1));
+            StartCoroutine(LoadLevelScene(1));
         }
 
         private void Update()
         {
             GameLevel.Current.GameUpdate();
+
+            foreach (var planet in _planets)
+            {
+                planet.GameUpdate();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                _storage.Save(this, saveVersion);
+            }
+            else if (Input.GetKeyDown(KeyCode.L))
+            {
+                Restart();
+                _storage.Load(this);
+            }
         }
 
         public void AddPlanet(Planet planet)
         {
-            
+            _planets.Add(planet);
         }
         
-        private IEnumerator LoadLevel(int levelBuildIndex)
+        private IEnumerator LoadLevelScene(int levelBuildIndex)
         {
             enabled = false;
             if (_loadedLevelBuildIndex > 0)
@@ -67,17 +84,53 @@ namespace Svnvav.UberSpace
             _loadedLevelBuildIndex = levelBuildIndex;
             enabled = true;
         }
+
+        public void Restart()
+        {
+            foreach (var planet in _planets)
+            {
+                planet.Recycle();
+            }
+            
+            _planets.Clear();
+        }
         
         public override void Save(GameDataWriter writer)
         {
-            
+            writer.Write(_loadedLevelBuildIndex);
+            GameLevel.Current.Save(writer);
+            writer.Write(_planets.Count);
+            foreach (var planet in _planets)
+            {
+                planet.Save(writer);
+            }
         }
 
         public override void Load(GameDataReader reader)
         {
-            
+            var version = reader.Version;
+            if (version > saveVersion)
+            {
+                Debug.LogError("Unsupported future save version " + version);
+                return;
+            }
+
+            StartCoroutine(LoadGame(reader));
         }
-        
-        
+
+        private IEnumerator LoadGame(GameDataReader reader)
+        {
+            yield return LoadLevelScene(reader.ReadInt());
+            
+            GameLevel.Current.Load(reader);
+            
+            var count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                var shape = _planetFactory.Get();
+                shape.Load(reader);
+            }
+        }
     }
 }

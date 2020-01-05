@@ -48,6 +48,11 @@ namespace Svnvav.UberSpace
         {
             _velocity = velocity;
         }
+
+        public void GameUpdate()
+        {
+            transform.Translate(Time.deltaTime * _velocity);
+        }
         
         public void Recycle ()
         {
@@ -58,11 +63,13 @@ namespace Svnvav.UberSpace
         public override void Save(GameDataWriter writer)
         {
             base.Save(writer);
+            writer.Write(_velocity);
         }
 
         public override void Load(GameDataReader reader)
         {
             base.Load(reader);
+            _velocity = reader.ReadVector3();
         }
     }
 }

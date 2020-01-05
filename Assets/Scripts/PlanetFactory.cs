@@ -44,7 +44,7 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public Planet Get(Vector3 position, int idInFactory = 0)
+        public Planet Get(int idInFactory = 0)
         {
             Planet instance;
 
@@ -65,7 +65,7 @@ namespace Svnvav.UberSpace
                 }
                 else
                 {
-                    instance = Instantiate(_prefabs[idInFactory], position, Quaternion.identity);
+                    instance = Instantiate(_prefabs[idInFactory]);
                     instance.OriginFactory = this;
                     instance.IdInFactory = idInFactory;
                     SceneManager.MoveGameObjectToScene(instance.gameObject, _poolScene);

@@ -7,7 +7,8 @@ namespace Svnvav.UberSpace
     {
         public PlanetFactory Factory;
 
-        [SerializeField, Range(0f, 50f)] float _spawnSpeed;
+        [SerializeField, Range(0f, 64f)] private float _spawnSpeed;
+        [SerializeField, Range(0f, 64f)] private float _planetSpeed;
         
         private float _spawnProgress;
 
@@ -23,9 +24,17 @@ namespace Svnvav.UberSpace
         
         private void Spawn()
         {
-            var planet = Factory.Get(transform.position);
-            planet.Initialize(-transform.position.normalized);
-            
+            var planet = Factory.Get();
+            planet.transform.position = transform.position;
+            planet.Initialize(-_planetSpeed * transform.position.normalized);
+        }
+
+        public override void Save (GameDataWriter writer) {
+            writer.Write(_spawnProgress);
+        }
+
+        public override void Load (GameDataReader reader) {
+            _spawnProgress = reader.ReadFloat();
         }
     }
 }
