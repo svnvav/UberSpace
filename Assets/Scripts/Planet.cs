@@ -8,7 +8,6 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private List<RaceOnPlanet> _races;
         [SerializeField] private Vector3 _velocity;
-        
 
         #region Factory
         
@@ -59,16 +58,15 @@ namespace Svnvav.UberSpace
             OriginFactory.Reclaim(this);
         }
 
-
         public override void Save(GameDataWriter writer)
         {
-            base.Save(writer);
+            writer.Write(transform.localPosition);
             writer.Write(_velocity);
         }
 
         public override void Load(GameDataReader reader)
         {
-            base.Load(reader);
+            transform.localPosition = reader.ReadVector3();
             _velocity = reader.ReadVector3();
         }
     }
