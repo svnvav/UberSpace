@@ -6,8 +6,9 @@ namespace Svnvav.UberSpace
 {
     public class Planet : PersistableObject
     {
-        [SerializeField] private List<RaceOnPlanet> _races;
         [SerializeField] private Vector3 _velocity;
+        [SerializeField] private RaceOnPlanet _leftRace, _rightRace;
+        [SerializeField] private GameObject _leftRaceSprite, _rightRaceSprite;
 
         #region Factory
         
@@ -51,6 +52,31 @@ namespace Svnvav.UberSpace
         public void GameUpdate()
         {
             transform.Translate(Time.deltaTime * _velocity);
+            //TODO: races war
+        }
+
+        public bool AddRace(RaceOnPlanet raceOnPlanet)
+        {
+            if (_leftRace == null)
+            {
+                _leftRace = raceOnPlanet;
+                RefreshView();
+                return true;
+            }
+            
+            if (_rightRace == null)
+            {
+                _rightRace = raceOnPlanet;
+                RefreshView();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void RefreshView()
+        {
+            //TODO:
         }
         
         public void Recycle ()
