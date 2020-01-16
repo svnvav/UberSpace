@@ -76,7 +76,7 @@ namespace Svnvav.UberSpace
 
         private void RefreshView()
         {
-            //TODO:
+            _leftRaceSprite.SetActive(_leftRace != null);
         }
         
         public void Recycle ()
