@@ -1,25 +1,24 @@
+using Catlike.ObjectManagement;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    [CreateAssetMenu]
-    public class Race : ScriptableObject
+    public class Race : PersistableObject
     {
-        [SerializeField] private string _name;
-        public string Name => _name;
-        
-        [SerializeField] private string _tagline;
-        public string Tagline => _tagline;
+        [SerializeField] private RaceDescription _description;
 
-        [SerializeField] private bool _isAggressive;
-        public bool IsAggressive => _isAggressive;
+        public RaceDescription Description => _description;
 
-        [SerializeField] private Sprite _planetSprite;
-        [SerializeField] private Sprite _hudInfoSprite;
-        [SerializeField] private Sprite _loadingSprite;
+        [SerializeField] private int _population;
 
-        public Sprite PlanetSprite => _planetSprite;
-        public Sprite HudInfoSprite => _hudInfoSprite;
-        public Sprite LoadingSprite => _loadingSprite;
+        public override void Save(GameDataWriter writer)
+        {
+            writer.Write(_population);
+        }
+
+        public override void Load(GameDataReader reader)
+        {
+            _population = reader.ReadInt();
+        }
     }
 }

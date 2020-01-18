@@ -22,7 +22,7 @@ namespace Svnvav.UberSpace
         {
             foreach (var levelObject in _levelObjects)
             {
-                levelObject.GameUpdate();
+                if(levelObject.isActiveAndEnabled) levelObject.GameUpdate();
             }
         }
         

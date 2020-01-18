@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Catlike.ObjectManagement;
 using UnityEngine;
@@ -7,42 +8,57 @@ namespace Svnvav.UberSpace
     public class Planet : PersistableObject
     {
         [SerializeField] private Vector3 _velocity;
-        [SerializeField] private RaceOnPlanet _leftRace, _rightRace;
-        [SerializeField] private GameObject _leftRaceSprite, _rightRaceSprite;
+        [SerializeField] private List<Race> _races;
+        [SerializeField] private SpriteRenderer _leftRaceSprite, _rightRaceSprite;
+        [SerializeField] private GameObject _spriteMask;
 
-        #region Factory
+        public int RacesCount => _races.Count;
         
+        #region Factory
+
         private int _idInFactory = int.MinValue;
 
         private PlanetFactory _originFactory;
 
-        public int IdInFactory {
+        public int IdInFactory
+        {
             get => _idInFactory;
-            set {
-                if (_idInFactory == int.MinValue) {
+            set
+            {
+                if (_idInFactory == int.MinValue)
+                {
                     _idInFactory = value;
                 }
-                else {
+                else
+                {
                     Debug.LogError("Not allowed to change IdInFactory.");
                 }
             }
         }
-        
+
         public PlanetFactory OriginFactory
         {
             get => _originFactory;
             set
             {
-                if (_originFactory == null) {
+                if (_originFactory == null)
+                {
                     _originFactory = value;
                 }
-                else {
+                else
+                {
                     Debug.LogError("Not allowed to change origin factory.");
                 }
             }
         }
-        
+
         #endregion
+
+        private void OnEnable()
+        {
+            GameController.Instance.AddPlanet(this);
+            RefreshView();
+        }
 
         public void Initialize(Vector3 velocity)
         {
@@ -55,31 +71,38 @@ namespace Svnvav.UberSpace
             //TODO: races war
         }
 
-        public bool AddRace(RaceOnPlanet raceOnPlanet)
+        public Race GetRaceById(int id)
         {
-            if (_leftRace == null)
-            {
-                _leftRace = raceOnPlanet;
-                RefreshView();
-                return true;
-            }
+            return _races[id];
+        }
+        
+        public bool AddRace(Race race)
+        {
+            if (_races.Count >= 2) return false;
             
-            if (_rightRace == null)
-            {
-                _rightRace = raceOnPlanet;
-                RefreshView();
-                return true;
-            }
+            _races.Add(race);
+            RefreshView();
+            return true;
+        }
 
-            return false;
+        public void RemoveRace(Race race)
+        {
+            _races.Remove(race);
+            RefreshView();
         }
 
         private void RefreshView()
         {
-            _leftRaceSprite.SetActive(_leftRace != null);
+            var racesCount = _races.Count;
+            _leftRaceSprite.gameObject.SetActive(racesCount > 0);
+            _leftRaceSprite.sprite = racesCount > 0 ? _races[0].Description.PlanetSprite : null;
+
+            _rightRaceSprite.gameObject.SetActive(racesCount > 1);
+            _rightRaceSprite.sprite = racesCount > 1 ? _races[1].Description.PlanetSprite : null;
+            _spriteMask.SetActive(racesCount > 1);
         }
-        
-        public void Recycle ()
+
+        public void Recycle()
         {
             OriginFactory.Reclaim(this);
         }

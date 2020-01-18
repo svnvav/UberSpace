@@ -21,6 +21,8 @@ namespace Svnvav.UberSpace
         
         private List<Planet> _planets;
 
+        public List<Planet> Planets => _planets;
+
         private void Awake()
         {
             _planets = new List<Planet>();
