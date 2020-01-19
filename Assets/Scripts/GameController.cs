@@ -69,10 +69,22 @@ namespace Svnvav.UberSpace
 
         public void AddPlanet(Planet planet)
         {
+            planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
         }
-        
-        
+
+        public void RemovePlanet(Planet planet)
+        {
+            var index = planet.SaveIndex;
+            var last = _planets.Count - 1;
+            if (index < last)
+            {
+                _planets[index] = _planets[last];
+                _planets[index].SaveIndex = index;
+            }
+            
+            _planets.RemoveAt(last);
+        }
         
         private IEnumerator LoadLevelScene(int levelBuildIndex)
         {

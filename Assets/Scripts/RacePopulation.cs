@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class Race : PersistableObject
+    public class RacePopulation : PersistableObject
     {
         [SerializeField] private RaceDescription _description;
 

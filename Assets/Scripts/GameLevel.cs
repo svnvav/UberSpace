@@ -37,7 +37,7 @@ namespace Svnvav.UberSpace
 
         public override void Load(GameDataReader reader)
         {
-            var savedCount = reader.ReadInt();
+            var savedCount = reader.ReadInt();//TODO: is it needed?
             for (int i = 0; i < _levelObjects.Length; i++)
             {
                 _levelObjects[i].Load(reader);

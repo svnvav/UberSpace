@@ -8,10 +8,12 @@ namespace Svnvav.UberSpace
     public class Planet : PersistableObject
     {
         [SerializeField] private Vector3 _velocity;
-        [SerializeField] private List<Race> _races;
+        [SerializeField] private List<RacePopulation> _races;
         [SerializeField] private SpriteRenderer _leftRaceSprite, _rightRaceSprite;
         [SerializeField] private GameObject _spriteMask;
 
+        public int SaveIndex { get; set; }//index in GameController._planets
+        
         public int RacesCount => _races.Count;
         
         #region Factory
@@ -54,9 +56,13 @@ namespace Svnvav.UberSpace
 
         #endregion
 
+        private void Start()
+        {
+            //GameController.Instance.AddPlanet(this);
+        }
+
         private void OnEnable()
         {
-            GameController.Instance.AddPlanet(this);
             RefreshView();
         }
 
@@ -71,23 +77,29 @@ namespace Svnvav.UberSpace
             //TODO: races war
         }
 
-        public Race GetRaceById(int id)
+        public void Die()
+        {
+            GameController.Instance.RemovePlanet(this);
+            Recycle();
+        }
+
+        public RacePopulation GetRaceById(int id)
         {
             return _races[id];
         }
         
-        public bool AddRace(Race race)
+        public bool AddRace(RacePopulation racePopulation)
         {
             if (_races.Count >= 2) return false;
             
-            _races.Add(race);
+            _races.Add(racePopulation);
             RefreshView();
             return true;
         }
 
-        public void RemoveRace(Race race)
+        public void RemoveRace(RacePopulation racePopulation)
         {
-            _races.Remove(race);
+            _races.Remove(racePopulation);
             RefreshView();
         }
 
