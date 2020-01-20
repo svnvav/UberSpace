@@ -107,10 +107,10 @@ namespace Svnvav.UberSpace
         {
             var racesCount = _races.Count;
             _leftRaceSprite.gameObject.SetActive(racesCount > 0);
-            _leftRaceSprite.sprite = racesCount > 0 ? _races[0].Description.PlanetSprite : null;
+            _leftRaceSprite.sprite = racesCount > 0 ? _races[0].Info.PlanetSprite : null;
 
             _rightRaceSprite.gameObject.SetActive(racesCount > 1);
-            _rightRaceSprite.sprite = racesCount > 1 ? _races[1].Description.PlanetSprite : null;
+            _rightRaceSprite.sprite = racesCount > 1 ? _races[1].Info.PlanetSprite : null;
             _spriteMask.SetActive(racesCount > 1);
         }
 

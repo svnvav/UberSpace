@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Svnvav.UberSpace
 {
     [CreateAssetMenu]
-    public class RaceDescription : ScriptableObject
+    public class RaceInfo : ScriptableObject
     {
         [SerializeField] private string _name;
         public string Name => _name;

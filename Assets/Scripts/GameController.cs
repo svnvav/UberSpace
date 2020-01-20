@@ -15,6 +15,7 @@ namespace Svnvav.UberSpace
         const int saveVersion = 1;
 
         [SerializeField] private PlanetFactory _planetFactory;
+        [SerializeField] private AllRacesInfo _allRacesInfo;
         [SerializeField] private PersistentStorage _storage;
 
         [NonSerialized] private int _loadedLevelBuildIndex;
@@ -22,6 +23,8 @@ namespace Svnvav.UberSpace
         private List<Planet> _planets;
 
         public List<Planet> Planets => _planets;
+
+        public AllRacesInfo AllRacesInfo => _allRacesInfo;
 
         private void Awake()
         {
