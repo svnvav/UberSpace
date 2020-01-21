@@ -9,21 +9,17 @@ namespace Svnvav.UberSpace
     [CreateAssetMenu]
     public class PlanetFactory : ScriptableObject
     {
-        [SerializeField] private Planet[] _prefabs;
+        [SerializeField] private Planet _prefab;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<Planet>[] _pools;
+        [NonSerialized] private List<Planet> _pool;
 
         [NonSerialized] private Scene _poolScene;
         
         void CreatePools()
         {
-            _pools = new List<Planet>[_prefabs.Length];
-            for (int i = 0; i < _pools.Length; i++)
-            {
-                _pools[i] = new List<Planet>();
-            }
+            _pool = new List<Planet>();
 
 #if UNITY_EDITOR
             _poolScene = SceneManager.GetSceneByName(name);
@@ -35,7 +31,7 @@ namespace Svnvav.UberSpace
                     .Select(go => go.GetComponent<Planet>());
                 foreach (var planet in inactiveShapes)
                 {
-                    _pools[planet.IdInFactory].Add(planet);
+                    _pool.Add(planet);
                 }
                 return;
             }
@@ -50,24 +46,22 @@ namespace Svnvav.UberSpace
 
             if (_recycle)
             {
-                if (_pools == null)
+                if (_pool == null)
                 {
                     CreatePools();
                 }
-
-                List<Planet> pool = _pools[idInFactory];
-                int lastIndex = pool.Count - 1;
+                
+                int lastIndex = _pool.Count - 1;
 
                 if (lastIndex >= 0)
                 {
-                    instance = pool[lastIndex];
-                    pool.RemoveAt(lastIndex);
+                    instance = _pool[lastIndex];
+                    _pool.RemoveAt(lastIndex);
                 }
                 else
                 {
-                    instance = Instantiate(_prefabs[idInFactory]);
+                    instance = Instantiate(_prefab);
                     instance.OriginFactory = this;
-                    instance.IdInFactory = idInFactory;
                     SceneManager.MoveGameObjectToScene(instance.gameObject, _poolScene);
                 }
 
@@ -75,8 +69,7 @@ namespace Svnvav.UberSpace
             }
             else
             {
-                instance = Instantiate(_prefabs[idInFactory]);
-                instance.IdInFactory = idInFactory;
+                instance = Instantiate(_prefab);
             }
 
             GameController.Instance.AddPlanet(instance);
@@ -92,12 +85,12 @@ namespace Svnvav.UberSpace
             
             if (_recycle)
             {
-                if (_pools == null)
+                if (_pool == null)
                 {
                     CreatePools();
                 }
 
-                _pools[toRecycle.IdInFactory].Add(toRecycle);
+                _pool.Add(toRecycle);
                 toRecycle.gameObject.SetActive(false);
             }
             else

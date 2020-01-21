@@ -8,7 +8,7 @@ namespace Svnvav.UberSpace
     public class Planet : PersistableObject
     {
         [SerializeField] private Vector3 _velocity;
-        [SerializeField] private List<RacePopulation> _races;
+        [SerializeField] private List<RaceInstance> _races;
         [SerializeField] private SpriteRenderer _leftRaceSprite, _rightRaceSprite;
         [SerializeField] private GameObject _spriteMask;
 
@@ -18,26 +18,8 @@ namespace Svnvav.UberSpace
         
         #region Factory
 
-        private int _idInFactory = int.MinValue;
-
         private PlanetFactory _originFactory;
-
-        public int IdInFactory
-        {
-            get => _idInFactory;
-            set
-            {
-                if (_idInFactory == int.MinValue)
-                {
-                    _idInFactory = value;
-                }
-                else
-                {
-                    Debug.LogError("Not allowed to change IdInFactory.");
-                }
-            }
-        }
-
+        
         public PlanetFactory OriginFactory
         {
             get => _originFactory;
@@ -83,23 +65,23 @@ namespace Svnvav.UberSpace
             Recycle();
         }
 
-        public RacePopulation GetRaceById(int id)
+        public RaceInstance GetRaceById(int id)
         {
             return _races[id];
         }
         
-        public bool AddRace(RacePopulation racePopulation)
+        public bool AddRace(RaceInstance raceInstance)
         {
             if (_races.Count >= 2) return false;
             
-            _races.Add(racePopulation);
+            _races.Add(raceInstance);
             RefreshView();
             return true;
         }
 
-        public void RemoveRace(RacePopulation racePopulation)
+        public void RemoveRace(RaceInstance raceInstance)
         {
-            _races.Remove(racePopulation);
+            _races.Remove(raceInstance);
             RefreshView();
         }
 
@@ -123,12 +105,24 @@ namespace Svnvav.UberSpace
         {
             writer.Write(transform.localPosition);
             writer.Write(_velocity);
+            writer.Write(RacesCount);
+            foreach (var race in _races)
+            {
+                race.Save(writer);
+            }
         }
 
         public override void Load(GameDataReader reader)
         {
             transform.localPosition = reader.ReadVector3();
             _velocity = reader.ReadVector3();
+            var racesCount = reader.ReadInt();
+            _races.Clear();
+            for (int i = 0; i < racesCount; i++)
+            {
+                //_races.Add();
+            }
+
         }
     }
 }
