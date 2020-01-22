@@ -7,24 +7,33 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private RaceInfo _info;
 
-        public RaceInfo Info => _info;
+        public RaceInfo Info {
+            get
+            {
+                if (_info == null)
+                {
+                    _info = OriginFactory.Infos[_infoId];//TODO: bad code
+                }
+                return _info;
+            }
+        }
 
         [SerializeField] private int _population;
 
         #region Factory
 
-        private int _idInFactory = int.MinValue;
+        private int _infoId = int.MinValue;
 
         private RaceFactory _originFactory;
 
-        public int IdInFactory
+        public int InfoId
         {
-            get => _idInFactory;
+            get => _infoId;
             set
             {
-                if (_idInFactory == int.MinValue)
+                if (_infoId == int.MinValue)
                 {
-                    _idInFactory = value;
+                    _infoId = value;
                 }
                 else
                 {
@@ -54,13 +63,13 @@ namespace Svnvav.UberSpace
         
         public override void Save(GameDataWriter writer)
         {
-            writer.Write(IdInFactory);
+            writer.Write(InfoId);
             writer.Write(_population);
         }
 
         public override void Load(GameDataReader reader)
         {
-            IdInFactory = reader.ReadInt();
+            InfoId = reader.ReadInt();
             _population = reader.ReadInt();
         }
     }

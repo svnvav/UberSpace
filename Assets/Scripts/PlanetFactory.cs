@@ -40,7 +40,7 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public Planet Get(int idInFactory = 0)
+        public Planet Get()
         {
             Planet instance;
 
@@ -79,7 +79,7 @@ namespace Svnvav.UberSpace
         public void Reclaim(Planet toRecycle)
         {
             if (toRecycle.OriginFactory != this) {
-                Debug.LogError("Tried to reclaim shape with wrong factory.");
+                Debug.LogError("Tried to reclaim planet with wrong factory.");
                 return;
             }
             

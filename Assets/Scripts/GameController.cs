@@ -89,6 +89,16 @@ namespace Svnvav.UberSpace
             _planets.RemoveAt(last);
         }
         
+        public void AddRace(RaceInstance planet)
+        {
+
+        }
+
+        public void RemoveRace(RaceInstance planet)
+        {
+
+        }
+        
         private IEnumerator LoadLevelScene(int levelBuildIndex)
         {
             enabled = false;
