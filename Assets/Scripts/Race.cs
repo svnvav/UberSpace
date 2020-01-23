@@ -3,37 +3,46 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class RaceInstance : PersistableObject
+    public class Race : PersistableObject
     {
-        [SerializeField] private RaceInfo _info;
+        #region StaticInfo
 
-        public RaceInfo Info {
-            get
-            {
-                if (_info == null)
-                {
-                    _info = OriginFactory.Infos[_infoId];//TODO: bad code
-                }
-                return _info;
-            }
-        }
+        [SerializeField] private string _name;
+        public string Name => _name;
+        
+        [SerializeField] private string _tagline;
+        public string Tagline => _tagline;
 
+        [SerializeField] private bool _isAggressive;
+        public bool IsAggressive => _isAggressive;
+
+        [SerializeField] private Sprite _planetSprite;
+        [SerializeField] private Sprite _hudInfoSprite;
+        [SerializeField] private Sprite _loadingSprite;
+
+        public Sprite PlanetSprite => _planetSprite;
+        public Sprite HudInfoSprite => _hudInfoSprite;
+        public Sprite LoadingSprite => _loadingSprite;
+        
+        #endregion
+        
         [SerializeField] private int _population;
+        public int PlanetSaveIndex { get; set; } = -1;
 
         #region Factory
 
-        private int _infoId = int.MinValue;
+        private int _prefabId = int.MinValue;
 
         private RaceFactory _originFactory;
 
-        public int InfoId
+        public int PrefabId
         {
-            get => _infoId;
+            get => _prefabId;
             set
             {
-                if (_infoId == int.MinValue)
+                if (_prefabId == int.MinValue)
                 {
-                    _infoId = value;
+                    _prefabId = value;
                 }
                 else
                 {
@@ -63,13 +72,13 @@ namespace Svnvav.UberSpace
         
         public override void Save(GameDataWriter writer)
         {
-            writer.Write(InfoId);
+            writer.Write(PlanetSaveIndex);
             writer.Write(_population);
         }
 
         public override void Load(GameDataReader reader)
         {
-            InfoId = reader.ReadInt();
+            PlanetSaveIndex = reader.ReadInt();
             _population = reader.ReadInt();
         }
     }

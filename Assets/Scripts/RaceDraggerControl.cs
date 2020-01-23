@@ -9,7 +9,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _captureMinDistance;
         
-        private RaceInstance _raceInstanceToMove;
+        private Race _raceToMove;
         private Planet _source;
 
         private void Update()
@@ -32,7 +32,7 @@ namespace Svnvav.UberSpace
 
             if (_source != null)
             {
-                _raceInstanceToMove = GetRaceByTouchPos(_source, touchPos);
+                _raceToMove = GetRaceByTouchPos(_source, touchPos);
             }
         }
 
@@ -43,14 +43,14 @@ namespace Svnvav.UberSpace
 
             if (target != null)
             {
-                if (target.AddRace(_raceInstanceToMove))
+                if (target.AddRace(_raceToMove))
                 {
-                    _source.RemoveRace(_raceInstanceToMove);
+                    _source.RemoveRace(_raceToMove);
                 }
             }
             
             _source = null;
-            _raceInstanceToMove = null;
+            _raceToMove = null;
         }
 
         private Planet GetNearestPlanet(Vector3 touchPos, float minDistance, Func<Planet, bool> planetCondition)
@@ -76,7 +76,7 @@ namespace Svnvav.UberSpace
 
             return result;
         }
-        private RaceInstance GetRaceByTouchPos(Planet source, Vector3 touchPos)
+        private Race GetRaceByTouchPos(Planet source, Vector3 touchPos)
         {
             var id = source.RacesCount == 1 ? 
                 0 : 

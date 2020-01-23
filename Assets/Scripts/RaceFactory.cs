@@ -9,20 +9,23 @@ namespace Svnvav.UberSpace
     [CreateAssetMenu]
     public class RaceFactory : ScriptableObject
     {
-        [SerializeField] private RaceInstance _prefab;
-        [SerializeField] private RaceInfo[] _infos;
-
-        public RaceInfo[] Infos => _infos;
+        [SerializeField] private Race[] _prefabs;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<RaceInstance> _pool;
+        [NonSerialized] private List<Race>[] _pools;
 
         [NonSerialized] private Scene _poolScene;
 
         void CreatePools()
         {
-            _pool = new List<RaceInstance>();
+            _pools = new List<Race>[_prefabs.Length];
+
+            for (int i = 0; i < _prefabs.Length; i++)
+            {
+                _pools[i] = new List<Race>();
+            }
+            
 
 #if UNITY_EDITOR
             _poolScene = SceneManager.GetSceneByName(name);
@@ -31,10 +34,10 @@ namespace Svnvav.UberSpace
                 var inactiveRaces = _poolScene
                     .GetRootGameObjects()
                     .Where(go => !go.activeSelf)
-                    .Select(go => go.GetComponent<RaceInstance>());
+                    .Select(go => go.GetComponent<Race>());
                 foreach (var raceInstance in inactiveRaces)
                 {
-                    _pool.Add(raceInstance);
+                    _pools[raceInstance.PrefabId].Add(raceInstance);
                 }
 
                 return;
@@ -44,29 +47,29 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
 
-        public RaceInstance Get(int infoId)
+        public Race Get(int prefabId)
         {
-            RaceInstance instance;
+            Race instance;
 
             if (_recycle)
             {
-                if (_pool == null)
+                if (_pools == null)
                 {
                     CreatePools();
                 }
-                
-                int lastIndex = _pool.Count - 1;
+                var pool = _pools[prefabId];
+                int lastIndex = pool.Count - 1;
 
                 if (lastIndex >= 0)
                 {
-                    instance = _pool[lastIndex];
-                    _pool.RemoveAt(lastIndex);
+                    instance = pool[lastIndex];
+                    pool.RemoveAt(lastIndex);
                 }
                 else
                 {
-                    instance = Instantiate(_prefab);
+                    instance = Instantiate(_prefabs[prefabId]);
                     instance.OriginFactory = this;
-                    instance.InfoId = infoId;
+                    instance.PrefabId = prefabId;
                     SceneManager.MoveGameObjectToScene(instance.gameObject, _poolScene);
                 }
 
@@ -74,16 +77,16 @@ namespace Svnvav.UberSpace
             }
             else
             {
-                instance = Instantiate(_prefab);
+                instance = Instantiate(_prefabs[prefabId]);
                 instance.OriginFactory = this;
-                instance.InfoId = infoId;
+                instance.PrefabId = prefabId;
             }
 
             GameController.Instance.AddRace(instance);
             return instance;
         }
 
-        public void Reclaim(RaceInstance toRecycle)
+        public void Reclaim(Race toRecycle)
         {
             if (toRecycle.OriginFactory != this)
             {
@@ -93,12 +96,12 @@ namespace Svnvav.UberSpace
 
             if (_recycle)
             {
-                if (_pool == null)
+                if (_pools == null)
                 {
                     CreatePools();
                 }
 
-                _pool.Add(toRecycle);
+                _pools[toRecycle.PrefabId].Add(toRecycle);
                 toRecycle.gameObject.SetActive(false);
             }
             else

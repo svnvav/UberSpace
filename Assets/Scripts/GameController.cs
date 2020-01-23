@@ -13,22 +13,22 @@ namespace Svnvav.UberSpace
         public static GameController Instance { get; private set; }
         
         const int saveVersion = 1;
+        [SerializeField] private PersistentStorage _storage;
 
         [SerializeField] private PlanetFactory _planetFactory;
-        [SerializeField] private RaceFactory raceFactory;
-        [SerializeField] private PersistentStorage _storage;
+        [SerializeField] private RaceFactory _raceFactory;
 
         [NonSerialized] private int _loadedLevelBuildIndex;
         
         private List<Planet> _planets;
+        private List<Race> _races;
 
         public List<Planet> Planets => _planets;
-
-        public RaceFactory RaceFactory => raceFactory;
 
         private void Awake()
         {
             _planets = new List<Planet>();
+            _races = new List<Race>();
             Instance = this;
         }
 
@@ -89,14 +89,14 @@ namespace Svnvav.UberSpace
             _planets.RemoveAt(last);
         }
         
-        public void AddRace(RaceInstance planet)
+        public void AddRace(Race race)
         {
-
+            _races.Add(race);
         }
 
-        public void RemoveRace(RaceInstance planet)
+        public void RemoveRace(Race race)
         {
-
+            _races.Remove(race);
         }
         
         private IEnumerator LoadLevelScene(int levelBuildIndex)
@@ -128,10 +128,18 @@ namespace Svnvav.UberSpace
         {
             writer.Write(_loadedLevelBuildIndex);
             GameLevel.Current.Save(writer);
+            
             writer.Write(_planets.Count);
             foreach (var planet in _planets)
             {
                 planet.Save(writer);
+            }
+            
+            writer.Write(_races.Count);
+            foreach (var race in _races)
+            {
+                writer.Write(race.PrefabId);
+                race.Save(writer);
             }
         }
 
@@ -154,12 +162,21 @@ namespace Svnvav.UberSpace
             GameLevel.Current.Load(reader);
             
             var count = reader.ReadInt();
-
             for (int i = 0; i < count; i++)
             {
-                var shape = _planetFactory.Get();
-                shape.Load(reader);
+                var planet = _planetFactory.Get();
+                planet.Load(reader);
             }
+            
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                var prefabId = reader.ReadInt();
+                var race = _raceFactory.Get(prefabId);
+                race.Load(reader);
+                _planets[race.PlanetSaveIndex].AddRace(race);
+            }
+            
         }
     }
 }
