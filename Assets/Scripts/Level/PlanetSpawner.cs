@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class PlanetSpawner : GameLevelObject
+    public class PlanetSpawner : ScenarioItem
     {
         public PlanetFactory Factory;
 
@@ -12,14 +12,16 @@ namespace Svnvav.UberSpace
         
         private float _spawnProgress;
 
-        public override void GameUpdate()
+        public override bool Progress(float deltaTime)
         {
-            _spawnProgress += Time.deltaTime * _spawnSpeed;
+            _spawnProgress += deltaTime * _spawnSpeed;
             while (_spawnProgress >= 1f)
             {
                 _spawnProgress -= 1f;
                 Spawn();
             }
+
+            return true;
         }
         
         private void Spawn()
@@ -29,12 +31,6 @@ namespace Svnvav.UberSpace
             planet.Initialize(-_planetSpeed * transform.position.normalized);
         }
 
-        public override void Save (GameDataWriter writer) {
-            writer.Write(_spawnProgress);
-        }
-
-        public override void Load (GameDataReader reader) {
-            _spawnProgress = reader.ReadFloat();
-        }
+        
     }
 }
