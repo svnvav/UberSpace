@@ -3,16 +3,19 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class PlanetSpawner : ScenarioItem
+    public class PlanetSpawner : Spawner
     {
         public PlanetFactory Factory;
 
+        [SerializeField] private float _firstSpawnDelay;
+        [SerializeField] private int _count;
         [SerializeField, Range(0f, 64f)] private float _spawnSpeed;
+        
         [SerializeField, Range(0f, 64f)] private float _planetSpeed;
         
         private float _spawnProgress;
 
-        public override bool Progress(float deltaTime)
+        public  bool Progress(float deltaTime)
         {
             _spawnProgress += deltaTime * _spawnSpeed;
             while (_spawnProgress >= 1f)
@@ -24,7 +27,7 @@ namespace Svnvav.UberSpace
             return true;
         }
         
-        private void Spawn()
+        public override void Spawn()
         {
             var planet = Factory.Get();
             planet.transform.position = transform.position;
