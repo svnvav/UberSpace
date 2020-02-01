@@ -15,7 +15,7 @@ namespace Svnvav.UberSpace
         
         private float _spawnProgress;
 
-        public  bool Progress(float deltaTime)
+        public override void Progress(float deltaTime)
         {
             _spawnProgress += deltaTime * _spawnSpeed;
             while (_spawnProgress >= 1f)
@@ -23,11 +23,9 @@ namespace Svnvav.UberSpace
                 _spawnProgress -= 1f;
                 Spawn();
             }
-
-            return true;
         }
         
-        public override void Spawn()
+        private void Spawn()
         {
             var planet = Factory.Get();
             planet.transform.position = transform.position;

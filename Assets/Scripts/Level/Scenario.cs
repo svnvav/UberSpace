@@ -15,20 +15,23 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private Stage[] _stages;
 
-        private int _currentItemId;
+        private int _currentStageId;
         
         private float _progress;
 
         public override void GameUpdate()
         {
+            _progress += Time.deltaTime;
             
         }
 
         public override void Save (GameDataWriter writer) {
+            writer.Write(_currentStageId);
             writer.Write(_progress);
         }
 
         public override void Load (GameDataReader reader) {
+            _currentStageId = reader.ReadInt();
             _progress = reader.ReadFloat();
         }
     }
