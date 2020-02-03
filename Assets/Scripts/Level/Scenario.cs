@@ -9,12 +9,12 @@ namespace Svnvav.UberSpace
         [Serializable]
         private struct Stage
         {
-            public Spawner[] Spawner;
             public float _duration;
+            public Spawner[] Spawners;
 
             public void Progress(float deltaTime)
             {
-                foreach (var spawner in Spawner)
+                foreach (var spawner in Spawners)
                 {
                     spawner.Progress(deltaTime);
                 }
@@ -32,7 +32,7 @@ namespace Svnvav.UberSpace
             var deltaTime = Time.deltaTime;
             _progress += deltaTime;
             
-            while (_progress > _stages[_currentStageId]._duration && _currentStageId < _stages.Length)
+            while (_currentStageId < _stages.Length && _progress > _stages[_currentStageId]._duration)
             {
                 var lastDt = _stages[_currentStageId]._duration - (_progress - deltaTime);
                 _stages[_currentStageId].Progress(lastDt);
