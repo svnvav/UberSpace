@@ -1,9 +1,10 @@
-﻿using Catlike.ObjectManagement;
+﻿
+using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public abstract class Spawner : PersistableObject
+    public abstract class Spawner : MonoBehaviour
     {
-        public abstract void Progress(float deltaTime);
+        public abstract void Spawn();
     }
 }

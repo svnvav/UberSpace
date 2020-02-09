@@ -1,4 +1,3 @@
-using System;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -6,22 +5,9 @@ namespace Svnvav.UberSpace
 {
     public class Scenario : GameLevelObject
     {
-        [Serializable]
-        private struct Stage
-        {
-            public float _duration;
-            public Spawner[] Spawners;
-
-            public void Progress(float deltaTime)
-            {
-                foreach (var spawner in Spawners)
-                {
-                    spawner.Progress(deltaTime);
-                }
-            }
-        }
+        private static float AdditionalDeltaTimeForLastStageUpdate = 0.001f;//to avoid precision error
         
-        [SerializeField] private Stage[] _stages;
+        [SerializeField] private ScenarioStage[] _stages;
 
         private int _currentStageId;
         
@@ -34,7 +20,7 @@ namespace Svnvav.UberSpace
             
             while (_currentStageId < _stages.Length && _progress > _stages[_currentStageId]._duration)
             {
-                var lastDt = _stages[_currentStageId]._duration - (_progress - deltaTime);
+                var lastDt = _stages[_currentStageId]._duration - (_progress - deltaTime) + AdditionalDeltaTimeForLastStageUpdate;
                 _stages[_currentStageId].Progress(lastDt);
                 deltaTime -= lastDt;
                 _progress -= _stages[_currentStageId]._duration;
@@ -54,6 +40,7 @@ namespace Svnvav.UberSpace
         public override void Load (GameDataReader reader) {
             _currentStageId = reader.ReadInt();
             _progress = reader.ReadFloat();
+            _stages[_currentStageId].SetTime(_progress);
         }
     }
 }
