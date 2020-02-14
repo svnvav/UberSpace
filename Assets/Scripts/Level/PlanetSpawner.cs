@@ -1,19 +1,25 @@
-﻿using Catlike.ObjectManagement;
+﻿
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class PlanetSpawner : Spawner
     {
-        public PlanetFactory Factory;
-        
         [SerializeField, Range(0f, 64f)] private float _planetSpeed;
+
+        [SerializeField] private int _raceIndex = -1;
         
         public override void Spawn()
         {
-            var planet = Factory.Get();
+            var planet = GameLevel.Current.PlanetFactory.Get();
             planet.transform.position = transform.position;
             planet.Initialize(-_planetSpeed * transform.position.normalized);
+            if (_raceIndex > -1)
+            {
+                var race = GameLevel.Current.RaceFactory.Get(_raceIndex);
+                //TODO: init race
+                planet.AddRace(race);
+            }
         }
 
     }
