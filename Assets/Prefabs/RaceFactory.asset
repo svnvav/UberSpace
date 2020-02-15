@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefb9d4bd140478bb95d705b804106ab, type: 3}
   m_Name: RaceFactory
   m_EditorClassIdentifier: 
-  _prefabs: []
-  _recycle: 0
+  _prefabs:
+  - {fileID: 7971773986106199017, guid: a2cdce14ebdc25b4a88aeacf7f72e5ce, type: 3}
+  _recycle: 1
