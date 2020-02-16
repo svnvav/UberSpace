@@ -6,13 +6,8 @@ namespace Svnvav.UberSpace
     public class GameLevel : PersistableObject
     {
         public static GameLevel Current;
-
-        [SerializeField] private PlanetFactory _planetFactory;
-        [SerializeField] private RaceFactory _raceFactory;
+        
         [SerializeField] private GameLevelObject[] _levelObjects;
-
-        public PlanetFactory PlanetFactory => _planetFactory;
-        public RaceFactory RaceFactory => _raceFactory;
 
         private void OnEnable()
         {

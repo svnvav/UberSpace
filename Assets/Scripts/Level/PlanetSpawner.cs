@@ -11,13 +11,12 @@ namespace Svnvav.UberSpace
         
         public override void Spawn()
         {
-            var planet = GameLevel.Current.PlanetFactory.Get();
+            var planet = GameController.Instance.PlanetFactory.Get();
             planet.transform.position = transform.position;
             planet.Initialize(-_planetSpeed * transform.position.normalized);
             if (_raceIndex > -1)
             {
-                var race = GameLevel.Current.RaceFactory.Get(_raceIndex);
-                //TODO: init race
+                var race = GameController.Instance.RaceFactory.Get(_raceIndex);
                 planet.AddRace(race);
             }
         }

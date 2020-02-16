@@ -16,14 +16,18 @@ namespace Svnvav.UberSpace
         [SerializeField] private PersistentStorage _storage;
 
         [SerializeField] private PlanetFactory _planetFactory;
+        public PlanetFactory PlanetFactory => _planetFactory;
+        
         [SerializeField] private RaceFactory _raceFactory;
+        public RaceFactory RaceFactory => _raceFactory;
 
         [NonSerialized] private int _loadedLevelBuildIndex;
         
         private List<Planet> _planets;
+        public List<Planet> Planets => _planets;
+        
         private List<Race> _races;
 
-        public List<Planet> Planets => _planets;
 
         private void Awake()
         {
@@ -92,11 +96,13 @@ namespace Svnvav.UberSpace
         public void AddRace(Race race)
         {
             _races.Add(race);
+            //TODO: initialize race ui
         }
 
         public void RemoveRace(Race race)
         {
             _races.Remove(race);
+            //TODO: remove race ui
         }
         
         private IEnumerator LoadLevelScene(int levelBuildIndex)
@@ -120,8 +126,13 @@ namespace Svnvav.UberSpace
             {
                 planet.Recycle();
             }
-            
             _planets.Clear();
+
+            foreach (var race in _races)
+            {
+                race.Recycle();
+            }
+            _races.Clear();
         }
         
         public override void Save(GameDataWriter writer)

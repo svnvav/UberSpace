@@ -69,18 +69,26 @@ namespace Svnvav.UberSpace
 
         #endregion
 
+        public void Die()
+        {
+            GameController.Instance.RemoveRace(this);
+            Recycle();
+        }
+        
+        public void Recycle()
+        {
+            OriginFactory.Reclaim(this);
+        }
         
         public override void Save(GameDataWriter writer)
         {
             writer.Write(PlanetSaveIndex);
-            writer.Write(PrefabId);
             writer.Write(_population);
         }
 
         public override void Load(GameDataReader reader)
         {
             PlanetSaveIndex = reader.ReadInt();
-            PrefabId = reader.ReadInt();
             _population = reader.ReadInt();
         }
     }

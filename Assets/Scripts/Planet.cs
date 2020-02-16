@@ -61,6 +61,10 @@ namespace Svnvav.UberSpace
         public void Die()
         {
             GameController.Instance.RemovePlanet(this);
+            foreach (var race in _races)
+            {
+                race.Die();
+            }
             Recycle();
         }
 
@@ -98,6 +102,7 @@ namespace Svnvav.UberSpace
 
         public void Recycle()
         {
+            _races.Clear();
             OriginFactory.Reclaim(this);
         }
 
@@ -111,6 +116,7 @@ namespace Svnvav.UberSpace
         {
             transform.localPosition = reader.ReadVector3();
             _velocity = reader.ReadVector3();
+            RefreshView();
         }
     }
 }
