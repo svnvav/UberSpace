@@ -8,6 +8,7 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _captureMinDistance;
+        [SerializeField] private Taxi _taxi;
         
         private Race _raceToMove;
         private Planet _source;
@@ -43,10 +44,8 @@ namespace Svnvav.UberSpace
 
             if (target != null)
             {
-                if (target.AddRace(_raceToMove))
-                {
-                    _source.RemoveRace(_raceToMove);
-                }
+                _taxi.AddOrder(_raceToMove, _source, target);
+                
             }
             
             _source = null;
