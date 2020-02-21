@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b59953bc4ca412f883dd1633e7a7a33, type: 3}
   m_Name: PlanetFactory
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 613892471377703400, guid: d79b6ec1c99296e4a8aede612f9a6063, type: 3}
+  _prefabs:
+  - {fileID: 4534601157054314636, guid: d79b6ec1c99296e4a8aede612f9a6063, type: 3}
   _recycle: 1

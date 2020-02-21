@@ -41,11 +41,11 @@ namespace Svnvav.UberSpace
         private void OnTouchStart()
         {
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount > 0);
+            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
 
             if (_departure != null)
             {
-                _raceToMove = GetRaceByTouchPos(_departure, touchPos);
+                _raceToMove = _departure.GetRaceByTouchPos(touchPos);
                 OnControlCapture();
             }
         }
@@ -54,7 +54,7 @@ namespace Svnvav.UberSpace
         {
             OnControlRelease();
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount < 2);
+            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
 
             if (destination != null)
             {
@@ -86,15 +86,6 @@ namespace Svnvav.UberSpace
             }
 
             return result;
-        }
-        
-        private Race GetRaceByTouchPos(Planet source, Vector3 touchPos)
-        {
-            var id = source.RacesCount == 1 ? 
-                0 : 
-                (touchPos.x - source.transform.position.x < 0 ? 0 : 1);//0 for left and 1 for right
-            
-            return source.GetRaceById(id);
         }
     }
 }

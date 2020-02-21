@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _planetSpeed: 2
+  _planetIndex: 0
   _raceIndex: 0
 --- !u!1 &62597373
 GameObject:
@@ -182,7 +183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &62597374
 Transform:
   m_ObjectHideFlags: 0
@@ -596,6 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _planetSpeed: 1
+  _planetIndex: 0
   _raceIndex: -1
 --- !u!4 &1480015037
 Transform:

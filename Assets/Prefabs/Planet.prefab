@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 613892471377703403}
-  - component: {fileID: 613892471377703400}
+  - component: {fileID: 4534601157054314636}
   - component: {fileID: 9034890421963193034}
   m_Layer: 0
   m_Name: Planet
@@ -67,7 +67,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &613892471377703400
+--- !u!114 &4534601157054314636
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,14 +76,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 613892471377703401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0e92a393144c3e90a47e2eacf152dc, type: 3}
+  m_Script: {fileID: 11500000, guid: b89a4670f85f41b4991d5761ab0ea7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _velocity: {x: 0, y: 0, z: 0}
   _races: []
+  _defaultSprite: {fileID: 3341653925062694781}
   _leftRaceSprite: {fileID: 5437684731312057901}
   _rightRaceSprite: {fileID: 2438667419341081555}
   _spriteMask: {fileID: 7047619082880462242}
+  _veilColor: {r: 0.3301887, g: 0.3301887, b: 0.3301887, a: 0}
 --- !u!58 &9034890421963193034
 CircleCollider2D:
   m_ObjectHideFlags: 0

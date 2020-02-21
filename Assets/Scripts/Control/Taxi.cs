@@ -8,7 +8,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
         
-        private Queue<Order> _queue;
+        private Queue<Order> _queue; //TODO: delete dead races, 
 
         private Order _current;
         private Race _passenger;
