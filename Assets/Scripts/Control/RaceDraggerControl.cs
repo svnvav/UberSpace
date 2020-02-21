@@ -9,9 +9,9 @@ namespace Svnvav.UberSpace
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _captureMinDistance;
         [SerializeField] private Taxi _taxi;
-        
+
         private Race _raceToMove;
-        private Planet _source;
+        private Planet _departure;
 
         private void Update()
         {
@@ -20,50 +20,62 @@ namespace Svnvav.UberSpace
                 OnTouchStart();
             }
 
-            if (Input.GetMouseButtonUp(0) && _source != null)
+            if (Input.GetMouseButtonUp(0) && _departure != null)
             {
                 OnTouchEnd();
             }
         }
-        
+
+        private void OnControlCapture()
+        {
+            Time.timeScale = 0.5f;
+            GameController.Instance.GameSpeed = 0.2f;
+        }
+
+        private void OnControlRelease()
+        {
+            Time.timeScale = 1f;
+            GameController.Instance.GameSpeed = 1f;
+        }
+
         private void OnTouchStart()
         {
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            _source = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount > 0);
+            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount > 0);
 
-            if (_source != null)
+            if (_departure != null)
             {
-                _raceToMove = GetRaceByTouchPos(_source, touchPos);
+                _raceToMove = GetRaceByTouchPos(_departure, touchPos);
+                OnControlCapture();
             }
         }
 
         private void OnTouchEnd()
         {
+            OnControlRelease();
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            var target = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount < 2);
+            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => planet.RacesCount < 2);
 
-            if (target != null)
+            if (destination != null)
             {
-                _taxi.AddOrder(_raceToMove, _source, target);
-                
+                _taxi.AddOrder(_raceToMove, _departure, destination);
             }
             
-            _source = null;
+            _departure = null;
             _raceToMove = null;
         }
-
-        private Planet GetNearestPlanet(Vector3 touchPos, float minDistance, Func<Planet, bool> planetCondition)
+        
+        public Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
         {
             Planet result = null;
-            var planets = GameController.Instance.Planets;
 
             var minSqrDistance = float.MaxValue;
 
-            foreach (var planet in planets)
+            foreach (var planet in GameController.Instance.Planets)
             {
                 if(planetCondition != null && !planetCondition(planet)) continue;
 
-                var posDif = planet.transform.position - touchPos;
+                var posDif = planet.transform.position - point;
                 var sqrDistance = posDif.x * posDif.x + posDif.y * posDif.y;
                 
                 if (sqrDistance < minDistance * minDistance && sqrDistance < minSqrDistance)
@@ -75,6 +87,7 @@ namespace Svnvav.UberSpace
 
             return result;
         }
+        
         private Race GetRaceByTouchPos(Planet source, Vector3 touchPos)
         {
             var id = source.RacesCount == 1 ? 

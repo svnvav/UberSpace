@@ -68,9 +68,9 @@ namespace Svnvav.UberSpace
             _velocity = velocity;
         }
 
-        public void GameUpdate()
+        public void GameUpdate(float deltaTime)
         {
-            transform.Translate(Time.deltaTime * _velocity);
+            transform.Translate(deltaTime * _velocity);
             //TODO: races war
         }
 

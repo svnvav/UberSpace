@@ -13,23 +13,23 @@ namespace Svnvav.UberSpace
         
         private float _progress;
 
-        public override void GameUpdate()
+        public override void GameUpdate(float deltaTime)
         {
-            var deltaTime = Time.deltaTime;
-            _progress += deltaTime;
+            var dt = deltaTime;
+            _progress += dt;
             
             while (_currentStageId < _stages.Length && _progress > _stages[_currentStageId]._duration)
             {
-                var lastDt = _stages[_currentStageId]._duration - (_progress - deltaTime) + AdditionalDeltaTimeForLastStageUpdate;
+                var lastDt = _stages[_currentStageId]._duration - (_progress - dt) + AdditionalDeltaTimeForLastStageUpdate;
                 _stages[_currentStageId].Progress(lastDt);
-                deltaTime -= lastDt;
+                dt -= lastDt;
                 _progress -= _stages[_currentStageId]._duration;
                 _currentStageId++;
             }
             
             if(_currentStageId >= _stages.Length) return;
             
-            _stages[_currentStageId].Progress(deltaTime);
+            _stages[_currentStageId].Progress(dt);
         }
 
         public override void Save (GameDataWriter writer) {

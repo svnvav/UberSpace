@@ -21,13 +21,20 @@ namespace Svnvav.UberSpace
         [SerializeField] private RaceFactory _raceFactory;
         public RaceFactory RaceFactory => _raceFactory;
 
+        [SerializeField] private float _gameSpeed = 1f;
+        public float GameSpeed
+        {
+            get => _gameSpeed;
+            set => _gameSpeed = value;
+        }
+
         [NonSerialized] private int _loadedLevelBuildIndex;
         
         private List<Planet> _planets;
         public List<Planet> Planets => _planets;
-        
-        private List<Race> _races;
 
+        private List<Race> _races;
+        
 
         private void Awake()
         {
@@ -56,11 +63,12 @@ namespace Svnvav.UberSpace
 
         private void Update()
         {
-            GameLevel.Current.GameUpdate();
+            var deltaTime = _gameSpeed * Time.deltaTime;
+            GameLevel.Current.GameUpdate(deltaTime);
 
             foreach (var planet in _planets)
             {
-                planet.GameUpdate();
+                planet.GameUpdate(deltaTime);
             }
             
             if (Input.GetKeyDown(KeyCode.S))
@@ -92,7 +100,7 @@ namespace Svnvav.UberSpace
             
             _planets.RemoveAt(last);
         }
-        
+
         public void AddRace(Race race)
         {
             _races.Add(race);
@@ -104,7 +112,7 @@ namespace Svnvav.UberSpace
             _races.Remove(race);
             //TODO: remove race ui
         }
-        
+
         private IEnumerator LoadLevelScene(int levelBuildIndex)
         {
             enabled = false;

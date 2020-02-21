@@ -18,11 +18,11 @@ namespace Svnvav.UberSpace
             }
         }
 
-        public void GameUpdate()
+        public void GameUpdate(float deltaTime)
         {
             foreach (var levelObject in _levelObjects)
             {
-                if(levelObject.isActiveAndEnabled) levelObject.GameUpdate();
+                if(levelObject.isActiveAndEnabled) levelObject.GameUpdate(deltaTime);
             }
         }
         

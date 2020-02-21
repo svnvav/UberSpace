@@ -2,6 +2,6 @@
 {
     public class GameLevelObject : PersistableObject
     {
-        public virtual void GameUpdate(){}
+        public virtual void GameUpdate(float deltaTIme){}
     }
 }
