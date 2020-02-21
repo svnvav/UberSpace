@@ -71,6 +71,7 @@ namespace Svnvav.UberSpace
             _rightRaceSprite.gameObject.SetActive(racesCount > 1);
             _rightRaceSprite.sprite = racesCount > 1 ? _races[1].PlanetSprite : null;
             _spriteMask.SetActive(racesCount > 1);
+            //TODO: default sprite
         }
 
         
