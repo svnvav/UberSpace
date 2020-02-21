@@ -32,9 +32,6 @@ namespace Svnvav.UberSpace
         #region Factory
 
         private int _prefabId = int.MinValue;
-
-        private RaceFactory _originFactory;
-
         public int PrefabId
         {
             get => _prefabId;
@@ -51,6 +48,7 @@ namespace Svnvav.UberSpace
             }
         }
 
+        private RaceFactory _originFactory;
         public RaceFactory OriginFactory
         {
             get => _originFactory;

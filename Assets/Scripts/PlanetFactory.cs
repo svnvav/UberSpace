@@ -9,29 +9,33 @@ namespace Svnvav.UberSpace
     [CreateAssetMenu]
     public class PlanetFactory : ScriptableObject
     {
-        [SerializeField] private Planet _prefab;
+        [SerializeField] private Planet[] _prefabs;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<Planet> _pool;
+        [NonSerialized] private List<Planet>[] _pools;
 
         [NonSerialized] private Scene _poolScene;
         
         void CreatePools()
         {
-            _pool = new List<Planet>();
+            _pools = new List<Planet>[_prefabs.Length];
+            for (int i = 0; i < _pools.Length; i++)
+            {
+                _pools[i] = new List<Planet>();
+            }
 
 #if UNITY_EDITOR
             _poolScene = SceneManager.GetSceneByName(name);
             if (_poolScene.isLoaded)
             {
-                var inactiveShapes = _poolScene
+                var inactiveObjects = _poolScene
                     .GetRootGameObjects()
                     .Where(go => !go.activeSelf)
                     .Select(go => go.GetComponent<Planet>());
-                foreach (var planet in inactiveShapes)
+                foreach (var planet in inactiveObjects)
                 {
-                    _pool.Add(planet);
+                    _pools[planet.PrefabId].Add(planet);
                 }
                 return;
             }
@@ -40,28 +44,29 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public Planet Get()
+        public Planet Get(int prefabId)
         {
             Planet instance;
 
             if (_recycle)
             {
-                if (_pool == null)
+                if (_pools == null)
                 {
                     CreatePools();
                 }
                 
-                int lastIndex = _pool.Count - 1;
+                int lastIndex = _pools[prefabId].Count - 1;
 
                 if (lastIndex >= 0)
                 {
-                    instance = _pool[lastIndex];
-                    _pool.RemoveAt(lastIndex);
+                    instance = _pools[prefabId][lastIndex];
+                    _pools[prefabId].RemoveAt(lastIndex);
                 }
                 else
                 {
-                    instance = Instantiate(_prefab);
+                    instance = Instantiate(_prefabs[prefabId]);
                     instance.OriginFactory = this;
+                    instance.PrefabId = prefabId;
                     SceneManager.MoveGameObjectToScene(instance.gameObject, _poolScene);
                 }
 
@@ -69,7 +74,9 @@ namespace Svnvav.UberSpace
             }
             else
             {
-                instance = Instantiate(_prefab);
+                instance = Instantiate(_prefabs[prefabId]);
+                instance.OriginFactory = this;
+                instance.PrefabId = prefabId;
             }
 
             GameController.Instance.AddPlanet(instance);
@@ -85,12 +92,12 @@ namespace Svnvav.UberSpace
             
             if (_recycle)
             {
-                if (_pool == null)
+                if (_pools == null)
                 {
                     CreatePools();
                 }
 
-                _pool.Add(toRecycle);
+                _pools[toRecycle.PrefabId].Add(toRecycle);
                 toRecycle.gameObject.SetActive(false);
             }
             else

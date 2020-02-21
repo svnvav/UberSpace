@@ -17,8 +17,24 @@ namespace Svnvav.UberSpace
         
         #region Factory
 
-        private PlanetFactory _originFactory;
+        private int _prefabId = int.MinValue;
+        public int PrefabId
+        {
+            get => _prefabId;
+            set
+            {
+                if (_prefabId == int.MinValue)
+                {
+                    _prefabId = value;
+                }
+                else
+                {
+                    Debug.LogError("Not allowed to change IdInFactory.");
+                }
+            }
+        }
         
+        private PlanetFactory _originFactory;
         public PlanetFactory OriginFactory
         {
             get => _originFactory;

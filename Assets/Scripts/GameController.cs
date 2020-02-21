@@ -143,6 +143,7 @@ namespace Svnvav.UberSpace
             writer.Write(_planets.Count);
             foreach (var planet in _planets)
             {
+                writer.Write(planet.PrefabId);
                 planet.Save(writer);
             }
             
@@ -175,7 +176,8 @@ namespace Svnvav.UberSpace
             var count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
-                var planet = _planetFactory.Get();
+                var prefabId = reader.ReadInt();
+                var planet = _planetFactory.Get(prefabId);
                 planet.Load(reader);
             }
             
