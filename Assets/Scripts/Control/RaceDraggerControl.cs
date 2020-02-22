@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -12,6 +13,8 @@ namespace Svnvav.UberSpace
 
         private Race _raceToMove;
         private Planet _departure;
+
+        private List<Planet> _availableDestinations;
 
         private void Update()
         {
@@ -64,8 +67,8 @@ namespace Svnvav.UberSpace
             _departure = null;
             _raceToMove = null;
         }
-        
-        public Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
+
+        private Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
         {
             Planet result = null;
 
@@ -86,6 +89,11 @@ namespace Svnvav.UberSpace
             }
 
             return result;
+        }
+
+        private void FindAvailablePlanets()
+        {
+            var orders = _taxi.
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Svnvav.UberSpace
 
         [NonSerialized] private Scene _poolScene;
 
-        void CreatePools()
+         private void CreatePools()
         {
             _pools = new List<Race>[_prefabs.Length];
 

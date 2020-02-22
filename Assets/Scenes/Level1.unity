@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _planetSpeed: 2
-  _planetIndex: 0
+  _planetIndex: 1
   _raceIndex: 0
 --- !u!1 &62597373
 GameObject:
@@ -328,7 +328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &448537357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -552,7 +552,7 @@ MonoBehaviour:
     - Spawner: {fileID: 1480015036}
       ActivationDelay: 0
       QuantityLimit: 0
-      Speed: 2
+      Speed: 1
 --- !u!4 &1424119127
 Transform:
   m_ObjectHideFlags: 0

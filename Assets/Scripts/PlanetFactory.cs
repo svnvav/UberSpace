@@ -17,7 +17,7 @@ namespace Svnvav.UberSpace
 
         [NonSerialized] private Scene _poolScene;
         
-        void CreatePools()
+        private void CreatePools()
         {
             _pools = new List<Planet>[_prefabs.Length];
             for (int i = 0; i < _pools.Length; i++)

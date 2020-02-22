@@ -54,10 +54,27 @@ namespace Svnvav.UberSpace
         
         private void RefreshView()
         {
+            _raceSprite.sprite = _race != null ? _race.PlanetSprite : null;
+
             _raceSprite.gameObject.SetActive(IsFull);
             _defaultSprite.gameObject.SetActive(IsEmpty);
         }
-        
+
+        public override void Die()
+        {
+            base.Die();
+            if (_race != null)
+            {
+                _race.Die();
+            }
+        }
+
+        public override void Recycle()
+        {
+            base.Recycle();
+            _race = null;
+        }
+
         public override void Load(GameDataReader reader)
         {
             base.Load(reader);

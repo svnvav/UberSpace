@@ -8,19 +8,20 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
         
-        private Queue<Order> _queue; //TODO: delete dead races, 
+        private Queue<Order> _ordersQueue; //TODO: delete dead races,
+        public Order[] Orders => _ordersQueue.ToArray();
 
         private Order _current;
         private Race _passenger;
 
         private void Awake()
         {
-            _queue = new Queue<Order>();
+            _ordersQueue = new Queue<Order>();
         }
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            _queue.Enqueue(new Order()
+            _ordersQueue.Enqueue(new Order()
             {
                 race = passenger,
                 departure = departure,
@@ -30,12 +31,12 @@ namespace Svnvav.UberSpace
 
         private void Update()
         {
-            if (_current == null && _queue.Count == 0)
+            if (_current == null && _ordersQueue.Count == 0)
             {
                 Idle();
                 return;
             }
-            if (_current == null && _queue.Count > 0)
+            if (_current == null && _ordersQueue.Count > 0)
             {
                 TakeOrder();
             }
@@ -57,7 +58,7 @@ namespace Svnvav.UberSpace
         
         private void TakeOrder()
         {
-            _current = _queue.Dequeue();
+            _current = _ordersQueue.Dequeue();
         }
 
         private void GoToDeparture()
@@ -91,12 +92,6 @@ namespace Svnvav.UberSpace
         {
             transform.LookAt(destination, Vector3.forward);
             transform.Translate(_speed * Time.deltaTime * transform.forward, Space.World);
-        }
-
-        private class Order
-        {
-            public Race race;
-            public Planet departure, destination;
         }
     }
 }
