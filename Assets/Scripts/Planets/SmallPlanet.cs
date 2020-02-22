@@ -10,6 +10,20 @@ namespace Svnvav.UberSpace
         [SerializeField] private SpriteRenderer _defaultSprite, _raceSprite;
         [SerializeField] private Color _veilColor;
 
+        private int _saveIndex;
+        public override int SaveIndex
+        {
+            get => _saveIndex;
+            set
+            {
+                _saveIndex = value;
+                if (_race != null)
+                {
+                    _race.PlanetSaveIndex = _saveIndex;
+                }
+            }
+        }
+        
         public override int Capacity => 1;
         public override bool IsFull => _race != null;
         public override bool IsEmpty => _race == null;
@@ -30,17 +44,12 @@ namespace Svnvav.UberSpace
             return _race;
         }
 
-        public override bool AddRace(Race race)
+        public override void AddRace(Race race)
         {
-            if (IsFull)
-            {
-                Debug.LogError("Trying to put a race to full planet");
-                return false;
-            }
+            base.AddRace(race);
 
             _race = race;
             RefreshView();
-            return true;
         }
 
         public override void RemoveRace(Race race)
@@ -63,11 +72,11 @@ namespace Svnvav.UberSpace
 
         public override void Die()
         {
-            base.Die();
             if (_race != null)
             {
                 _race.Die();
             }
+            base.Die();
         }
 
         public override void Recycle()

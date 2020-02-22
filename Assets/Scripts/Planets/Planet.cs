@@ -7,7 +7,7 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] protected Vector3 _velocity;
         
-        public int SaveIndex { get; set; }//index in GameController._planets
+        public abstract int SaveIndex { get; set; }//index in GameController._planets
         
         public abstract int Capacity { get; }
         public abstract bool IsFull { get; }
@@ -66,7 +66,14 @@ namespace Svnvav.UberSpace
 
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
 
-        public abstract bool AddRace(Race race);
+        public virtual void AddRace(Race race)
+        {
+            if (IsFull)
+            {
+                Debug.LogError("Trying to put a race to full planet");
+            }
+            race.PlanetSaveIndex = SaveIndex;
+        }
         public abstract void RemoveRace(Race race);
 
         public virtual void Die()

@@ -40,7 +40,10 @@ namespace Svnvav.UberSpace
         public override void Load (GameDataReader reader) {
             _currentStageId = reader.ReadInt();
             _progress = reader.ReadFloat();
-            _stages[_currentStageId].SetTime(_progress);
+            if (_currentStageId < _stages.Length)
+            {
+                _stages[_currentStageId].SetTime(_progress);
+            }
         }
     }
 }

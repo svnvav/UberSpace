@@ -20,8 +20,8 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private RaceFactory _raceFactory;
         public RaceFactory RaceFactory => _raceFactory;
-
-        [SerializeField] private float _gameSpeed = 1f;
+        
+        private float _gameSpeed = 1f;
         public float GameSpeed
         {
             get => _gameSpeed;
@@ -29,7 +29,32 @@ namespace Svnvav.UberSpace
         }
 
         [NonSerialized] private int _loadedLevelBuildIndex;
+
+        #region Callbacks
+
+        private List<Action<Planet>> _onAddPlanet, _onRemovePlanet;
+        public void RegisterOnAddPlanet(Action<Planet> onAddPlanet)
+        {
+            _onAddPlanet.Add(onAddPlanet);
+        }
         
+        public void UnregisterOnAddPlanet(Action<Planet> onAddPlanet)
+        {
+            _onAddPlanet.Remove(onAddPlanet);
+        }
+        
+        public void RegisterOnRemovePlanet(Action<Planet> onAddPlanet)
+        {
+            _onRemovePlanet.Add(onAddPlanet);
+        }
+        
+        public void UnregisterOnRemovePlanet(Action<Planet> onAddPlanet)
+        {
+            _onRemovePlanet.Remove(onAddPlanet);
+        }
+
+        #endregion
+
         private List<Planet> _planets;
         public List<Planet> Planets => _planets;
 
@@ -41,6 +66,8 @@ namespace Svnvav.UberSpace
             _planets = new List<Planet>();
             _races = new List<Race>();
             Instance = this;
+            _onAddPlanet = new List<Action<Planet>>();
+            _onRemovePlanet = new List<Action<Planet>>();
         }
 
         private void Start()
@@ -82,6 +109,8 @@ namespace Svnvav.UberSpace
             }
         }
 
+        
+        
         public void AddPlanet(Planet planet)
         {
             planet.SaveIndex = _planets.Count;
