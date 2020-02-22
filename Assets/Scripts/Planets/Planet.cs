@@ -9,6 +9,7 @@ namespace Svnvav.UberSpace
         
         public int SaveIndex { get; set; }//index in GameController._planets
         
+        public abstract int Capacity { get; }
         public abstract bool IsFull { get; }
         public abstract bool IsEmpty { get; }
         

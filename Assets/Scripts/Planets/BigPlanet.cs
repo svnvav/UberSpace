@@ -11,7 +11,8 @@ namespace Svnvav.UberSpace
         [SerializeField] private GameObject _spriteMask;
         [SerializeField] private Color _veilColor;
 
-        public override bool IsFull => _races.Count >= 2;
+        public override int Capacity => 2;
+        public override bool IsFull => _races.Count >= Capacity;
         public override bool IsEmpty => _races.Count == 0;
 
         private void OnEnable()
@@ -44,7 +45,7 @@ namespace Svnvav.UberSpace
 
         public override bool AddRace(Race race)
         {
-            if (_races.Count >= 2)
+            if (IsFull)
             {
                 Debug.LogError("Trying to put a race to full planet");
                 return false;

@@ -14,7 +14,13 @@ namespace Svnvav.UberSpace
         private Race _raceToMove;
         private Planet _departure;
 
-        private List<Planet> _availableDestinations;
+        private List<Planet> _availableDestinations, _planetsToVeil;
+
+        private void Awake()
+        {
+            _availableDestinations = new List<Planet>();
+            _planetsToVeil = new List<Planet>();
+        }
 
         private void Update()
         {
@@ -50,7 +56,10 @@ namespace Svnvav.UberSpace
             {
                 _raceToMove = _departure.GetRaceByTouchPos(touchPos);
                 OnControlCapture();
+                FindAvailablePlanets();
             }
+            
+            //TODO: on planet die cancel capture
         }
 
         private void OnTouchEnd()
@@ -94,6 +103,8 @@ namespace Svnvav.UberSpace
         private void FindAvailablePlanets()
         {
             var orders = _taxi.Orders;
+            
+            
         }
     }
 }

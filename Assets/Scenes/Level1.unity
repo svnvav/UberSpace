@@ -552,7 +552,7 @@ MonoBehaviour:
     - Spawner: {fileID: 1480015036}
       ActivationDelay: 0
       QuantityLimit: 0
-      Speed: 1
+      Speed: 0.5
 --- !u!4 &1424119127
 Transform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private SpriteRenderer _defaultSprite, _raceSprite;
         [SerializeField] private Color _veilColor;
 
+        public override int Capacity => 1;
         public override bool IsFull => _race != null;
         public override bool IsEmpty => _race == null;
         public override void Veil()

@@ -21,12 +21,7 @@ namespace Svnvav.UberSpace
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            _ordersQueue.Enqueue(new Order()
-            {
-                race = passenger,
-                departure = departure,
-                destination = destination
-            });
+            _ordersQueue.Enqueue(new Order(passenger, departure, destination));
         }
 
         private void Update()
@@ -63,26 +58,26 @@ namespace Svnvav.UberSpace
 
         private void GoToDeparture()
         {
-            var departurePoint = _current.departure.transform.position;
+            var departurePoint = _current.Departure.transform.position;
             MoveTo(departurePoint);
             
             if (Vector3.SqrMagnitude(transform.position - departurePoint) <
                 _takePassengerRadius * _takePassengerRadius)
             {
-                _passenger = _current.race;
-                _current.departure.RemoveRace(_passenger);
+                _passenger = _current.Race;
+                _current.Departure.RemoveRace(_passenger);
             }
         }
         
         private void GoToDestination()
         {
-            var destinationPoint = _current.destination.transform.position;
+            var destinationPoint = _current.Destination.transform.position;
             MoveTo(destinationPoint);
             
             if (Vector3.SqrMagnitude(transform.position - destinationPoint) <
                 _takePassengerRadius * _takePassengerRadius)
             {
-                _current.destination.AddRace(_passenger);
+                _current.Destination.AddRace(_passenger);
                 _passenger = null;
                 _current = null;
             }
