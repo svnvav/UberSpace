@@ -42,6 +42,14 @@ namespace Svnvav.UberSpace
         {
             _onAddPlanet.Remove(onAddPlanet);
         }
+
+        private void OnAddPlanet(Planet planet)
+        {
+            foreach (var action in _onAddPlanet)
+            {
+                action(planet);
+            }
+        }
         
         public void RegisterOnRemovePlanet(Action<Planet> onAddPlanet)
         {
@@ -51,6 +59,14 @@ namespace Svnvav.UberSpace
         public void UnregisterOnRemovePlanet(Action<Planet> onAddPlanet)
         {
             _onRemovePlanet.Remove(onAddPlanet);
+        }
+        
+        private void OnRemovePlanet(Planet planet)
+        {
+            foreach (var action in _onRemovePlanet)
+            {
+                action(planet);
+            }
         }
 
         #endregion

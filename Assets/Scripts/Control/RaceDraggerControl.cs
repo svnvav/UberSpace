@@ -20,6 +20,8 @@ namespace Svnvav.UberSpace
         {
             _availableDestinations = new List<Planet>();
             _planetsToVeil = new List<Planet>();
+            GameController.Instance.RegisterOnAddPlanet(OnAddPlanet);
+            GameController.Instance.RegisterOnRemovePlanet(OnRemovePlanet);
         }
 
         private void Update()
@@ -35,6 +37,25 @@ namespace Svnvav.UberSpace
             }
         }
 
+        private void OnAddPlanet(Planet  planet)
+        {
+            if (planet.IsFull)
+            {
+                _planetsToVeil.Add(planet);
+            }
+            else
+            {
+                _availableDestinations.Add(planet);
+            }
+        }
+
+        private void OnRemovePlanet(Planet planet)
+        {
+            _taxi.RemoveOrdersWithPlanet(planet);
+            _planetsToVeil.Remove(planet);
+            _availableDestinations.Remove(planet);
+        }
+        
         private void OnControlCapture()
         {
             Time.timeScale = 0.5f;

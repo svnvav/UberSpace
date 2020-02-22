@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -22,6 +23,13 @@ namespace Svnvav.UberSpace
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
             _ordersQueue.Enqueue(new Order(passenger, departure, destination));
+        }
+
+        public void RemoveOrdersWithPlanet(Planet planet)
+        {
+            var newOrders = _ordersQueue
+                .Where(order => order.Departure != planet && order.Destination != planet);//TODO: deal with linked list
+            _ordersQueue = new Queue<Order>(newOrders);
         }
 
         private void Update()
