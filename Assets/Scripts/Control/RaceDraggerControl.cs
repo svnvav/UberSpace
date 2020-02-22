@@ -93,7 +93,7 @@ namespace Svnvav.UberSpace
 
         private void FindAvailablePlanets()
         {
-            var orders = _taxi.
+            var orders = _taxi.Orders;
         }
     }
 }
