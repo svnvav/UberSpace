@@ -9,7 +9,7 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _captureMinDistance;
-        [SerializeField] private Taxi _taxi;
+        //[SerializeField] private Taxi _taxi;
 
         private Race _raceToMove;
         private Planet _departure;
@@ -55,14 +55,8 @@ namespace Svnvav.UberSpace
 
         private void OnRemovePlanet(Planet planet)
         {
-            _taxi.RemoveOrdersWithPlanet(planet);
             _planetsToVeil.Remove(planet);
             _availableDestinations.Remove(planet);
-        }
-
-        private void OnOrderAdd()
-        {
-            
         }
 
         private void OnControlCapture()
@@ -99,7 +93,7 @@ namespace Svnvav.UberSpace
 
             if (destination != null)
             {
-                _taxi.AddOrder(_raceToMove, _departure, destination);
+                GameController.Instance.TransferRace(_raceToMove, _departure, destination);
             }
             
             _departure = null;

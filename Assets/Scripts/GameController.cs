@@ -13,6 +13,9 @@ namespace Svnvav.UberSpace
         public static GameController Instance { get; private set; }
         
         const int saveVersion = 1;
+        
+        [SerializeField] private Taxi _taxi;
+        
         [SerializeField] private PersistentStorage _storage;
 
         [SerializeField] private PlanetFactory _planetFactory;
@@ -125,8 +128,6 @@ namespace Svnvav.UberSpace
             }
         }
 
-        
-        
         public void AddPlanet(Planet planet)
         {
             planet.SaveIndex = _planets.Count;
@@ -158,6 +159,11 @@ namespace Svnvav.UberSpace
         {
             _races.Remove(race);
             //TODO: remove race ui
+        }
+
+        public void TransferRace(Race race, Planet departure, Planet destination)
+        {
+            _taxi.AddOrder(race, departure, destination);
         }
 
         private IEnumerator LoadLevelScene(int levelBuildIndex)
