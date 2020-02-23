@@ -131,6 +131,7 @@ namespace Svnvav.UberSpace
         {
             planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
+            OnAddPlanet(planet);
         }
 
         public void RemovePlanet(Planet planet)
@@ -144,6 +145,7 @@ namespace Svnvav.UberSpace
             }
             
             _planets.RemoveAt(last);
+            OnRemovePlanet(planet);
         }
 
         public void AddRace(Race race)

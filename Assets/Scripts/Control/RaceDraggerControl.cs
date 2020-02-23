@@ -20,6 +20,10 @@ namespace Svnvav.UberSpace
         {
             _availableDestinations = new List<Planet>();
             _planetsToVeil = new List<Planet>();
+        }
+
+        private void Start()
+        {
             GameController.Instance.RegisterOnAddPlanet(OnAddPlanet);
             GameController.Instance.RegisterOnRemovePlanet(OnRemovePlanet);
         }
@@ -55,17 +59,24 @@ namespace Svnvav.UberSpace
             _planetsToVeil.Remove(planet);
             _availableDestinations.Remove(planet);
         }
-        
+
+        private void OnOrderAdd()
+        {
+            
+        }
+
         private void OnControlCapture()
         {
             Time.timeScale = 0.5f;
             GameController.Instance.GameSpeed = 0.2f;
+            VeilUnavailablePlanets();
         }
 
         private void OnControlRelease()
         {
             Time.timeScale = 1f;
             GameController.Instance.GameSpeed = 1f;
+            UnveilPlanets();
         }
 
         private void OnTouchStart()
@@ -77,10 +88,7 @@ namespace Svnvav.UberSpace
             {
                 _raceToMove = _departure.GetRaceByTouchPos(touchPos);
                 OnControlCapture();
-                FindAvailablePlanets();
             }
-            
-            //TODO: on planet die cancel capture
         }
 
         private void OnTouchEnd()
@@ -121,11 +129,20 @@ namespace Svnvav.UberSpace
             return result;
         }
 
-        private void FindAvailablePlanets()
+        private void VeilUnavailablePlanets()
         {
-            var orders = _taxi.Orders;
-            
-            
+            foreach (var planet in _planetsToVeil)
+            {
+                planet.Veil();
+            }
+        }
+
+        private void UnveilPlanets()
+        {
+            foreach (var planet in _planetsToVeil)
+            {
+                planet.Unveil();
+            }
         }
     }
 }
