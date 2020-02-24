@@ -1,3 +1,4 @@
+using System;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Svnvav.UberSpace
     public abstract class Planet : PersistableObject
     {
         [SerializeField] protected Vector3 _velocity;
+        [SerializeField] private GameObject _veil;
+
+        public Action<Planet> OnDie;//TODO: possible memory leaks
         
         public abstract int SaveIndex { get; set; }//index in GameController._planets
         
@@ -61,24 +65,45 @@ namespace Svnvav.UberSpace
             transform.Translate(deltaTime * _velocity);
         }
 
-        public abstract void Veil();
-        public abstract void Unveil();
+        public void Veil()
+        {
+            _veil.SetActive(true);
+        }
+
+        public void Unveil()
+        {
+            _veil.SetActive(false);
+        }
 
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
 
-        public virtual void AddRace(Race race)
+        public virtual void AddRaceToArrive(Race race)
         {
             if (IsFull)
             {
                 Debug.LogError("Trying to put a race to full planet");
             }
-            race.PlanetSaveIndex = SaveIndex;
         }
-        public abstract void RemoveRace(Race race);
+
+        public abstract void AddRace(Race race, bool hard = false);
+        
+        public virtual void AddRaceToDeparture(Race race)
+        {
+            if (IsEmpty)
+            {
+                Debug.LogError("There is no race to departure");
+            }
+        }
+        public abstract void DepartureRace(Race race);
+        
+        public abstract void RemoveRaceToArrive(Race race);
+        
+        public abstract void RemoveRaceToDeparture(Race race);
 
         public virtual void Die()
         {
-            GameController.Instance.RemovePlanet(this);
+            OnDie?.Invoke(this);
+            GameController.Instance.RemovePlanet(this);//TODO: remove when OnDie implemented
             Recycle();
         }
 

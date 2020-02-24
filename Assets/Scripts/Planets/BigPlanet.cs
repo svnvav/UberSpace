@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Catlike.ObjectManagement;
 using UnityEngine;
@@ -7,10 +8,12 @@ namespace Svnvav.UberSpace
     public sealed class BigPlanet : Planet
     {
         [SerializeField] private List<Race> _races;
-        [SerializeField] private SpriteRenderer _defaultSprite, _leftRaceSprite, _rightRaceSprite;
-        [SerializeField] private GameObject _spriteMask;
-        [SerializeField] private Color _veilColor;
+        [SerializeField] private SpriteRenderer _defaultSprite, _leftRaceSprite, _rightRaceSprite, _leftRaceToArriveSprite, _rightRaceToArriveSprite;
+        [SerializeField] private GameObject _rightRaceMask, _rightRaceToArrive;
+        [SerializeField] private GameObject _veil;
 
+        private List<Race> _racesToArrive, _racesToDeparture;
+        
         private int _saveIndex;
         public override int SaveIndex
         {
@@ -29,23 +32,15 @@ namespace Svnvav.UberSpace
         public override bool IsFull => _races.Count >= Capacity;
         public override bool IsEmpty => _races.Count == 0;
 
+        private void Start()
+        {
+            _racesToArrive = new List<Race>();
+            _racesToDeparture = new List<Race>();
+        }
+
         private void OnEnable()
         {
             RefreshView();
-        }
-
-        public override void Veil()
-        {
-            _defaultSprite.color = _veilColor;
-            _rightRaceSprite.color = _veilColor;
-            _leftRaceSprite.color = _veilColor;
-        }
-
-        public override void Unveil()
-        {
-            _defaultSprite.color = Color.white;
-            _rightRaceSprite.color =  Color.white;
-            _leftRaceSprite.color =  Color.white;
         }
 
         public override Race GetRaceByTouchPos(Vector3 touchPos)
@@ -57,18 +52,27 @@ namespace Svnvav.UberSpace
             return _races[id];
         }
 
-        public override void AddRace(Race race)
+        public override void AddRace(Race race, bool hard = false)
         {
-            base.AddRace(race);
-            
             _races.Add(race);
+            race.PlanetSaveIndex = SaveIndex;
             RefreshView();
         }
 
-        public override void RemoveRace(Race race)
+        public override void DepartureRace(Race race)
         {
             _races.Remove(race);
             RefreshView();
+        }
+
+        public override void RemoveRaceToArrive(Race race)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveRaceToDeparture(Race race)
+        {
+            throw new NotImplementedException();
         }
 
         private void RefreshView()
@@ -79,7 +83,7 @@ namespace Svnvav.UberSpace
 
             _rightRaceSprite.gameObject.SetActive(racesCount > 1);
             _rightRaceSprite.sprite = racesCount > 1 ? _races[1].PlanetSprite : null;
-            _spriteMask.SetActive(racesCount > 1);
+            _rightRaceMask.SetActive(racesCount > 1);
             //TODO: default sprite
         }
 

@@ -73,7 +73,7 @@ namespace Svnvav.UberSpace
                 _takePassengerRadius * _takePassengerRadius)
             {
                 _passenger = _current.Race;
-                _current.Departure.RemoveRace(_passenger);
+                _current.Departure.DepartureRace(_passenger);
             }
         }
         

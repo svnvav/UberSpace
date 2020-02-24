@@ -7,9 +7,11 @@ namespace Svnvav.UberSpace
     public class SmallPlanet : Planet
     {
         [SerializeField] private Race _race;
-        [SerializeField] private SpriteRenderer _defaultSprite, _raceSprite;
-        [SerializeField] private Color _veilColor;
+        [SerializeField] private SpriteRenderer _defaultSprite, _raceSprite, _raceToArriveSprite;
+        
 
+        private Race _raceToArrive, _raceToDeparture;
+        
         private int _saveIndex;
         public override int SaveIndex
         {
@@ -25,43 +27,83 @@ namespace Svnvav.UberSpace
         }
         
         public override int Capacity => 1;
-        public override bool IsFull => _race != null;
-        public override bool IsEmpty => _race == null;
-        public override void Veil()
-        {
-            _defaultSprite.color = _veilColor;
-            _raceSprite.color = _veilColor;
-        }
-
-        public override void Unveil()
-        {
-            _defaultSprite.color = Color.white;
-            _raceSprite.color =  Color.white;
-        }
+        public override bool IsFull => _race != null || _raceToArrive != null;
+        public override bool IsEmpty => _race == null && _raceToArrive == null;
 
         public override Race GetRaceByTouchPos(Vector3 touchPos)
         {
             return _race;
         }
 
-        public override void AddRace(Race race)
+        public override void AddRaceToArrive(Race race)
         {
-            base.AddRace(race);
-
-            _race = race;
+            base.AddRaceToArrive(race);
+            
+            _raceToArrive = race;
             RefreshView();
         }
 
-        public override void RemoveRace(Race race)
+        public override void AddRace(Race race, bool hard = false)
         {
-            if (race != _race)
+            if (race != _raceToArrive && !hard)
             {
-                throw new Exception("There is no that race");
+                Debug.LogError("RaceToArrive and actual race are different");
             }
-            _race = null;
+
+            _raceToArrive = null;
+            _race = race;
+            race.PlanetSaveIndex = SaveIndex;
             RefreshView();
         }
         
+        public override void AddRaceToDeparture(Race race)
+        {
+            if (race != _race)
+            {
+                Debug.LogError("RaceToDeparture and actual race are different");
+            }
+
+            _raceToDeparture = race;
+        }
+
+        //when taxi takes passenger
+        public override void DepartureRace(Race race)
+        {
+            if (race != _race)
+            {
+                Debug.LogError("There is no that race to departure");
+            }
+            if (race != _raceToDeparture)
+            {
+                Debug.LogError("RaceToDeparture and actual race are different");
+            }
+            
+            _race = null;
+            _raceToDeparture = null;
+            
+            RefreshView();
+        }
+
+        public override void RemoveRaceToArrive(Race race)
+        {
+            if (_raceToArrive != race)
+            {
+                Debug.LogError("RaceToArrive and race in parameter are different");
+            }
+
+            _raceToArrive = null;
+        }
+
+        public override void RemoveRaceToDeparture(Race race)
+        {
+            if (_raceToDeparture != race)
+            {
+                Debug.LogError("RaceToDeparture and race in parameter are different");
+            }
+
+            _raceToDeparture = null;
+        }
+
         private void RefreshView()
         {
             _raceSprite.sprite = _race != null ? _race.PlanetSprite : null;
