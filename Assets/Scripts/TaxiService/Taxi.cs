@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Catlike.ObjectManagement;
@@ -10,17 +11,17 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
 
-        //private Queue<Order> _ordersQueue; //TODO: delete dead races,
+        private Queue<Order> _ordersQueue; //TODO: delete dead races,
         //public Order[] Orders => _ordersQueue.ToArray();
 
-        private Order _current;
+        //private Order _current;
         //private Race _passenger;
         private OrderPool _pool;
 
         private void Awake()
         {
-            //_ordersQueue = new Queue<Order>();
-            _pool = new OrderPool(7);
+            _ordersQueue = new Queue<Order>();
+            _pool = new OrderPool(5);
         }
 
         private void Start()
@@ -30,8 +31,7 @@ namespace Svnvav.UberSpace
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            //_ordersQueue.Enqueue(new Order(passenger, departure, destination));
-            
+            _ordersQueue.Enqueue(_pool.Get(passenger, departure, destination));
         }
 
         public void RemoveOrdersWithPlanet(Planet planet)
@@ -73,53 +73,39 @@ namespace Svnvav.UberSpace
 
         public void GameUpdate(float deltaTime)
         {
-            if (_current == null && _ordersQueue.Count == 0)
+            if (_ordersQueue.Count == 0)
             {
                 Idle();
                 return;
             }
 
-            if (_current == null && _ordersQueue.Count > 0)
+            var order = _ordersQueue.Peek();
+            switch (order.Status)
             {
-                TakeOrder();
-            }
-
-            if (_passenger == null)
-            {
-                GoToDeparture(deltaTime);
-            }
-            else
-            {
-                GoToDestination(deltaTime);
+                case OrderStatus.Queued:
+                    order.Take();
+                    break;
+                case OrderStatus.Taken:
+                    MoveTo(order.GetCurrentPointToMove(), deltaTime);
+                    if (Vector3.SqrMagnitude(transform.position - order.GetCurrentPointToMove()) <
+                        _takePassengerRadius * _takePassengerRadius)
+                    {
+                        order.StartExecuting();
+                    }
+                    break;
+                case OrderStatus.Executing:
+                    MoveTo(order.GetCurrentPointToMove(), deltaTime);
+                    if (Vector3.SqrMagnitude(transform.position - order.GetCurrentPointToMove()) <
+                        _takePassengerRadius * _takePassengerRadius)
+                    {
+                        order.Complete();
+                    }
+                    break;
             }
         }
 
         private void Idle()
         {
-        }
-
-        private void TakeOrder()
-        {
-            _current = _ordersQueue.Dequeue();
-        }
-
-        private void GoToDeparture(float deltaTime)
-        {
-            var departurePoint = _current.Departure.transform.position;
-            MoveTo(departurePoint, deltaTime);
-
-            if (Vector3.SqrMagnitude(transform.position - departurePoint) <
-                _takePassengerRadius * _takePassengerRadius)
-            {
-                Departure();
-            }
-        }
-
-        private void Departure()
-        {
-            _passenger = _current.Client;
-            _current.Departure.DepartureRace(_passenger);
-            _passenger.PlanetSaveIndex = -_passenger.PlanetSaveIndex - 1;
         }
 
         private void GoToDestination(float deltaTime)
@@ -158,7 +144,7 @@ namespace Svnvav.UberSpace
 
             foreach (var order in ordersToSave)
             {
-                writer.Write(order.Client.SaveIndex);
+                writer.Write(order.Race.SaveIndex);
                 writer.Write(order.Departure.SaveIndex);
                 writer.Write(order.Destination.SaveIndex);
             }
@@ -193,9 +179,9 @@ namespace Svnvav.UberSpace
             if (reader.ReadBool())
             {
                 _current = _ordersQueue.Dequeue();
-                if (_current.Client.PlanetSaveIndex < 0)
+                if (_current.Race.PlanetSaveIndex < 0)
                 {
-                    _passenger = _current.Client;
+                    _passenger = _current.Race;
                 }
             }
         }
