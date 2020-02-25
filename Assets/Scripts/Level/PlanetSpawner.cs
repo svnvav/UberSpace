@@ -19,7 +19,7 @@ namespace Svnvav.UberSpace
             if (_raceIndex > -1)
             {
                 var race = GameController.Instance.RaceFactory.Get(_raceIndex);
-                planet.AddRace(race);
+                planet.AddRace(race, true);
             }
         }
     }

@@ -10,7 +10,6 @@ namespace Svnvav.UberSpace
         [SerializeField] private List<Race> _races;
         [SerializeField] private SpriteRenderer _defaultSprite, _leftRaceSprite, _rightRaceSprite, _leftRaceToArriveSprite, _rightRaceToArriveSprite;
         [SerializeField] private GameObject _rightRaceMask, _rightRaceToArrive;
-        [SerializeField] private GameObject _veil;
 
         private List<Race> _racesToArrive, _racesToDeparture;
         
@@ -32,10 +31,12 @@ namespace Svnvav.UberSpace
         public override bool IsFull => _races.Count >= Capacity;
         public override bool IsEmpty => _races.Count == 0;
 
-        private void Start()
+        public override void Initialize(Vector3 velocity)
         {
+            base.Initialize(velocity);
             _racesToArrive = new List<Race>();
             _racesToDeparture = new List<Race>();
+            //TODO: veil
         }
 
         private void OnEnable()
@@ -67,7 +68,7 @@ namespace Svnvav.UberSpace
 
         public override void RemoveRaceToArrive(Race race)
         {
-            throw new NotImplementedException();
+           
         }
 
         public override void RemoveRaceToDeparture(Race race)

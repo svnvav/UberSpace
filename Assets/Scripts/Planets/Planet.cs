@@ -7,7 +7,8 @@ namespace Svnvav.UberSpace
     public abstract class Planet : PersistableObject
     {
         [SerializeField] protected Vector3 _velocity;
-        [SerializeField] private GameObject _veil;
+        [SerializeField] private Color _veilColor;
+        protected SpriteRendererVeil _veil;
 
         public Action<Planet> OnDie;//TODO: possible memory leaks
         
@@ -55,7 +56,12 @@ namespace Svnvav.UberSpace
 
         #endregion
 
-        public void Initialize(Vector3 velocity)
+        protected void Awake()
+        {
+            _veil = new SpriteRendererVeil(_veilColor);
+        }
+
+        public virtual void Initialize(Vector3 velocity)
         {
             _velocity = velocity;
         }
@@ -67,12 +73,12 @@ namespace Svnvav.UberSpace
 
         public void Veil()
         {
-            _veil.SetActive(true);
+            if(!_veil.Veiled) _veil.Veil();
         }
-
+        
         public void Unveil()
         {
-            _veil.SetActive(false);
+            if(_veil.Veiled) _veil.Unveil();
         }
 
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
@@ -103,6 +109,7 @@ namespace Svnvav.UberSpace
         public virtual void Die()
         {
             OnDie?.Invoke(this);
+            OnDie = null;
             GameController.Instance.RemovePlanet(this);//TODO: remove when OnDie implemented
             Recycle();
         }

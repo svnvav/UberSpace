@@ -9,7 +9,7 @@ namespace Svnvav.UberSpace
 
         [SerializeField] private string _name;
         public string Name => _name;
-        
+
         [SerializeField] private string _tagline;
         public string Tagline => _tagline;
 
@@ -23,15 +23,18 @@ namespace Svnvav.UberSpace
         public Sprite PlanetSprite => _planetSprite;
         public Sprite HudInfoSprite => _hudInfoSprite;
         public Sprite LoadingSprite => _loadingSprite;
-        
+
         #endregion
-        
+
         [SerializeField] private int _population;
-        public int PlanetSaveIndex { get; set; } = -1;
+        public int PlanetSaveIndex { get; set; } = int.MinValue;
+
+        public int SaveIndex { get; set; }
 
         #region Factory
 
         private int _prefabId = int.MinValue;
+
         public int PrefabId
         {
             get => _prefabId;
@@ -49,6 +52,7 @@ namespace Svnvav.UberSpace
         }
 
         private RaceFactory _originFactory;
+
         public RaceFactory OriginFactory
         {
             get => _originFactory;
@@ -72,12 +76,12 @@ namespace Svnvav.UberSpace
             GameController.Instance.RemoveRace(this);
             Recycle();
         }
-        
+
         public void Recycle()
         {
             OriginFactory.Reclaim(this);
         }
-        
+
         public override void Save(GameDataWriter writer)
         {
             writer.Write(PlanetSaveIndex);

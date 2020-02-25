@@ -20,6 +20,10 @@ namespace Catlike.ObjectManagement
             _writer.Write(value);
         }
         
+        public void Write (bool value) {
+            _writer.Write(value);
+        }
+        
         public void Write (Quaternion value) {
             _writer.Write(value.x);
             _writer.Write(value.y);

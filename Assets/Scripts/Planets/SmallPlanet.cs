@@ -1,5 +1,4 @@
-﻿using System;
-using Catlike.ObjectManagement;
+﻿using Catlike.ObjectManagement;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -29,6 +28,19 @@ namespace Svnvav.UberSpace
         public override int Capacity => 1;
         public override bool IsFull => _race != null || _raceToArrive != null;
         public override bool IsEmpty => _race == null && _raceToArrive == null;
+
+        protected new void Awake()
+        {
+            base.Awake();
+            _veil.AddSpriteRenderer(_defaultSprite);
+            _veil.AddSpriteRenderer(_raceSprite);
+            _veil.AddSpriteRenderer(_raceToArriveSprite);
+        }
+        
+        private void OnEnable()
+        {
+            RefreshView();
+        }
 
         public override Race GetRaceByTouchPos(Vector3 touchPos)
         {
@@ -107,9 +119,11 @@ namespace Svnvav.UberSpace
         private void RefreshView()
         {
             _raceSprite.sprite = _race != null ? _race.PlanetSprite : null;
+            _raceToArriveSprite.sprite = _raceToArrive != null ? _raceToArrive.PlanetSprite : null;
 
-            _raceSprite.gameObject.SetActive(IsFull);
-            _defaultSprite.gameObject.SetActive(IsEmpty);
+            _raceSprite.gameObject.SetActive(_race != null);
+            _defaultSprite.gameObject.SetActive(_race == null);
+            _raceToArriveSprite.gameObject.SetActive(_raceToArrive != null);
         }
 
         public override void Die()
@@ -125,6 +139,8 @@ namespace Svnvav.UberSpace
         {
             base.Recycle();
             _race = null;
+            _raceToArrive = null;
+            _raceToDeparture = null;
         }
 
         public override void Load(GameDataReader reader)

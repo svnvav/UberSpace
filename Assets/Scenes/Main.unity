@@ -323,7 +323,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainCamera: {fileID: 172199703}
   _captureMinDistance: 0.75
-  _taxi: {fileID: 26960070}
 --- !u!4 &1253569812
 Transform:
   m_ObjectHideFlags: 0
@@ -367,10 +366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e623578410d3a7343926dd4aadce83d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _taxi: {fileID: 26960070}
   _storage: {fileID: 510287293}
   _planetFactory: {fileID: 11400000, guid: b42a4eb789805de48968ceff4fbbb839, type: 2}
   _raceFactory: {fileID: 11400000, guid: 8dd91a0970aa2be4ba34573fed607ce5, type: 2}
-  _gameSpeed: 1
 --- !u!4 &1351398480
 Transform:
   m_ObjectHideFlags: 0

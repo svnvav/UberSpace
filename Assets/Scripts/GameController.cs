@@ -78,7 +78,7 @@ namespace Svnvav.UberSpace
         public List<Planet> Planets => _planets;
 
         private List<Race> _races;
-        
+        public List<Race> Races => _races;
 
         private void Awake()
         {
@@ -116,6 +116,8 @@ namespace Svnvav.UberSpace
             {
                 planet.GameUpdate(deltaTime);
             }
+
+            _taxi.GameUpdate(deltaTime);
             
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -132,6 +134,7 @@ namespace Svnvav.UberSpace
         {
             planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
+            //planet.OnDie += RemovePlanet;
             OnAddPlanet(planet);
         }
 
@@ -151,18 +154,29 @@ namespace Svnvav.UberSpace
 
         public void AddRace(Race race)
         {
+            race.SaveIndex = _races.Count;
             _races.Add(race);
             //TODO: initialize race ui
         }
 
         public void RemoveRace(Race race)
         {
-            _races.Remove(race);
+            var index = race.SaveIndex;
+            var last = _races.Count - 1;
+            if (index < last)
+            {
+                _races[index] = _races[last];
+                _races[index].SaveIndex = index;
+            }
+            
+            _races.RemoveAt(last);
             //TODO: remove race ui
         }
 
         public void TransferRace(Race race, Planet departure, Planet destination)
         {
+            departure.AddRaceToDeparture(race);
+            destination.AddRaceToArrive(race);
             _taxi.AddOrder(race, departure, destination);
         }
 
@@ -214,6 +228,8 @@ namespace Svnvav.UberSpace
                 writer.Write(race.PrefabId);
                 race.Save(writer);
             }
+            
+            _taxi.Save(writer);
         }
 
         public override void Load(GameDataReader reader)
@@ -248,9 +264,13 @@ namespace Svnvav.UberSpace
                 var prefabId = reader.ReadInt();
                 var race = _raceFactory.Get(prefabId);
                 race.Load(reader);
-                _planets[race.PlanetSaveIndex].AddRace(race);
+                if (race.PlanetSaveIndex >= 0)
+                {
+                    _planets[race.PlanetSaveIndex].AddRace(race, true);
+                }
             }
             
+            _taxi.Load(reader);
         }
     }
 }

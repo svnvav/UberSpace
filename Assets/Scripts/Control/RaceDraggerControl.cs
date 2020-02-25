@@ -9,18 +9,11 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _captureMinDistance;
-        //[SerializeField] private Taxi _taxi;
 
         private Race _raceToMove;
         private Planet _departure;
 
-        private List<Planet> _availableDestinations, _planetsToVeil;
-
-        private void Awake()
-        {
-            _availableDestinations = new List<Planet>();
-            _planetsToVeil = new List<Planet>();
-        }
+        private bool _captured;
 
         private void Start()
         {
@@ -43,20 +36,15 @@ namespace Svnvav.UberSpace
 
         private void OnAddPlanet(Planet  planet)
         {
-            if (planet.IsFull)
+            if (_captured && planet.IsFull)
             {
-                _planetsToVeil.Add(planet);
-            }
-            else
-            {
-                _availableDestinations.Add(planet);
+                planet.Veil();
             }
         }
 
         private void OnRemovePlanet(Planet planet)
         {
-            _planetsToVeil.Remove(planet);
-            _availableDestinations.Remove(planet);
+            planet.Unveil();
         }
 
         private void OnControlCapture()
@@ -75,6 +63,7 @@ namespace Svnvav.UberSpace
 
         private void OnTouchStart()
         {
+            _captured = true;
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
             _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
 
@@ -98,6 +87,7 @@ namespace Svnvav.UberSpace
             
             _departure = null;
             _raceToMove = null;
+            _captured = false;
         }
 
         private Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
@@ -125,15 +115,15 @@ namespace Svnvav.UberSpace
 
         private void VeilUnavailablePlanets()
         {
-            foreach (var planet in _planetsToVeil)
+            foreach (var planet in GameController.Instance.Planets)
             {
-                planet.Veil();
+                if(planet.IsFull) planet.Veil();
             }
         }
 
         private void UnveilPlanets()
         {
-            foreach (var planet in _planetsToVeil)
+            foreach (var planet in GameController.Instance.Planets)
             {
                 planet.Unveil();
             }

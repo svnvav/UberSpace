@@ -24,6 +24,10 @@ namespace Catlike.ObjectManagement
             return _reader.ReadInt32();
         }
         
+        public bool ReadBool () {
+            return _reader.ReadBoolean();
+        }
+        
         public Quaternion ReadQuaternion () {
             Quaternion value;
             value.x = _reader.ReadSingle();
