@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9577912052649dbbd6a363afb5870ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _planetSpeed: 2
+  _planetSpeed: 1.5
   _planetIndex: 1
   _raceIndex: 0
 --- !u!1 &62597373
@@ -543,10 +543,14 @@ MonoBehaviour:
       ActivationDelay: 0
       QuantityLimit: 0
       Speed: 2
+    - Spawner: {fileID: 1480015036}
+      ActivationDelay: 0.3
+      QuantityLimit: 0
+      Speed: 2
   - _duration: 5
     Items:
     - Spawner: {fileID: 32922793}
-      ActivationDelay: 1
+      ActivationDelay: 0
       QuantityLimit: 0
       Speed: 1
     - Spawner: {fileID: 1480015036}

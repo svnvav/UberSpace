@@ -10,7 +10,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private Color _veilColor;
         protected SpriteRendererVeil _veil;
 
-        public Action<Planet> OnDie;//TODO: possible memory leaks
+        //public Action<Planet> OnDie;//TODO: possible memory leaks
         
         public abstract int SaveIndex { get; set; }//index in GameController._planets
         
@@ -108,8 +108,8 @@ namespace Svnvav.UberSpace
 
         public virtual void Die()
         {
-            OnDie?.Invoke(this);
-            OnDie = null;
+            //OnDie?.Invoke(this);
+            //OnDie = null;
             GameController.Instance.RemovePlanet(this);//TODO: remove when OnDie implemented
             Recycle();
         }

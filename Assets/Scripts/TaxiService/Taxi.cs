@@ -10,27 +10,65 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
 
-        private Queue<Order> _ordersQueue; //TODO: delete dead races,
-        public Order[] Orders => _ordersQueue.ToArray();
+        //private Queue<Order> _ordersQueue; //TODO: delete dead races,
+        //public Order[] Orders => _ordersQueue.ToArray();
 
         private Order _current;
-        private Race _passenger;
+        //private Race _passenger;
+        private OrderPool _pool;
 
         private void Awake()
         {
-            _ordersQueue = new Queue<Order>();
+            //_ordersQueue = new Queue<Order>();
+            _pool = new OrderPool(7);
+        }
+
+        private void Start()
+        {
+            GameController.Instance.RegisterOnRemovePlanet(RemoveOrdersWithPlanet);
         }
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            _ordersQueue.Enqueue(new Order(passenger, departure, destination));
+            //_ordersQueue.Enqueue(new Order(passenger, departure, destination));
+            
         }
 
         public void RemoveOrdersWithPlanet(Planet planet)
         {
+            /*Order canceled = null;
+            if (_current != null)
+            {
+                if (_passenger != null)
+                {
+                    if (_current.Destination == planet)
+                    {
+                        //return back
+                        _current = new Order(_passenger, _current.Departure, _current.Departure); 
+
+                        canceled = _ordersQueue.LastOrDefault(o => o.Destination == _current.Destination);
+                        if (canceled != null)
+                        {
+                            canceled.Destination.RemoveRaceToArrive(canceled.Client);
+                            canceled.Departure.RemoveRaceToDeparture(canceled.Client);
+                        }
+                        
+                        _current.Destination.AddRaceToArrive(_passenger);
+                        //TODO: consider dragndrop from taxiship
+                    }
+                }
+                else
+                {
+                    if (_current.Departure == planet || _current.Destination == planet)
+                    {
+                        _current = null;
+                    }
+                }
+            }
+
             var newOrders = _ordersQueue
-                .Where(order => order.Departure != planet && order.Destination != planet); //TODO: mb implement with linked list?
-            _ordersQueue = new Queue<Order>(newOrders);
+                .Where(order => order.Departure != planet && order.Destination != planet && order != canceled); //TODO: mb implement with linked list?
+            _ordersQueue = new Queue<Order>(newOrders);*/
         }
 
         public void GameUpdate(float deltaTime)
@@ -79,7 +117,7 @@ namespace Svnvav.UberSpace
 
         private void Departure()
         {
-            _passenger = _current.Race;
+            _passenger = _current.Client;
             _current.Departure.DepartureRace(_passenger);
             _passenger.PlanetSaveIndex = -_passenger.PlanetSaveIndex - 1;
         }
@@ -120,7 +158,7 @@ namespace Svnvav.UberSpace
 
             foreach (var order in ordersToSave)
             {
-                writer.Write(order.Race.SaveIndex);
+                writer.Write(order.Client.SaveIndex);
                 writer.Write(order.Departure.SaveIndex);
                 writer.Write(order.Destination.SaveIndex);
             }
@@ -155,9 +193,9 @@ namespace Svnvav.UberSpace
             if (reader.ReadBool())
             {
                 _current = _ordersQueue.Dequeue();
-                if (_current.Race.PlanetSaveIndex < 0)
+                if (_current.Client.PlanetSaveIndex < 0)
                 {
-                    _passenger = _current.Race;
+                    _passenger = _current.Client;
                 }
             }
         }
