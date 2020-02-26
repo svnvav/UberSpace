@@ -104,6 +104,7 @@ namespace Svnvav.UberSpace
             }
 
             _raceToArrive = null;
+            RefreshView();
         }
 
         public override void RemoveRaceToDeparture(Race race)

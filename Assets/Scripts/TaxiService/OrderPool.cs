@@ -17,7 +17,7 @@ namespace Svnvav.UberSpace
             }
         }
 
-        public Order Get(Race race, Planet departure, Planet destination)
+        public Order Get(Race race, Planet departure, Planet destination, OrderStatus status = OrderStatus.Queued)
         {
             var order = _pool.FirstOrDefault(o => o.Status == OrderStatus.Completed);
 
@@ -27,7 +27,7 @@ namespace Svnvav.UberSpace
                 _pool.Add(order);
             }
             
-            order.Init(race, departure, destination);
+            order.Init(race, departure, destination, status);
 
             return order;
         }

@@ -19,18 +19,39 @@ namespace Svnvav.UberSpace
             _status = OrderStatus.Completed;
         }
 
-        public void Init(Race race, Planet departure, Planet destination)
+        public void Init(Race race, Planet departure, Planet destination, OrderStatus status)
         {
             _race = race;
             _departure = departure;
             _destination = destination;
-            
-            departure.AddRaceToDeparture(race);
-            destination.AddRaceToArrive(race);
-            
-            _status = OrderStatus.Queued;
+
+            SetStatus(status);
         }
 
+        public void SetStatus(OrderStatus status)
+        {
+            _status = status;
+
+            switch (status)
+            {
+                case OrderStatus.Completed:
+                    _race = null;
+                    _departure = null;
+                    _destination = null;
+                    break;
+                case OrderStatus.Queued:
+                case OrderStatus.Taken:
+                    _departure.AddRaceToDeparture(_race);
+                    _destination.AddRaceToArrive(_race);
+                    break;
+                case OrderStatus.Executing:
+                    _destination.AddRaceToArrive(_race);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(status), status, null);
+            }
+        }
+        
         public Vector3 GetCurrentPointToMove()
         {
             switch (_status)
@@ -53,19 +74,18 @@ namespace Svnvav.UberSpace
         {
             _departure.DepartureRace(_race);
             _race.PlanetSaveIndex = -_race.PlanetSaveIndex - 1;
+            
+            _status = OrderStatus.Executing;
         }
         
         public void Complete()
         {
             _destination.AddRace(_race);
-            _race = null;
-            _departure = null;
-            _destination = null;
 
-            _status = OrderStatus.Completed;
+            SetStatus(OrderStatus.Completed);
         }
 
-        public void Cancel(Action onExecutionCancel)
+        public void Cancel()
         {
             switch (_status)
             {
@@ -73,16 +93,13 @@ namespace Svnvav.UberSpace
                 case OrderStatus.Taken:
                     _departure.RemoveRaceToDeparture(_race);
                     _destination.RemoveRaceToArrive(_race);
+                    SetStatus(OrderStatus.Completed);
                     break;
                 case OrderStatus.Executing:
-                    onExecutionCancel();
+                    _destination = _departure;
+                    _destination.AddRaceToArrive(_race);
                     break;
             }
-            _race = null;
-            _departure = null;
-            _destination = null;
-
-            _status = OrderStatus.Completed;
         }
     }
 }

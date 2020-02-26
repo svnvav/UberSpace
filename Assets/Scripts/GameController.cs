@@ -175,8 +175,6 @@ namespace Svnvav.UberSpace
 
         public void TransferRace(Race race, Planet departure, Planet destination)
         {
-            departure.AddRaceToDeparture(race);
-            destination.AddRaceToArrive(race);
             _taxi.AddOrder(race, departure, destination);
         }
 
