@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -10,12 +9,12 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
 
-        private Queue<Order> _ordersQueue; //TODO: delete dead races,
+        private OrderLinkedQueue _queue; //TODO: delete dead races,
         private OrderPool _pool;
 
         private void Awake()
         {
-            _ordersQueue = new Queue<Order>();
+            _queue = new OrderLinkedQueue();
             _pool = new OrderPool(1);
         }
 
@@ -26,29 +25,29 @@ namespace Svnvav.UberSpace
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            _ordersQueue.Enqueue(_pool.Get(passenger, departure, destination));
+            _queue.Enqueue(_pool.Get(passenger, departure, destination));
         }
 
         public void RemoveOrdersWithPlanet(Planet planet)
         {
             //TODO: consider dragndrop from taxiship
-            if (_ordersQueue.Count == 0) return;
+            if (_queue.Count == 0) return;
 
             Order canceled = null;
 
-            var current = _ordersQueue.Peek();
+            var current = _queue.Peek();
             if (current.Status == OrderStatus.Executing)
             {
                 if (current.Destination == planet)
                 {
-                    canceled = _ordersQueue.LastOrDefault(o => o.Destination == current.Departure);
+                    canceled = _queue.RemoveAndGetLast(o => o.Destination == current.Departure);
                     canceled?.Cancel();
                     //return back
                     current.Cancel();
                 }
             }
 
-            foreach (var order in _ordersQueue)
+            foreach (var order in _queue)
             {
                 if (order.Status != OrderStatus.Executing && 
                     (order.Departure == planet || order.Destination == planet)
@@ -58,20 +57,18 @@ namespace Svnvav.UberSpace
                 }
             }
             
-            var newOrders = _ordersQueue
-                .Where(order => order.Status != OrderStatus.Completed); //TODO: mb implement with linked list?
-            _ordersQueue = new Queue<Order>(newOrders);
+            _queue.RemoveAll(order => order.Status == OrderStatus.Completed);
         }
 
         public void GameUpdate(float deltaTime)
         {
-            if (_ordersQueue.Count == 0)
+            if (_queue.Count == 0)
             {
                 Idle();
                 return;
             }
 
-            var order = _ordersQueue.Peek();
+            var order = _queue.Peek();
             switch (order.Status)
             {
                 case OrderStatus.Queued:
@@ -92,7 +89,7 @@ namespace Svnvav.UberSpace
                         _takePassengerRadius * _takePassengerRadius)
                     {
                         order.Complete();
-                        _ordersQueue.Dequeue();
+                        _queue.Dequeue();
                     }
 
                     break;
@@ -115,7 +112,7 @@ namespace Svnvav.UberSpace
             writer.Write(transform.localPosition);
             writer.Write(transform.localRotation);
 
-            var ordersToSave = new List<Order>(_ordersQueue);
+            var ordersToSave = new List<Order>(_queue);
 
             writer.Write(ordersToSave.Count);
 
@@ -133,7 +130,7 @@ namespace Svnvav.UberSpace
             transform.localPosition = reader.ReadVector3();
             transform.localRotation = reader.ReadQuaternion();
 
-            _ordersQueue.Clear();
+            _queue.Clear();
             var count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
@@ -143,7 +140,7 @@ namespace Svnvav.UberSpace
                 var destination = GameController.Instance.Planets[reader.ReadInt()];
                 var status = (OrderStatus) reader.ReadInt();
 
-                _ordersQueue.Enqueue(_pool.Get(race, departure, destination, status));
+                _queue.Enqueue(_pool.Get(race, departure, destination, status));
             }
         }
     }
