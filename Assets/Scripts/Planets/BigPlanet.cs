@@ -68,12 +68,12 @@ namespace Svnvav.UberSpace
 
         public override void RemoveRaceToArrive(Race race)
         {
-           
+            _racesToArrive.Remove(race);
         }
 
         public override void RemoveRaceToDeparture(Race race)
         {
-            throw new NotImplementedException();
+            _racesToDeparture.Remove(race);
         }
 
         private void RefreshView()
