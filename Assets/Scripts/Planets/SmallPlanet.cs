@@ -70,6 +70,7 @@ namespace Svnvav.UberSpace
         
         public override void AddRaceToDeparture(Race race)
         {
+            base.AddRaceToDeparture(race);
             if (race != _race)
             {
                 Debug.LogError("RaceToDeparture and actual race are different");

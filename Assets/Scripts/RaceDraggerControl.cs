@@ -38,7 +38,7 @@ namespace Svnvav.UberSpace
         {
             if (_captured && planet.IsFull)
             {
-                planet.Veil();
+                planet.Veil();//TODO: do it on race add because planet hasnt any race just after initialization
             }
         }
 

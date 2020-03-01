@@ -1,4 +1,3 @@
-using System;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -87,7 +86,7 @@ namespace Svnvav.UberSpace
         {
             if (IsFull)
             {
-                Debug.LogError("Trying to put a race to full planet");
+                Debug.LogError("Trying to put a race to full planet");//TODO: Debug for big Planet
             }
         }
 
