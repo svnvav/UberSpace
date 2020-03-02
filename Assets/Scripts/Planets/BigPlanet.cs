@@ -27,8 +27,8 @@ namespace Svnvav.UberSpace
         }
 
         public override int Capacity => 2;
-        public override bool IsFull => _races.Count >= Capacity;//TODO: consider races to arrive
-        public override bool IsEmpty => _races.Count == 0;
+        public override bool IsFull => _races.Count + _racesToArrive.Count >= Capacity;
+        public override bool IsEmpty => _races.Count + _racesToArrive.Count == 0;
 
         protected new void Awake()
         {
