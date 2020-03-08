@@ -8,10 +8,11 @@ namespace Svnvav.UberSpace
     public class RaceDraggerControl : MonoBehaviour
     {
         [SerializeField] private Camera _mainCamera;
+        [SerializeField] private LineRenderer _line;
         [SerializeField] private float _captureMinDistance;
 
         private Race _raceToMove;
-        private Planet _departure;
+        private Planet _departure, _potentialDestination;
 
         private bool _captured;
 
@@ -28,10 +29,49 @@ namespace Svnvav.UberSpace
                 OnTouchStart();
             }
 
+            if (_captured)
+            {
+                SearchPotentialDestination();
+            }
+
             if (Input.GetMouseButtonUp(0) && _departure != null)
             {
                 OnTouchEnd();
             }
+        }
+
+        private void SearchPotentialDestination()
+        {
+            //TODO:
+        }
+        
+        private void OnTouchStart()
+        {
+            _captured = true;
+            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
+
+            if (_departure != null)
+            {
+                _raceToMove = _departure.GetRaceByTouchPos(touchPos);
+                OnControlCapture();
+            }
+        }
+
+        private void OnTouchEnd()
+        {
+            OnControlRelease();
+            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
+
+            if (destination != null)
+            {
+                GameController.Instance.TransferRace(_raceToMove, _departure, destination);
+            }
+            
+            _departure = null;
+            _raceToMove = null;
+            _captured = false;
         }
 
         private void OnAddPlanet(Planet  planet)
@@ -61,34 +101,7 @@ namespace Svnvav.UberSpace
             UnveilPlanets();
         }
 
-        private void OnTouchStart()
-        {
-            _captured = true;
-            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
-
-            if (_departure != null)
-            {
-                _raceToMove = _departure.GetRaceByTouchPos(touchPos);
-                OnControlCapture();
-            }
-        }
-
-        private void OnTouchEnd()
-        {
-            OnControlRelease();
-            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
-
-            if (destination != null)
-            {
-                GameController.Instance.TransferRace(_raceToMove, _departure, destination);
-            }
-            
-            _departure = null;
-            _raceToMove = null;
-            _captured = false;
-        }
+        
 
         private Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
         {
