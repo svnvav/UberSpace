@@ -12,7 +12,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _captureMinDistance;
 
         private Race _raceToMove;
-        private Planet _departure, _potentialDestination;
+        private Planet _departure, _destination;
 
         private bool _captured;
 
@@ -42,12 +42,22 @@ namespace Svnvav.UberSpace
 
         private void SearchPotentialDestination()
         {
-            //TODO:
+            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            _destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
+            if (_destination != null)
+            {
+                _line.SetPosition(0, _departure.transform.position);
+                _line.SetPosition(1, _destination.transform.position);
+            }
+            else
+            {
+                _line.SetPosition(0, Vector3.zero);
+                _line.SetPosition(1, Vector3.zero);
+            }
         }
         
         private void OnTouchStart()
         {
-            _captured = true;
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
             _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
 
@@ -60,18 +70,22 @@ namespace Svnvav.UberSpace
 
         private void OnTouchEnd()
         {
-            OnControlRelease();
-            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            var destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
-
-            if (destination != null)
+            if (_destination != null)
             {
-                GameController.Instance.TransferRace(_raceToMove, _departure, destination);
+                GameController.Instance.TransferRace(_raceToMove, _departure, _destination);
             }
             
+            OnControlRelease();
+            Clear();
+        }
+
+        private void Clear()
+        {
             _departure = null;
+            _destination = null;
             _raceToMove = null;
-            _captured = false;
+            _line.SetPosition(0, Vector3.zero);
+            _line.SetPosition(1, Vector3.zero);
         }
 
         private void OnAddPlanet(Planet  planet)
@@ -85,10 +99,16 @@ namespace Svnvav.UberSpace
         private void OnRemovePlanet(Planet planet)
         {
             planet.Unveil();
+            if (planet == _departure)
+            {
+                OnControlRelease();
+                Clear();
+            }
         }
 
         private void OnControlCapture()
         {
+            _captured = true;
             Time.timeScale = 0.5f;
             GameController.Instance.GameSpeed = 0.2f;
             VeilUnavailablePlanets();
@@ -99,6 +119,7 @@ namespace Svnvav.UberSpace
             Time.timeScale = 1f;
             GameController.Instance.GameSpeed = 1f;
             UnveilPlanets();
+            _captured = false;
         }
 
         
