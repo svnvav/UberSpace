@@ -49,9 +49,7 @@ namespace Svnvav.UberSpace
                 var start = _departure.transform.position;
                 var end = _destination.transform.position;
 
-                var magnitude = (start - end).magnitude;
-
-                var t = 1f - _destination.Radius / magnitude;
+                var t = 1f - _destination.Radius / (start - end).magnitude;
 
                 var head = Vector3.Lerp(start, end, t);
                 
