@@ -26,6 +26,8 @@ namespace Svnvav.UberSpace
             }
         }
 
+        public override float Radius => 0.5f * _defaultSprite.transform.lossyScale.x;
+
         public override int Capacity => 2;
         public override bool IsFull => _races.Count + _racesToArrive.Count >= Capacity;
         public override bool IsEmpty => _races.Count + _racesToArrive.Count == 0;

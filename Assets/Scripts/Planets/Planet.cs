@@ -11,6 +11,7 @@ namespace Svnvav.UberSpace
 
         //public Action<Planet> OnDie;//TODO: possible memory leaks
         
+        public abstract float Radius { get; }
         public abstract int SaveIndex { get; set; }//index in GameController._planets
         
         public abstract int Capacity { get; }

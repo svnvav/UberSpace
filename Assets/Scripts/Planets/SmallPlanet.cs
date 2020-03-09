@@ -25,6 +25,8 @@ namespace Svnvav.UberSpace
             }
         }
         
+        public override float Radius => 0.5f * _defaultSprite.transform.lossyScale.x;
+        
         public override int Capacity => 1;
         public override bool IsFull => _race != null || _raceToArrive != null;
         public override bool IsEmpty => _race == null && _raceToArrive == null;

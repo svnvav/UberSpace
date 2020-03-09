@@ -8,7 +8,7 @@ namespace Svnvav.UberSpace
     public class RaceDraggerControl : MonoBehaviour
     {
         [SerializeField] private Camera _mainCamera;
-        [SerializeField] private LineRenderer _line;
+        [SerializeField] private Arrow _arrow;
         [SerializeField] private float _captureMinDistance;
 
         private Race _raceToMove;
@@ -46,13 +46,22 @@ namespace Svnvav.UberSpace
             _destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
             if (_destination != null)
             {
-                _line.SetPosition(0, _departure.transform.position);
-                _line.SetPosition(1, _destination.transform.position);
+                var start = _departure.transform.position;
+                var end = _destination.transform.position;
+
+                var magnitude = (start - end).magnitude;
+
+                var t = 1f - _destination.Radius / magnitude;
+
+                var head = Vector3.Lerp(start, end, t);
+                
+                _arrow.SetPosition(0, start);
+
+                _arrow.SetPosition(1, head);
             }
             else
             {
-                _line.SetPosition(0, Vector3.zero);
-                _line.SetPosition(1, Vector3.zero);
+                _arrow.Clear();
             }
         }
         
@@ -84,8 +93,7 @@ namespace Svnvav.UberSpace
             _departure = null;
             _destination = null;
             _raceToMove = null;
-            _line.SetPosition(0, Vector3.zero);
-            _line.SetPosition(1, Vector3.zero);
+            _arrow.Clear();
         }
 
         private void OnAddPlanet(Planet  planet)
