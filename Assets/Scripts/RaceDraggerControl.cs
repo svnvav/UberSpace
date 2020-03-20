@@ -65,7 +65,7 @@ namespace Svnvav.UberSpace
         private void OnTouchStart()
         {
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
+            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);//TODO: fix the same order bug
 
             if (_departure != null)
             {
@@ -76,7 +76,7 @@ namespace Svnvav.UberSpace
 
         private void OnTouchEnd()
         {
-            if (_destination != null)
+            if (_destination != null && _destination != _departure)
             {
                 GameController.Instance.TransferRace(_raceToMove, _departure, _destination);
             }
