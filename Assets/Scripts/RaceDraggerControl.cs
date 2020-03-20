@@ -1,6 +1,5 @@
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -18,8 +17,8 @@ namespace Svnvav.UberSpace
 
         private void Start()
         {
-            GameController.Instance.RegisterOnAddPlanet(OnAddPlanet);
-            GameController.Instance.RegisterOnRemovePlanet(OnRemovePlanet);
+            GameController.Instance.OnAddPlanet.RegisterCallback(OnAddPlanet);
+            GameController.Instance.OnRemovePlanet.RegisterCallback(OnRemovePlanet);
         }
 
         private void Update()
@@ -96,15 +95,15 @@ namespace Svnvav.UberSpace
 
         private void OnAddPlanet(Planet  planet)
         {
-            if (_captured && planet.IsFull)
+            if (_captured)
             {
-                planet.Veil();//TODO: do it on race add because planet hasnt any race just after initialization
+                planet.SetVeiling(true);
             }
         }
 
         private void OnRemovePlanet(Planet planet)
         {
-            planet.Unveil();
+            planet.SetVeiling(false);
             if (planet == _departure)
             {
                 OnControlRelease();
@@ -117,7 +116,7 @@ namespace Svnvav.UberSpace
             _captured = true;
             Time.timeScale = 0.5f;
             GameController.Instance.GameSpeed = 0.2f;
-            VeilUnavailablePlanets();
+            SetPlanetsVeiling();
         }
 
         private void OnControlRelease()
@@ -153,11 +152,11 @@ namespace Svnvav.UberSpace
             return result;
         }
 
-        private void VeilUnavailablePlanets()
+        private void SetPlanetsVeiling()
         {
             foreach (var planet in GameController.Instance.Planets)
             {
-                if(planet.IsFull) planet.Veil();
+                if(planet.IsFull) planet.SetVeiling(true);
             }
         }
 
@@ -165,7 +164,7 @@ namespace Svnvav.UberSpace
         {
             foreach (var planet in GameController.Instance.Planets)
             {
-                planet.Unveil();
+                planet.SetVeiling(false);
             }
         }
     }

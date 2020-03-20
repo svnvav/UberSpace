@@ -33,46 +33,11 @@ namespace Svnvav.UberSpace
 
         [NonSerialized] private int _loadedLevelBuildIndex;
 
-        #region Callbacks
+        private ActionContainer<Planet> _onAddPlanet, _onRemovePlanet;
 
-        private List<Action<Planet>> _onAddPlanet, _onRemovePlanet;
-        public void RegisterOnAddPlanet(Action<Planet> onAddPlanet)
-        {
-            _onAddPlanet.Add(onAddPlanet);
-        }
-        
-        public void UnregisterOnAddPlanet(Action<Planet> onAddPlanet)
-        {
-            _onAddPlanet.Remove(onAddPlanet);
-        }
+        public ActionContainer<Planet> OnAddPlanet => _onAddPlanet;
+        public ActionContainer<Planet> OnRemovePlanet => _onRemovePlanet;
 
-        private void OnAddPlanet(Planet planet)
-        {
-            foreach (var action in _onAddPlanet)
-            {
-                action(planet);
-            }
-        }
-        
-        public void RegisterOnRemovePlanet(Action<Planet> onAddPlanet)
-        {
-            _onRemovePlanet.Add(onAddPlanet);
-        }
-        
-        public void UnregisterOnRemovePlanet(Action<Planet> onAddPlanet)
-        {
-            _onRemovePlanet.Remove(onAddPlanet);
-        }
-        
-        private void OnRemovePlanet(Planet planet)
-        {
-            foreach (var action in _onRemovePlanet)
-            {
-                action(planet);
-            }
-        }
-
-        #endregion
 
         private List<Planet> _planets;
         public List<Planet> Planets => _planets;
@@ -82,11 +47,13 @@ namespace Svnvav.UberSpace
 
         private void Awake()
         {
+            Instance = this;
+            
             _planets = new List<Planet>();
             _races = new List<Race>();
-            Instance = this;
-            _onAddPlanet = new List<Action<Planet>>();
-            _onRemovePlanet = new List<Action<Planet>>();
+            
+            _onAddPlanet = new ActionContainer<Planet>();
+            _onRemovePlanet = new ActionContainer<Planet>();
         }
 
         private void Start()
@@ -135,7 +102,7 @@ namespace Svnvav.UberSpace
             planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
             //planet.OnDie += RemovePlanet;
-            OnAddPlanet(planet);
+            _onAddPlanet.Execute(planet);
         }
 
         public void RemovePlanet(Planet planet)
@@ -149,7 +116,7 @@ namespace Svnvav.UberSpace
             }
             
             _planets.RemoveAt(last);
-            OnRemovePlanet(planet);
+            _onRemovePlanet.Execute(planet);
         }
 
         public void AddRace(Race race)

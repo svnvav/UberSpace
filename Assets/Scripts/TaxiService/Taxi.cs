@@ -9,7 +9,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
 
-        private OrderLinkedQueue _queue; //TODO: delete dead races,
+        private OrderLinkedQueue _queue; //TODO: delete dead races, if the reason is not a planet death
         private OrderPool _pool;
 
         private void Awake()
@@ -20,7 +20,7 @@ namespace Svnvav.UberSpace
 
         private void Start()
         {
-            GameController.Instance.RegisterOnRemovePlanet(RemoveOrdersWithPlanet);
+            GameController.Instance.OnRemovePlanet.RegisterCallback(RemoveOrdersWithPlanet);
         }
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)

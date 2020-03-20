@@ -9,6 +9,8 @@ namespace Svnvav.UberSpace
         [SerializeField] private Color _veilColor;
         protected SpriteRendererVeil _veil;
 
+        protected bool _veiling;
+
         //public Action<Planet> OnDie;//TODO: possible memory leaks
         
         public abstract float Radius { get; }
@@ -71,7 +73,20 @@ namespace Svnvav.UberSpace
             transform.Translate(deltaTime * _velocity);
         }
 
-        public void Veil()
+        public void SetVeiling(bool value)
+        {
+            _veiling = value;
+            if (!_veiling)
+            {
+                _veil.Unveil();
+            }
+            else if(IsFull)
+            {
+                _veil.Veil();
+            }
+        }
+        
+        /*public void Veil()
         {
             if(!_veil.Veiled) _veil.Veil();
         }
@@ -79,7 +94,7 @@ namespace Svnvav.UberSpace
         public void Unveil()
         {
             if(_veil.Veiled) _veil.Unveil();
-        }
+        }*/
 
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
 

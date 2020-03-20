@@ -158,6 +158,15 @@ namespace Svnvav.UberSpace
                 _leftRaceToArriveSprite.gameObject.SetActive(racesToArriveCount > 1);
                 _leftRaceToArriveSprite.sprite = racesToArriveCount > 1 ? _racesToArrive[1].PlanetSprite : null;
             }
+
+            if (_veiling && IsFull && !_veil.Veiled)
+            {
+                _veil.Veil();
+            }
+            else
+            {
+                _veil.Unveil();
+            }
         }
 
         

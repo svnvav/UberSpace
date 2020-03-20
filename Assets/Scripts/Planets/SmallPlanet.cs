@@ -128,6 +128,15 @@ namespace Svnvav.UberSpace
             _raceSprite.gameObject.SetActive(_race != null);
             _defaultSprite.gameObject.SetActive(_race == null);
             _raceToArriveSprite.gameObject.SetActive(_raceToArrive != null);
+            
+            if (_veiling && IsFull && !_veil.Veiled)
+            {
+                _veil.Veil();
+            }
+            else
+            {
+                _veil.Unveil();
+            }
         }
 
         public override void Die()
