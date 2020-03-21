@@ -29,7 +29,7 @@ namespace Svnvav.UberSpace
         
         public override int Capacity => 1;
         public override bool IsFull => _race != null || _raceToArrive != null;
-        public override bool IsEmpty => _race == null && _raceToArrive == null;
+        public override bool IsEmpty => _race == null && _raceToArrive == null || _raceToDeparture != null;
 
         protected new void Awake()
         {

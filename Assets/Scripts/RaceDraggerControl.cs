@@ -65,7 +65,7 @@ namespace Svnvav.UberSpace
         private void OnTouchStart()
         {
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);//TODO: fix the same order bug
+            _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
 
             if (_departure != null)
             {
