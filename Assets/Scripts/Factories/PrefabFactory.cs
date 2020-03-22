@@ -6,23 +6,22 @@ using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace
 {
-    [CreateAssetMenu]
-    public class ArrowFactory : PrefabFactory<OrderArrow>
+    public abstract class PrefabFactory<T> : ScriptableObject, IReclaimer where T : MonoBehaviour, IRecyclable
     {
-        /*[SerializeField] private OrderArrow[] _prefabs;
+        [SerializeField] private T[] _prefabs;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<OrderArrow>[] _pools;
+        [NonSerialized] private List<T>[] _pools;
 
         [NonSerialized] private Scene _poolScene;
         
         private void CreatePools()
         {
-            _pools = new List<OrderArrow>[_prefabs.Length];
+            _pools = new List<T>[_prefabs.Length];
             for (int i = 0; i < _pools.Length; i++)
             {
-                _pools[i] = new List<OrderArrow>();
+                _pools[i] = new List<T>();
             }
 
 #if UNITY_EDITOR
@@ -32,7 +31,7 @@ namespace Svnvav.UberSpace
                 var inactiveObjects = _poolScene
                     .GetRootGameObjects()
                     .Where(go => !go.activeSelf)
-                    .Select(go => go.GetComponent<OrderArrow>());
+                    .Select(go => go.GetComponent<T>());
                 foreach (var planet in inactiveObjects)
                 {
                     _pools[planet.PrefabId].Add(planet);
@@ -44,9 +43,9 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public Planet Get(int prefabId)
+        public T Get(int prefabId)
         {
-            Planet instance;
+            T instance;
 
             if (_recycle)
             {
@@ -78,15 +77,14 @@ namespace Svnvav.UberSpace
                 instance.OriginFactory = this;
                 instance.PrefabId = prefabId;
             }
-
-            GameController.Instance.AddPlanet(instance);
+            
             return instance;
         }
         
-        public void Reclaim(Planet toRecycle)
+        public void Reclaim(IRecyclable toRecycle)
         {
             if (toRecycle.OriginFactory != this) {
-                Debug.LogError("Tried to reclaim planet with wrong factory.");
+                Debug.LogError($"Tried to reclaim {toRecycle.GetType().Name} with wrong factory.");
                 return;
             }
             
@@ -97,13 +95,13 @@ namespace Svnvav.UberSpace
                     CreatePools();
                 }
 
-                _pools[toRecycle.PrefabId].Add(toRecycle);
-                toRecycle.gameObject.SetActive(false);
+                //_pools[toRecycle.PrefabId].Add(toRecycle);//TODO:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                toRecycle.RecyclableGameObject.SetActive(false);
             }
             else
             {
-                Destroy(toRecycle.gameObject);
+                Destroy(toRecycle.RecyclableGameObject);
             }
-        }*/
+        }
     }
 }

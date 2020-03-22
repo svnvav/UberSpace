@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab057403ec73400e8316213a2fccdc2a, type: 3}
+  m_Name: ArrowFactory
+  m_EditorClassIdentifier: 
+  _prefabs:
+  - {fileID: -6188315735447906215, guid: 51c5af13411782b4d938d45f80a8ffe9, type: 3}
+  _recycle: 0
