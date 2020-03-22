@@ -18,7 +18,7 @@ namespace Svnvav.UberSpace
         
         public abstract int Capacity { get; }
         public abstract bool IsFull { get; }
-        public abstract bool IsEmpty { get; }
+        public abstract bool IsEmpty { get; }//TODO: change name or departure logic
         
         #region Factory
 
@@ -85,16 +85,6 @@ namespace Svnvav.UberSpace
                 _veil.Veil();
             }
         }
-        
-        /*public void Veil()
-        {
-            if(!_veil.Veiled) _veil.Veil();
-        }
-        
-        public void Unveil()
-        {
-            if(_veil.Veiled) _veil.Unveil();
-        }*/
 
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
 

@@ -42,23 +42,23 @@ namespace Svnvav.UberSpace
         private void SearchPotentialDestination()
         {
             var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            touchPos.z = 0;
             _destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
+            var start = _departure.transform.position;
+            _arrow.SetPosition(0, start);
             if (_destination != null)
             {
-                var start = _departure.transform.position;
                 var end = _destination.transform.position;
 
                 var t = 1f - _destination.Radius / (start - end).magnitude;
 
                 var head = Vector3.Lerp(start, end, t);
-                
-                _arrow.SetPosition(0, start);
 
                 _arrow.SetPosition(1, head);
             }
             else
             {
-                _arrow.Clear();
+                _arrow.SetPosition(1, touchPos);
             }
         }
         
