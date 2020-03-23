@@ -1,7 +1,9 @@
+using UnityEngine;
+
 namespace Svnvav.UberSpace
 {
-    public interface IReclaimer
+    public interface IReclaimer<T> where T : Object, IRecyclable
     {
-        void Reclaim(IRecyclable recyclable);
+        void Reclaim(T recyclable);
     }
 }

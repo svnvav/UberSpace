@@ -20,23 +20,11 @@ namespace Svnvav.UberSpace
                 }
             }
         }
-        
-        private IReclaimer _originFactory;
-        public IReclaimer OriginFactory
-        {
-            get => _originFactory;
-            set
-            {
-                if (_originFactory == null)
-                {
-                    _originFactory = value;
-                }
-                else
-                {
-                    Debug.LogError("Not allowed to change origin factory.");
-                }
-            }
-        }
+
+        private ArrowGenericFactory _originGenericFactory;
+
         public GameObject RecyclableGameObject => gameObject;
+        
+        
     }
 }

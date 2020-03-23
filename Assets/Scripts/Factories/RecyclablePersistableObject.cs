@@ -1,8 +1,6 @@
-using UnityEngine;
-
-namespace Svnvav.UberSpace
+﻿namespace Svnvav.UberSpace
 {
-    public interface IRecyclable
+    public class RecyclablePersistableObject
     {
         void SetOriginFactory<T>(PrefabGenericFactory<T> originGenericFactory) where T : Object, IRecyclable;
 
