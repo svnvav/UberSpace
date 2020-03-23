@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 namespace Svnvav.UberSpace
 {
-    public abstract class PrefabGenericFactory<T> : ScriptableObject, IReclaimer<T> where T : Object, IRecyclable
+    [CreateAssetMenu]
+    public class PrefabFactory : ScriptableObject
     {
-        [SerializeField] private T[] _prefabs;
+        [SerializeField] private RecyclablePersistableObject[] _prefabs;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<T>[] _pools;
+        [NonSerialized] private List<RecyclablePersistableObject>[] _pools;
 
         [NonSerialized] private Scene _poolScene;
+        
+        [NonSerialized] private Type _targetType;
 
+        public Type TargetType => _targetType;
+
+        public void Initialize(Type type)
+        {
+            _targetType = type;
+        }
+        
         private void CreatePools()
         {
-            _pools = new List<T>[_prefabs.Length];
+            _pools = new List<RecyclablePersistableObject>[_prefabs.Length];
             for (int i = 0; i < _pools.Length; i++)
             {
-                _pools[i] = new List<T>();
+                _pools[i] = new List<RecyclablePersistableObject>();
             }
 
 #if UNITY_EDITOR
@@ -32,10 +41,10 @@ namespace Svnvav.UberSpace
                 var inactiveObjects = _poolScene
                     .GetRootGameObjects()
                     .Where(go => !go.activeSelf)
-                    .Select(go => go.GetComponent<T>());
-                foreach (var planet in inactiveObjects)
+                    .Select(go => go.GetComponent<RecyclablePersistableObject>());
+                foreach (var instances in inactiveObjects)
                 {
-                    _pools[planet.PrefabId].Add(planet);
+                    _pools[instances.PrefabId].Add(instances);
                 }
                 return;
             }
@@ -44,8 +53,13 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public T Get(int prefabId)
+        public T Get<T>(int prefabId) where T: RecyclablePersistableObject
         {
+            if (typeof(T) != _targetType)
+            {
+                Debug.LogError($"Trying to get object of type {typeof(T).Name} from pool of type {_targetType.Name}");
+            }
+            
             T instance;
 
             if (_recycle)
@@ -59,30 +73,30 @@ namespace Svnvav.UberSpace
 
                 if (lastIndex >= 0)
                 {
-                    instance = _pools[prefabId][lastIndex];
+                    instance = (T)_pools[prefabId][lastIndex];
                     _pools[prefabId].RemoveAt(lastIndex);
                 }
                 else
                 {
-                    instance = Instantiate(_prefabs[prefabId]);
-                    instance.SetOriginFactory(this);
+                    instance = (T)Instantiate(_prefabs[prefabId]);
+                    instance.OriginFactory = this;
                     instance.PrefabId = prefabId;
-                    SceneManager.MoveGameObjectToScene(instance.RecyclableGameObject, _poolScene);
+                    SceneManager.MoveGameObjectToScene(instance.gameObject, _poolScene);
                 }
 
-                instance.RecyclableGameObject.SetActive(true);
+                instance.gameObject.SetActive(true);
             }
             else
             {
-                instance = Instantiate(_prefabs[prefabId]);
-                instance.SetOriginFactory(this);
+                instance = (T)Instantiate(_prefabs[prefabId]);
+                instance.OriginFactory = this;
                 instance.PrefabId = prefabId;
             }
             
             return instance;
         }
         
-        public void Reclaim(T toRecycle)
+        public void Reclaim(RecyclablePersistableObject toRecycle)
         {
             if (_recycle)
             {
@@ -92,11 +106,11 @@ namespace Svnvav.UberSpace
                 }
 
                 _pools[toRecycle.PrefabId].Add(toRecycle);
-                toRecycle.RecyclableGameObject.SetActive(false);
+                toRecycle.gameObject.SetActive(false);
             }
             else
             {
-                Destroy(toRecycle.RecyclableGameObject);
+                Destroy(toRecycle.gameObject);
             }
         }
     }

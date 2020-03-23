@@ -68,27 +68,33 @@ namespace Svnvav.UberSpace
                 return;
             }
 
-            var order = _queue.Peek();
-            switch (order.Status)
+            foreach (var order in _queue)
+            {
+                order.GameUpdate();
+            }
+            
+            var current = _queue.Peek();
+            switch (current.Status)
             {
                 case OrderStatus.Queued:
-                    order.Take();
+                    current.Take();
                     break;
                 case OrderStatus.Taken:
-                    MoveTo(order.GetCurrentPointToMove(), deltaTime);
-                    if (Vector3.SqrMagnitude(transform.position - order.GetCurrentPointToMove()) <
+                    MoveTo(current.GetCurrentPointToMove(), deltaTime);
+                    if (Vector3.SqrMagnitude(transform.position - current.GetCurrentPointToMove()) <
                         _takePassengerRadius * _takePassengerRadius)
                     {
-                        order.StartExecuting();
+                        current.StartExecuting();
                     }
 
                     break;
                 case OrderStatus.Executing:
-                    MoveTo(order.GetCurrentPointToMove(), deltaTime);
-                    if (Vector3.SqrMagnitude(transform.position - order.GetCurrentPointToMove()) <
+                    MoveTo(current.GetCurrentPointToMove(), deltaTime);
+                    current.SetArrowPositions(transform.position, current.Destination.OnTheEdgeFrom(transform.position));
+                    if (Vector3.SqrMagnitude(transform.position - current.GetCurrentPointToMove()) <
                         _takePassengerRadius * _takePassengerRadius)
                     {
-                        order.Complete();
+                        current.Complete();
                         _queue.Dequeue();
                     }
 

@@ -48,13 +48,7 @@ namespace Svnvav.UberSpace
             _arrow.SetPosition(0, start);
             if (_destination != null)
             {
-                var end = _destination.transform.position;
-
-                var t = 1f - _destination.Radius / (start - end).magnitude;
-
-                var head = Vector3.Lerp(start, end, t);
-
-                _arrow.SetPosition(1, head);
+                _arrow.SetPosition(1, _destination.OnTheEdgeFrom(start));
             }
             else
             {

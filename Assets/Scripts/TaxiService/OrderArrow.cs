@@ -2,29 +2,15 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class OrderArrow : MonoBehaviour, IRecyclable
+    public class OrderArrow : RecyclablePersistableObject
     {
-        private int _prefabId = int.MinValue;
-        public int PrefabId
+        [SerializeField] private Arrow _arrow;
+
+        public Arrow Arrow => _arrow;
+
+        public void Reclaim()
         {
-            get => _prefabId;
-            set
-            {
-                if (_prefabId == int.MinValue)
-                {
-                    _prefabId = value;
-                }
-                else
-                {
-                    Debug.LogError("Not allowed to change IdInFactory.");
-                }
-            }
+            OriginFactory.Reclaim(this);
         }
-
-        private ArrowGenericFactory _originGenericFactory;
-
-        public GameObject RecyclableGameObject => gameObject;
-        
-        
     }
 }

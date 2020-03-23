@@ -14,6 +14,7 @@ namespace Svnvav.UberSpace
         //public Action<Planet> OnDie;//TODO: possible memory leaks
         
         public abstract float Radius { get; }
+
         public abstract int SaveIndex { get; set; }//index in GameController._planets
         
         public abstract int Capacity { get; }
@@ -71,6 +72,13 @@ namespace Svnvav.UberSpace
         public virtual void GameUpdate(float deltaTime)
         {
             transform.Translate(deltaTime * _velocity);
+        }
+        
+        public Vector3 OnTheEdgeFrom(Vector3 from)
+        {
+            var t = 1f - Radius / (from - transform.position).magnitude;
+
+            return Vector3.Lerp(from, transform.position, t);
         }
 
         public void SetVeiling(bool value)
