@@ -18,6 +18,8 @@ namespace Svnvav.UberSpace
 
         public int Count => _count;
 
+        public Action OnEnqueue, OnDequeue;
+
         public void Clear()
         {
             foreach (var order in this)
@@ -54,6 +56,8 @@ namespace Svnvav.UberSpace
             }
 
             _count++;
+            
+            OnEnqueue?.Invoke();
         }
 
         public Order Dequeue()
@@ -70,6 +74,7 @@ namespace Svnvav.UberSpace
                 _head.prev = null;
             }
             
+            OnDequeue?.Invoke();
             return dequeued.value;
         }
 
