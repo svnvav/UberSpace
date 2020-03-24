@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -9,93 +9,46 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
 
-        private OrderLinkedQueue _queue; //TODO: delete dead races, if the reason is not a planet death
-        private OrderPool _pool;
-
-        private void Awake()
+        public bool IsIdle => _current == null;
+        
+        private Order _current;
+        private Action _onCurrentComplete;
+        
+        public void ExecuteOrder(Order order, Action onComplete)
         {
-            _queue = new OrderLinkedQueue();
-            _pool = new OrderPool(1);
-        }
-
-        private void Start()
-        {
-            GameController.Instance.OnRemovePlanet.RegisterCallback(RemoveOrdersWithPlanet);
-        }
-
-        public void AddOrder(Race passenger, Planet departure, Planet destination)
-        {
-            _queue.Enqueue(_pool.Get(passenger, departure, destination));
-        }
-
-        public void RemoveOrdersWithPlanet(Planet planet)
-        {
-            //TODO: consider dragndrop from taxiship
-            if (_queue.Count == 0) return;
-
-            Order canceled = null;
-
-            var current = _queue.Peek();
-            if (current.Status == OrderStatus.Executing)
-            {
-                if (current.Destination == planet)
-                {
-                    canceled = _queue.RemoveAndGetLast(o => o.Destination == current.Departure);
-                    canceled?.Cancel();
-                    //return back
-                    current.Cancel();
-                }
-            }
-
-            foreach (var order in _queue)
-            {
-                if (order.Status != OrderStatus.Executing && 
-                    (order.Departure == planet || order.Destination == planet)
-                    )
-                {
-                    order.Cancel();
-                }
-            }
-            
-            _queue.RemoveAll(order => order.Status == OrderStatus.Completed);
+            _current = order;
+            _onCurrentComplete = onComplete;
         }
 
         public void GameUpdate(float deltaTime)
         {
-            if (_queue.Count == 0)
+            if (IsIdle)
             {
                 Idle();
                 return;
             }
-
-            foreach (var order in _queue)
-            {
-                order.GameUpdate();
-            }
-            
-            var current = _queue.Peek();
-            switch (current.Status)
+            switch (_current.Status)
             {
                 case OrderStatus.Queued:
-                    current.Take();
+                    _current.Take();
                     break;
                 case OrderStatus.Taken:
-                    MoveTo(current.GetCurrentPointToMove(), deltaTime);
-                    if (Vector3.SqrMagnitude(transform.position - current.GetCurrentPointToMove()) <
+                    MoveTo(_current.GetCurrentPointToMove(), deltaTime);
+                    if (Vector3.SqrMagnitude(transform.position - _current.GetCurrentPointToMove()) <
                         _takePassengerRadius * _takePassengerRadius)
                     {
-                        current.StartExecuting();
+                        _current.StartExecuting();
                     }
 
                     break;
                 case OrderStatus.Executing:
-                    MoveTo(current.GetCurrentPointToMove(), deltaTime);
-                    current.SetArrowPositions(transform.position, current.Destination.OnTheEdgeFrom(transform.position));
-                    if (Vector3.SqrMagnitude(transform.position - current.GetCurrentPointToMove()) <
+                    MoveTo(_current.GetCurrentPointToMove(), deltaTime);
+                    _current.SetArrowPositions(transform.position, _current.Destination.OnTheEdgeFrom(transform.position));
+                    if (Vector3.SqrMagnitude(transform.position - _current.GetCurrentPointToMove()) <
                         _takePassengerRadius * _takePassengerRadius)
                     {
-                        current.Complete();
-                        _queue.Dequeue();
+                        _current.Complete();
+                        _onCurrentComplete?.Invoke();
                     }
 
                     break;
@@ -117,37 +70,13 @@ namespace Svnvav.UberSpace
         {
             writer.Write(transform.localPosition);
             writer.Write(transform.localRotation);
-
-            var ordersToSave = new List<Order>(_queue);
-
-            writer.Write(ordersToSave.Count);
-
-            foreach (var order in ordersToSave)
-            {
-                writer.Write(order.Race.SaveIndex);
-                writer.Write(order.Departure.SaveIndex);
-                writer.Write(order.Destination.SaveIndex);
-                writer.Write((int) order.Status);
-            }
         }
 
         public override void Load(GameDataReader reader)
         {
+            _current = null;
             transform.localPosition = reader.ReadVector3();
             transform.localRotation = reader.ReadQuaternion();
-
-            _queue.Clear();
-            var count = reader.ReadInt();
-
-            for (int i = 0; i < count; i++)
-            {
-                var race = GameController.Instance.Races[reader.ReadInt()];
-                var departure = GameController.Instance.Planets[reader.ReadInt()];
-                var destination = GameController.Instance.Planets[reader.ReadInt()];
-                var status = (OrderStatus) reader.ReadInt();
-
-                _queue.Enqueue(_pool.Get(race, departure, destination, status));
-            }
         }
     }
 }

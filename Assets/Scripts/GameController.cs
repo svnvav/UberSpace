@@ -14,7 +14,7 @@ namespace Svnvav.UberSpace
         
         const int saveVersion = 1;
         
-        [SerializeField] private Taxi _taxi;
+        [SerializeField] private TaxiService _taxiService;
         
         [SerializeField] private PersistentStorage _storage;
 
@@ -84,7 +84,7 @@ namespace Svnvav.UberSpace
                 planet.GameUpdate(deltaTime);
             }
 
-            _taxi.GameUpdate(deltaTime);
+            _taxiService.GameUpdate(deltaTime);
             
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -142,7 +142,7 @@ namespace Svnvav.UberSpace
 
         public void TransferRace(Race race, Planet departure, Planet destination)
         {
-            _taxi.AddOrder(race, departure, destination);
+            _taxiService.AddOrder(race, departure, destination);
         }
 
         private IEnumerator LoadLevelScene(int levelBuildIndex)
@@ -194,7 +194,7 @@ namespace Svnvav.UberSpace
                 race.Save(writer);
             }
             
-            _taxi.Save(writer);
+            _taxiService.Save(writer);
         }
 
         public override void Load(GameDataReader reader)
@@ -235,7 +235,7 @@ namespace Svnvav.UberSpace
                 }
             }
             
-            _taxi.Load(reader);
+            _taxiService.Load(reader);
         }
     }
 }
