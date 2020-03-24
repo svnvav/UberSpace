@@ -20,6 +20,10 @@ namespace Svnvav.UberSpace
 
         public void Clear()
         {
+            foreach (var order in this)
+            {
+                order.SetStatus(OrderStatus.Completed);
+            }
             _head = _tail = null;
             _count = 0;
         }
