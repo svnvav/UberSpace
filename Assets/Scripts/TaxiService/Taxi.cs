@@ -43,7 +43,6 @@ namespace Svnvav.UberSpace
                     break;
                 case OrderStatus.Executing:
                     MoveTo(_current.GetCurrentPointToMove(), deltaTime);
-                    _current.SetArrowPositions(transform.position, _current.Destination.OnTheEdgeFrom(transform.position));
                     if (Vector3.SqrMagnitude(transform.position - _current.GetCurrentPointToMove()) <
                         _takePassengerRadius * _takePassengerRadius)
                     {

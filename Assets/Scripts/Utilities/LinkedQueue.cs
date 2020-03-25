@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Svnvav.UberSpace
 {
-    public class OrderLinkedQueue : IEnumerable<Order>
+    public class LinkedQueue<T> : IEnumerable<T> where T : class
     {
         private class Item
         {
-            internal Order value;
+            internal T value;
             internal Item prev, next;
         }
 
@@ -18,24 +18,20 @@ namespace Svnvav.UberSpace
 
         public int Count => _count;
 
-        public Action OnEnqueue, OnDequeue;
+        public Action<T> OnEnqueue, OnDequeue;
 
         public void Clear()
         {
-            foreach (var order in this)
-            {
-                order.SetStatus(OrderStatus.Completed);
-            }
             _head = _tail = null;
             _count = 0;
         }
         
-        public Order Peek()
+        public T Peek()
         {
             return _head?.value;
         }
         
-        public void Enqueue(Order order)
+        public void Enqueue(T order)
         {
             if (_count == 0)
             {
@@ -57,10 +53,10 @@ namespace Svnvav.UberSpace
 
             _count++;
             
-            OnEnqueue?.Invoke();
+            OnEnqueue?.Invoke(order);
         }
 
-        public Order Dequeue()
+        public T Dequeue()
         {
             if (_count == 0) return null;
 
@@ -74,11 +70,11 @@ namespace Svnvav.UberSpace
                 _head.prev = null;
             }
             
-            OnDequeue?.Invoke();
+            OnDequeue?.Invoke(dequeued.value);
             return dequeued.value;
         }
 
-        public Order RemoveAndGetLast(Func<Order, bool> predicate)
+        public T RemoveAndGetLast(Func<T, bool> predicate)
         {
             var iterator = _tail;
             while (iterator != null)
@@ -94,7 +90,7 @@ namespace Svnvav.UberSpace
             return null;
         }
 
-        public void RemoveAll(Func<Order, bool> predicate)
+        public void RemoveAll(Func<T, bool> predicate)
         {
             var iterator = _tail;
             while (iterator != null)
@@ -139,12 +135,12 @@ namespace Svnvav.UberSpace
             return GetEnumerator();
         }
 
-        public IEnumerator<Order> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new ItemsEnumerator(_head);
         }
         
-        private class ItemsEnumerator : IEnumerator<Order>
+        private class ItemsEnumerator : IEnumerator<T>
         {
             private Item _head, _current;
 
@@ -173,7 +169,7 @@ namespace Svnvav.UberSpace
                 GC.SuppressFinalize(this);
             }
 
-            public Order Current => _current.value;
+            public T Current => _current.value;
         }
     }
 }

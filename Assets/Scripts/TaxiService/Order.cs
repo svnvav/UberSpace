@@ -5,8 +5,6 @@ namespace Svnvav.UberSpace
 {
     public class Order
     {
-        private OrderArrow _arrow;
-        
         private Race _race;
         private Planet _departure, _destination;
         private OrderStatus _status;
@@ -26,27 +24,8 @@ namespace Svnvav.UberSpace
             _race = race;
             _departure = departure;
             _destination = destination;
-            _arrow = FactoriesManager.Instance.Get<OrderArrow>(0);
 
             SetStatus(status);
-        }
-
-        public void GameUpdate()
-        {
-            if (_status == OrderStatus.Completed)
-            {
-                return;
-            }
-            
-            var start = _departure.transform.position;
-
-            SetArrowPositions(start, _destination.OnTheEdgeFrom(start));
-        }
-
-        public void SetArrowPositions(Vector3 start, Vector3 end)
-        {
-            _arrow.Arrow.SetPosition(0, start);
-            _arrow.Arrow.SetPosition(1, end);
         }
 
         public void SetStatus(OrderStatus status)
@@ -59,8 +38,6 @@ namespace Svnvav.UberSpace
                     _race = null;
                     _departure = null;
                     _destination = null;
-                    _arrow.Reclaim();
-                    _arrow = null;
                     break;
                 case OrderStatus.Queued:
                 case OrderStatus.Taken:

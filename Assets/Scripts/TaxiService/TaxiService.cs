@@ -8,13 +8,15 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private Taxi _taxi;
         
-        private OrderLinkedQueue _queue; //TODO: delete dead races, if the reason is not a planet death
+        private LinkedQueue<Order> _queue; //TODO: delete dead races, if the reason is not a planet death
+        private OrderArrowChain _arrowChain;
         private OrderPool _pool;
 
         private void Awake()
         {
-            _queue = new OrderLinkedQueue();
+            _queue = new LinkedQueue<Order>();
             _pool = new OrderPool(1);
+            _arrowChain = new OrderArrowChain(_queue, _taxi.transform);
         }
 
         private void Start()
@@ -24,10 +26,7 @@ namespace Svnvav.UberSpace
 
         public void GameUpdate(float deltaTime)
         {
-            foreach (var order in _queue)
-            {
-                order.GameUpdate();
-            }
+            _arrowChain.GameUpdate();
             
             if (_taxi.IsIdle && _queue.Count > 0)
             {
@@ -39,7 +38,9 @@ namespace Svnvav.UberSpace
 
         public void AddOrder(Race passenger, Planet departure, Planet destination)
         {
-            _queue.Enqueue(_pool.Get(passenger, departure, destination));
+            var order = _pool.Get(passenger, departure, destination);
+            _queue.Enqueue(order);
+            
         }
 
         private void OnOrderCompleted()
@@ -101,7 +102,12 @@ namespace Svnvav.UberSpace
         {
             _taxi.Load(reader);
             
+            foreach (var order in _queue)
+            {
+                order.SetStatus(OrderStatus.Completed);
+            }
             _queue.Clear();
+            
             var count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)

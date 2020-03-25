@@ -292,6 +292,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &619850633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 619850635}
+  - component: {fileID: 619850634}
+  m_Layer: 0
+  m_Name: TaxiService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &619850634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619850633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0eac57be06c4ae0a72601b5119cf521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _taxi: {fileID: 26960070}
+--- !u!4 &619850635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619850633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1180007146
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e623578410d3a7343926dd4aadce83d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _taxi: {fileID: 26960070}
+  _taxiService: {fileID: 619850634}
   _storage: {fileID: 510287293}
   _planetFactory: {fileID: 11400000, guid: b42a4eb789805de48968ceff4fbbb839, type: 2}
   _raceFactory: {fileID: 11400000, guid: 8dd91a0970aa2be4ba34573fed607ce5, type: 2}
