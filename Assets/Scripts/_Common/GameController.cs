@@ -13,6 +13,8 @@ namespace Svnvav.UberSpace
         public static GameController Instance { get; private set; }
         
         const int saveVersion = 1;
+
+        [SerializeField] private HUD _hud;
         
         [SerializeField] private TaxiService _taxiService;
         
@@ -123,7 +125,7 @@ namespace Svnvav.UberSpace
         {
             race.SaveIndex = _races.Count;
             _races.Add(race);
-            //TODO: initialize race ui
+            _hud.AddRaceInfo(race);
         }
 
         public void RemoveRace(Race race)

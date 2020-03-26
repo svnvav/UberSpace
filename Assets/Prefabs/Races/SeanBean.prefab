@@ -47,6 +47,6 @@ MonoBehaviour:
   _tagline: 
   _isAggressive: 0
   _planetSprite: {fileID: 21300000, guid: c7f3196b66d67fd4bac56d52e0ec56c7, type: 3}
-  _hudInfoSprite: {fileID: 0}
+  _hudInfoSprite: {fileID: 21300000, guid: ec31c15d7bec96d438ba2668d5d67c67, type: 3}
   _loadingSprite: {fileID: 0}
   _population: 100
