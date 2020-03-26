@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
@@ -15,6 +16,16 @@ namespace Svnvav.UberSpace
                     planet.Die();
                 }
             }
+        }
+
+        private void Update()
+        {
+            
+        }
+
+        public void OnTap()
+        {
+            GameController.Instance.Pause();
         }
     }
 }

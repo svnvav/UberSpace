@@ -27,6 +27,11 @@ namespace Svnvav.UberSpace
         public RaceFactory RaceFactory => _raceFactory;
         
         private float _gameSpeed = 1f;
+        private bool _paused;
+        private float _beforePauseGameSpeed;
+        private float _beforePauseTimeScale;
+        
+        
         public float GameSpeed
         {
             get => _gameSpeed;
@@ -78,6 +83,20 @@ namespace Svnvav.UberSpace
 
         private void Update()
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var hit = Physics2D.Raycast(touchPos, Vector2.zero);
+                if (hit.collider != null)
+                {
+                    var blackHole = hit.collider.GetComponent<BlackHole>();
+                    if (blackHole != null)
+                    {
+                        Pause();
+                    }
+                }
+            }
+
             var deltaTime = _gameSpeed * Time.deltaTime;
             GameLevel.Current.GameUpdate(deltaTime);
 
@@ -99,6 +118,32 @@ namespace Svnvav.UberSpace
             }
         }
 
+        public void Pause()
+        {
+            if (_paused)
+            {
+                return;
+            }
+
+            _hud.OnPause();
+            _beforePauseGameSpeed = GameSpeed;
+            _beforePauseTimeScale = Time.timeScale;
+            Time.timeScale = 0.5f;
+            GameSpeed = 0.0f;
+        }
+
+        public void Unpause()
+        {
+            if (!_paused)
+            {
+                return;
+            }
+            
+            _hud.OnUnpause();
+            GameSpeed = _beforePauseGameSpeed;
+            Time.timeScale = _beforePauseTimeScale;
+        }
+        
         public void AddPlanet(Planet planet)
         {
             planet.SaveIndex = _planets.Count;
