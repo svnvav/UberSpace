@@ -17,8 +17,6 @@ namespace Svnvav.UberSpace
         [SerializeField] private HUD _hud;
         
         [SerializeField] private TaxiService _taxiService;
-        
-        [SerializeField] private PersistentStorage _storage;
 
         [SerializeField] private PlanetFactory _planetFactory;
         public PlanetFactory PlanetFactory => _planetFactory;
@@ -109,12 +107,12 @@ namespace Svnvav.UberSpace
             
             if (Input.GetKeyDown(KeyCode.S))
             {
-                _storage.Save(this, saveVersion);
+                PersistentStorage.Instance.Save(this, saveVersion);
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
                 Restart();
-                _storage.Load(this);
+                PersistentStorage.Instance.Load(this);
             }
         }
 
@@ -125,6 +123,7 @@ namespace Svnvav.UberSpace
                 return;
             }
 
+            _paused = true;
             _hud.OnPause();
             _beforePauseGameSpeed = GameSpeed;
             _beforePauseTimeScale = Time.timeScale;
@@ -139,6 +138,7 @@ namespace Svnvav.UberSpace
                 return;
             }
             
+            _paused = false;
             _hud.OnUnpause();
             GameSpeed = _beforePauseGameSpeed;
             Time.timeScale = _beforePauseTimeScale;

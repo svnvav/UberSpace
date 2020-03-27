@@ -5,10 +5,13 @@ namespace Catlike.ObjectManagement
 {
     public class PersistentStorage : MonoBehaviour
     {
+        public static PersistentStorage Instance;
+        
         private string _savePath;
 
         private void Awake()
         {
+            Instance = this;
             _savePath = Path.Combine(Application.persistentDataPath, "GameSave");
         }
         
