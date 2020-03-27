@@ -6,7 +6,7 @@ namespace Svnvav.UberSpace
 {
     public class RaceDraggerControl : MonoBehaviour
     {
-        [SerializeField] private Camera _mainCamera;
+        private Camera _mainCamera;
         [SerializeField] private Arrow _arrow;
         [SerializeField] private float _captureMinDistance;
 
@@ -14,6 +14,11 @@ namespace Svnvav.UberSpace
         private Planet _departure, _destination;
 
         private bool _captured;
+
+        private void Awake()
+        {
+            _mainCamera = Camera.main;
+        }
 
         private void Start()
         {
