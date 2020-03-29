@@ -76,7 +76,7 @@ namespace Svnvav.UberSpace
             }
 #endif
 
-            StartCoroutine(LoadLevelScene(1));
+            StartCoroutine(LoadLevelScene(3));
         }
 
         private void Update()

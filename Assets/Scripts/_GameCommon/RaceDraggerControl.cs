@@ -6,7 +6,6 @@ namespace Svnvav.UberSpace
 {
     public class RaceDraggerControl : MonoBehaviour
     {
-        private Camera _mainCamera;
         [SerializeField] private Arrow _arrow;
         [SerializeField] private float _captureMinDistance;
 
@@ -14,10 +13,20 @@ namespace Svnvav.UberSpace
         private Planet _departure, _destination;
 
         private bool _captured;
+        
+        private Camera _mainCamera;
 
-        private void Awake()
+        public Camera MainCamera
         {
-            _mainCamera = Camera.main;
+            get
+            {
+                if (_mainCamera == null)
+                {
+                    _mainCamera = Camera.main;
+                }
+
+                return _mainCamera;
+            }
         }
 
         private void Start()
@@ -46,7 +55,7 @@ namespace Svnvav.UberSpace
 
         private void SearchPotentialDestination()
         {
-            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            var touchPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             touchPos.z = 0;
             _destination = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsFull);
             var start = _departure.transform.position;
@@ -63,7 +72,7 @@ namespace Svnvav.UberSpace
         
         private void OnTouchStart()
         {
-            var touchPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            var touchPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _departure = GetNearestPlanet(touchPos, _captureMinDistance, planet => !planet.IsEmpty);
 
             if (_departure != null)

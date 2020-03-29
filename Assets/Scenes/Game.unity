@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.3333334
+  m_AspectRatio: 0.5625
 --- !u!114 &1375999611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _racesInfoPanel: {fileID: 1169505720}
-  _raceInfoPrefab: {fileID: 578671737102903200, guid: f097ce77a67e34843a1e7306d42f55d0,
+  _raceInfoPrefab: {fileID: 5416994793981550846, guid: f097ce77a67e34843a1e7306d42f55d0,
     type: 3}
 --- !u!1 &1449945070
 GameObject:
