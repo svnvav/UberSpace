@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace
 {
-    public class ScenesManager : MonoBehaviour
+    public class ScenesManagerSample : MonoBehaviour
     {
          /// <summary>
         /// The scenes manager instance.
         /// </summary>
-        public static ScenesManager Instance;
+        public static ScenesManagerSample Instance;
         /// <summary>
         /// Current scene name.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Svnvav.UberSpace
         private void Awake()
         {
             // Keep alive between scene changes
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             // Setup the array of updateDelegates
             _updateDelegates = new UpdateDelegate[(int) SceneState.Count];
             _updateDelegates[(int) SceneState.Reset] = UpdateSceneReset;
@@ -49,6 +49,11 @@ namespace Svnvav.UberSpace
             _updateDelegates[(int) SceneState.Run] = UpdateSceneRun;
             _nextSceneName = SceneManager.GetActiveScene().name;
             _sceneState = SceneState.Reset;
+            
+            if (Instance == null)
+                Instance = this;
+            else if (Instance != this)
+                Destroy(gameObject);
         }
         private void OnDestroy()
         {
@@ -57,13 +62,7 @@ namespace Svnvav.UberSpace
             for (var i = 0; i < (int) SceneState.Count; i++)
                 _updateDelegates[i] = null;
         }
-        private void Start()
-        {
-            if (Instance == null)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-        }
+        
         /// <summary>
         /// Scene switch.
         /// </summary>
