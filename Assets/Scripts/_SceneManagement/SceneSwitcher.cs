@@ -1,40 +1,30 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Svnvav.UberSpace
 {
     public class SceneSwitcher : MonoBehaviour
     {
-        /// <summary>
-        /// Current scene name.
-        /// </summary>
+        [SerializeField] private GameObject _loadingScreen;
+        [SerializeField] private Text _progress;
+        
         private string _currentSceneName;
-        /// <summary>
-        /// Next scene name.
-        /// </summary>
+
         private string _nextSceneName;
-        /// <summary>
-        /// Unload resource task.
-        /// </summary>
+
         private AsyncOperation _resourceUnloadTask;
-        /// <summary>
-        /// Load scene task.
-        /// </summary>
+
         private AsyncOperation _sceneLoadTask;
         /// <summary>
         /// Current scene state.
         /// </summary>
         private SceneState _sceneState;
-        /// <summary>
-        /// Update delegates array.
-        /// </summary>
+
         private UpdateDelegate[] _updateDelegates;
         public void Initialize(string initSceneName)
         {
-            // Keep alive between scene changes
-            //DontDestroyOnLoad(gameObject);
-            // Setup the array of updateDelegates
             _updateDelegates = new UpdateDelegate[(int) SceneState.Count];
             _updateDelegates[(int) SceneState.Reset] = UpdateSceneReset;
             _updateDelegates[(int) SceneState.Preload] = UpdateScenePreload;
@@ -54,10 +44,6 @@ namespace Svnvav.UberSpace
                 _updateDelegates[i] = null;
         }
         
-        /// <summary>
-        /// Scene switch.
-        /// </summary>
-        /// <param name="nextSceneName"> Next scene name. </param>
         public void SwitchScene(string nextSceneName)
         {
             if (_currentSceneName != nextSceneName)
@@ -73,6 +59,7 @@ namespace Svnvav.UberSpace
         /// </summary>
         private void UpdateSceneReset()
         {
+            _loadingScreen.SetActive(true);
             GC.Collect();
             _sceneState = SceneState.Preload;
         }
@@ -92,7 +79,7 @@ namespace Svnvav.UberSpace
             if (_sceneLoadTask.isDone)
                 _sceneState = SceneState.Unload;
             {
-                //update scene loading progress
+                _progress.text = $"{(int)Mathf.Floor(_sceneLoadTask.progress * 100)} %";
             }
         }
         private void UpdateSceneUnload()
@@ -115,6 +102,7 @@ namespace Svnvav.UberSpace
         /// </summary>
         private void UpdateScenePostLoad()
         {
+            _loadingScreen.SetActive(false);
             _currentSceneName = _nextSceneName;
             _sceneState = SceneState.Ready;
         }
