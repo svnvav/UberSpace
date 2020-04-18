@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace
 {
@@ -7,9 +8,12 @@ namespace Svnvav.UberSpace
     {
         public static PersistentGameManager Instance;
 
+        [SerializeField] private SceneSwitcher _scenesSwitcher;
+
         private void Awake()
         {
             Instance = this;
+            _scenesSwitcher.Initialize("MainMenu");
         }
 
         public void ContinueGame()
@@ -21,5 +25,7 @@ namespace Svnvav.UberSpace
         {
             
         }
+        
+        
     }
 }
