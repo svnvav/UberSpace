@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace
 {
-    public class ScenesManagerSample : MonoBehaviour
+    public class CustomSceneManager : MonoBehaviour
     {
          /// <summary>
         /// The scenes manager instance.
         /// </summary>
-        public static ScenesManagerSample Instance;
+        public static CustomSceneManager Instance;
         /// <summary>
         /// Current scene name.
         /// </summary>
