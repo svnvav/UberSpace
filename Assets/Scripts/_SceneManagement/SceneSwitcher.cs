@@ -47,7 +47,9 @@ namespace Svnvav.UberSpace
         public void SwitchScene(string nextSceneName)
         {
             if (_currentSceneName != nextSceneName)
+            {
                 _nextSceneName = nextSceneName;
+            }
         }
         private void Update()
         {
