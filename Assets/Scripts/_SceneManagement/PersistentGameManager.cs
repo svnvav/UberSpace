@@ -23,7 +23,7 @@ namespace Svnvav.UberSpace
 
         public void StartLevel(int index)
         {
-            _scenesSwitcher.SwitchScene($"Level{index}");
+            _scenesSwitcher.SwitchScene($"Game");
         }
         
         
