@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Svnvav.UberSpace
+namespace Svnvav.UberSpace.SceneManagement
 {
     public class PersistentGameManager : MonoBehaviour
     {

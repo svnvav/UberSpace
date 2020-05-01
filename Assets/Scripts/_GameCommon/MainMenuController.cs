@@ -1,9 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using Svnvav.UberSpace.SceneManagement;
+using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class MainMenuController : MonoBehaviour
     {
+        private void Awake()
+        {
+            
+        }
+
         public void Continue()
         {
             PersistentGameManager.Instance.ContinueGame();
