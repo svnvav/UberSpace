@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Svnvav.UberSpace.SceneManagement
+namespace Svnvav.UberSpace.CoreScene
 {
     public class SceneSwitcher : MonoBehaviour
     {

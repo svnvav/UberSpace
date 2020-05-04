@@ -1,19 +1,14 @@
-﻿using System;
-using Svnvav.UberSpace.SceneManagement;
+﻿using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class MainMenuController : MonoBehaviour
     {
-        private void Awake()
-        {
-            
-        }
-
+        
         public void Continue()
         {
-            PersistentGameManager.Instance.ContinueGame();
+            CoreSceneController.Instance.ContinueGame();
         }
 
         public void LoadLevelMenu()
@@ -23,7 +18,7 @@ namespace Svnvav.UberSpace
 
         public void LoadLevel(int index)
         {
-            PersistentGameManager.Instance.StartLevel(index);
+            CoreSceneController.Instance.StartLevel(index);
         }
 
         public void Settings()

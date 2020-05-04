@@ -334,7 +334,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1663868645}
   - component: {fileID: 1663868644}
-  - component: {fileID: 1663868643}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -342,20 +341,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1663868643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1663868642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d5b86d9a02d4513935f18c7f61b4a11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadingScreen: {fileID: 1775829523}
-  _progress: {fileID: 1040055665}
 --- !u!114 &1663868644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d118f82682146dcbc4db71013c07f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scenesSwitcher: {fileID: 1663868643}
 --- !u!4 &1663868645
 Transform:
   m_ObjectHideFlags: 0
