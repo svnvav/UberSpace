@@ -9,6 +9,7 @@ namespace Svnvav.UberSpace.CoreScene
     [DisallowMultipleComponent]
     public class CoreSceneAgent : MonoBehaviour
     {
+        [SerializeField] private CoreSceneAgentSource _sceneType;
         private void Awake()
         {
             if (!CoreSceneUtility.IsCoreSceneInitialized)

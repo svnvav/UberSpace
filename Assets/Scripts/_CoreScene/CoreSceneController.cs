@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -12,21 +13,22 @@ namespace Svnvav.UberSpace.CoreScene
 
         //[SerializeField] private SceneSwitcher _scenesSwitcher;
 
-        private GlobalGameState _currentState;
-
-        public void SetState(GlobalGameState state)
-        {
-            _currentState = state;
-        }
+        private GameState _currentGameState = GameState.Loading;
+        private GameState _targetGameState;
+        private Scene _stateScene;
+        private string _levelPostfix;
 
         private void Awake()
         {
             Instance = this;
         }
 
-        private void Start()
+        private void Update()
         {
-            throw new NotImplementedException();
+            if (_currentGameState != _targetGameState)
+            {
+                
+            }
         }
 
         public void ContinueGame()
@@ -34,9 +36,22 @@ namespace Svnvav.UberSpace.CoreScene
             
         }
 
-        public void StartLevel(int index)
+        public void StartLevel(string postfix)
         {
-            //_scenesSwitcher.SwitchScene($"Game");
+            _targetGameState = GameState.Game;
+        }
+
+        public void GoToMainMenu()
+        {
+            _targetGameState = GameState.Menu;
+        }
+        
+        
+        private enum GameState
+        {
+            Menu,
+            Loading,
+            Game
         }
     }
 }

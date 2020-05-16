@@ -685,6 +685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1351398480}
   - component: {fileID: 1351398481}
+  - component: {fileID: 1351398482}
   - component: {fileID: 1351398479}
   m_Layer: 0
   m_Name: GameController
@@ -709,6 +710,7 @@ MonoBehaviour:
   _taxiService: {fileID: 619850634}
   _planetFactory: {fileID: 11400000, guid: b42a4eb789805de48968ceff4fbbb839, type: 2}
   _raceFactory: {fileID: 11400000, guid: 8dd91a0970aa2be4ba34573fed607ce5, type: 2}
+  levelsManager: {fileID: 0}
 --- !u!4 &1351398480
 Transform:
   m_ObjectHideFlags: 0
@@ -733,6 +735,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 114694b32e1441b7b25281a09c52ec67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneType: 0
+--- !u!114 &1351398482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351398478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6eb95944284495bd39ef999258ff6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1375999605

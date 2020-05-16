@@ -23,20 +23,20 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private RaceFactory _raceFactory;
         public RaceFactory RaceFactory => _raceFactory;
-        
-        private float _gameSpeed = 1f;
+
+        [SerializeField] private LevelsManager levelsManager;
+
+        public LevelsManager LevelsManager => levelsManager;
+
         private bool _paused;
         private float _beforePauseGameSpeed;
         private float _beforePauseTimeScale;
-        
-        
+        private float _gameSpeed = 1f;
         public float GameSpeed
         {
             get => _gameSpeed;
             set => _gameSpeed = value;
         }
-
-        [NonSerialized] private int _loadedLevelBuildIndex;
 
         private ActionContainer<Planet> _onAddPlanet, _onRemovePlanet;
 
@@ -59,24 +59,6 @@ namespace Svnvav.UberSpace
             
             _onAddPlanet = new ActionContainer<Planet>();
             _onRemovePlanet = new ActionContainer<Planet>();
-        }
-
-        private void Start()
-        {
-#if UNITY_EDITOR
-            for (int i = 0; i < SceneManager.sceneCount; i++)
-            {
-                Scene loadedScene = SceneManager.GetSceneAt(i);
-                if (loadedScene.name.Contains("Level"))
-                {
-                    SceneManager.SetActiveScene(loadedScene);
-                    _loadedLevelBuildIndex = loadedScene.buildIndex;
-                    return;
-                }
-            }
-#endif
-
-            StartCoroutine(LoadLevelScene(3));
         }
 
         private void Update()
@@ -192,21 +174,6 @@ namespace Svnvav.UberSpace
             _taxiService.AddOrder(race, departure, destination);
         }
 
-        private IEnumerator LoadLevelScene(int levelBuildIndex)
-        {
-            enabled = false;
-            if (_loadedLevelBuildIndex > 0)
-            {
-                yield return SceneManager.UnloadSceneAsync(_loadedLevelBuildIndex);
-            }
-
-            yield return
-                SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
-            _loadedLevelBuildIndex = levelBuildIndex;
-            enabled = true;
-        }
-
         public void Restart()
         {
             foreach (var planet in _planets)
@@ -224,7 +191,7 @@ namespace Svnvav.UberSpace
         
         public override void Save(GameDataWriter writer)
         {
-            writer.Write(_loadedLevelBuildIndex);
+            //writer.Write(_loadedLevelBuildIndex);
             GameLevel.Current.Save(writer);
             
             writer.Write(_planets.Count);
@@ -258,7 +225,9 @@ namespace Svnvav.UberSpace
 
         private IEnumerator LoadGame(GameDataReader reader)
         {
-            yield return LoadLevelScene(reader.ReadInt());
+            enabled = false;
+            yield return levelsManager.LoadLevelScene(reader.ReadInt());
+            enabled = true;
             
             GameLevel.Current.Load(reader);
             
