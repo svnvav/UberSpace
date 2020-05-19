@@ -24,10 +24,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private RaceFactory _raceFactory;
         public RaceFactory RaceFactory => _raceFactory;
 
-        [SerializeField] private LevelsManager levelsManager;
-
-        public LevelsManager LevelsManager => levelsManager;
-
+        private bool _started;
         private bool _paused;
         private float _beforePauseGameSpeed;
         private float _beforePauseTimeScale;
@@ -63,6 +60,7 @@ namespace Svnvav.UberSpace
 
         private void Update()
         {
+            //TODO: Game start (sync with CoreSceneController)
             if (Input.GetMouseButtonDown(0))
             {
                 var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -191,7 +189,6 @@ namespace Svnvav.UberSpace
         
         public override void Save(GameDataWriter writer)
         {
-            //writer.Write(_loadedLevelBuildIndex);
             GameLevel.Current.Save(writer);
             
             writer.Write(_planets.Count);
@@ -220,15 +217,11 @@ namespace Svnvav.UberSpace
                 return;
             }
 
-            StartCoroutine(LoadGame(reader));
+            LoadGame(reader);
         }
 
-        private IEnumerator LoadGame(GameDataReader reader)
+        private void LoadGame(GameDataReader reader)
         {
-            enabled = false;
-            yield return levelsManager.LoadLevelScene(reader.ReadInt());
-            enabled = true;
-            
             GameLevel.Current.Load(reader);
             
             var count = reader.ReadInt();

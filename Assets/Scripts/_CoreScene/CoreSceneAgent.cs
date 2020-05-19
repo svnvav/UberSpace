@@ -1,20 +1,24 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace.CoreScene
 {
     /// <summary>
-    /// This script should be the first executed in any key scene.
-    /// Add this to Script Execution Order to satisfy that
+    /// Add this script to every key scene to be able to start a game from that scene.
+    /// This script should be the first executed in any key scene. Add it to Script Execution Order to satisfy that.
     /// </summary>
     [DisallowMultipleComponent]
     public class CoreSceneAgent : MonoBehaviour
     {
-        [SerializeField] private CoreSceneAgentSource _sceneType;
+        private const string CoreSceneName = "CoreScene";
+        private static bool _isCoreSceneInitialized;
+
         private void Awake()
         {
-            if (!CoreSceneUtility.IsCoreSceneInitialized)
+            if (!_isCoreSceneInitialized)
             {
-                CoreSceneUtility.InitializeCoreScene();
+                SceneManager.LoadScene(CoreSceneName, LoadSceneMode.Additive);
+                _isCoreSceneInitialized = true;
             }
         }
     }
