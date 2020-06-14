@@ -17,7 +17,12 @@ namespace Svnvav.UberSpace.CoreScene
         {
             if (!_isCoreSceneInitialized)
             {
-                SceneManager.LoadScene(CoreSceneName, LoadSceneMode.Additive);
+                var coreScene = SceneManager.GetSceneByName(CoreSceneName);
+                if (!coreScene.IsValid())
+                {
+                    SceneManager.LoadScene(CoreSceneName, LoadSceneMode.Additive);
+                }
+
                 _isCoreSceneInitialized = true;
             }
         }

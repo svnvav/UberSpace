@@ -14,8 +14,6 @@ namespace Svnvav.UberSpace.CoreScene
         private const string LevelScenePrefix = "Level";
         private const string StartLevelPostfix = "1";
 
-        //[SerializeField] private SceneSwitcher _scenesSwitcher;
-        
         private Scene _mainMenuScene, _gameScene, _levelScene;
         private AsyncOperation _loadingOp;
         private string _levelPostfix;
@@ -23,7 +21,7 @@ namespace Svnvav.UberSpace.CoreScene
         private void Awake()
         {
             Instance = this;
-            ResolveStartScenes();
+            StartCoroutine(ResolveStartScenes());
         }
 
         private void Update()
@@ -37,37 +35,49 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void LoadLevel(string postfix)
         {
-            StartCoroutine(LoadLevelScene($"{LevelScenePrefix}{postfix}"));
+            StartCoroutine(LoadLevelRoutine(postfix));
+        }
+
+        private IEnumerator LoadLevelRoutine(string postfix)
+        {
+            yield return LoadLevelScene($"{LevelScenePrefix}{postfix}");
+            yield return ResolveStartScenes();
         }
 
         public void GoToMainMenu()
         {
         }
 
-        private void ResolveStartScenes()
+        private IEnumerator ResolveStartScenes()
         {
-            var sceneCount = SceneManager.sceneCount;
-            for (int i = 0; i < sceneCount; i++)
+            FindLevelScene();
+            if (_levelScene.IsValid())
             {
-                var scene = SceneManager.GetSceneAt(i);
-                if (scene.name.StartsWith(LevelScenePrefix))
-                {
-                    StartCoroutine(LoadGameScene());
-                    return;
-                }
+                yield return LoadGameScene();
+                GameController.Instance.Play();
+                yield break;
             }
-
+    
             _gameScene = SceneManager.GetSceneByName(GameSceneName);
             if (_gameScene.IsValid())
             {
-                StartCoroutine(LoadLevelScene($"{LevelScenePrefix}{StartLevelPostfix}"));
-                //TODO: Game start (sync with GameController)
+                yield return LoadLevelScene($"{LevelScenePrefix}{StartLevelPostfix}");
+                GameController.Instance.Play();
+                yield break;
+            }
+
+            _mainMenuScene = SceneManager.GetSceneByName(MainMenuSceneName);
+            if (!_mainMenuScene.IsValid())
+            {
+                yield return LoadMainMenuScene();
             }
         }
-
+        
         private IEnumerator LoadLevelScene(string levelSceneName)
         {
             yield return UnloadMainMenuScene();
+            
+            //TODO: refactor that part with another loading routines to reduce duplication 
             _loadingOp = SceneManager.LoadSceneAsync(levelSceneName, LoadSceneMode.Additive);
             yield return _loadingOp;
             _levelScene = SceneManager.GetSceneByName(levelSceneName);
@@ -76,9 +86,22 @@ namespace Svnvav.UberSpace.CoreScene
         private IEnumerator LoadGameScene()
         {
             yield return UnloadMainMenuScene();
+            
             _loadingOp = SceneManager.LoadSceneAsync(GameSceneName, LoadSceneMode.Additive);
             yield return _loadingOp;
             _gameScene = SceneManager.GetSceneByName(GameSceneName);
+        }
+
+        private IEnumerator LoadMainMenuScene()
+        {
+            if (GameController.Instance != null) GameController.Instance.Stop();
+
+            yield return UnloadGameScene();
+            yield return UnloadLevelScene();
+            
+            _loadingOp = SceneManager.LoadSceneAsync(MainMenuSceneName, LoadSceneMode.Additive);
+            yield return _loadingOp;
+            _mainMenuScene = SceneManager.GetSceneByName(MainMenuSceneName);
         }
 
         private IEnumerator UnloadMainMenuScene()
@@ -87,19 +110,50 @@ namespace Svnvav.UberSpace.CoreScene
             if(!_mainMenuScene.IsValid()) yield break;
 
             _loadingOp = SceneManager.UnloadSceneAsync(_mainMenuScene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);//TODO: test UnloadSceneOptions
-
             yield return _loadingOp;
 
             _loadingOp = Resources.UnloadUnusedAssets();
-
             yield return _loadingOp;
         }
-        
-        private enum GameState
+
+        //TODO: reduce duplication with UnloadMainMenuScene by ref parameter
+        private IEnumerator UnloadGameScene()
         {
-            Menu,
-            Loading,
-            Game
+            _gameScene = SceneManager.GetSceneByName(GameSceneName);
+            if(!_gameScene.IsValid()) yield break;
+
+            _loadingOp = SceneManager.UnloadSceneAsync(_gameScene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            yield return _loadingOp;
+
+            _loadingOp = Resources.UnloadUnusedAssets();
+            yield return _loadingOp;
+        }
+
+        private IEnumerator UnloadLevelScene()
+        {
+            FindLevelScene();
+            if(!_levelScene.IsValid()) yield break;
+            
+            _loadingOp = SceneManager.UnloadSceneAsync(_levelScene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            yield return _loadingOp;
+
+            _loadingOp = Resources.UnloadUnusedAssets();
+            yield return _loadingOp;
+        }
+
+        private void FindLevelScene()
+        {
+            if (_levelScene.IsValid()) return;
+            
+            var sceneCount = SceneManager.sceneCount;
+            for (int i = 0; i < sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (scene.name.StartsWith(LevelScenePrefix))
+                {
+                    _levelScene = scene;
+                }
+            }
         }
     }
 }

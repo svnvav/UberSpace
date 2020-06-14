@@ -60,7 +60,8 @@ namespace Svnvav.UberSpace
 
         private void Update()
         {
-            //TODO: Game start (sync with CoreSceneController)
+            if(!_started) return;
+            
             if (Input.GetMouseButtonDown(0))
             {
                 var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -96,6 +97,16 @@ namespace Svnvav.UberSpace
             }
         }
 
+        public void Play()
+        {
+            _started = true;
+        }
+        
+        public void Stop()
+        {
+            _started = false;
+        }
+        
         public void Pause()
         {
             if (_paused)
