@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -14,6 +15,7 @@ namespace Svnvav.UberSpace.CoreScene
         private const string LevelScenePrefix = "Level";
         private const string StartLevelPostfix = "1";
 
+        [SerializeField] private Text _loadingProgressText;
         private Scene _mainMenuScene, _gameScene, _levelScene;
         private AsyncOperation _loadingOp;
         private string _levelPostfix;
@@ -21,7 +23,12 @@ namespace Svnvav.UberSpace.CoreScene
         private void Awake()
         {
             Instance = this;
-            StartCoroutine(ResolveStartScenes());
+        }
+
+        private IEnumerator Start()
+        {
+            yield return ResolveStartScenes();
+            _loadingProgressText.gameObject.SetActive(false);
         }
 
         private void Update()
@@ -40,8 +47,10 @@ namespace Svnvav.UberSpace.CoreScene
 
         private IEnumerator LoadLevelRoutine(string postfix)
         {
+            _loadingProgressText.gameObject.SetActive(true);
             yield return LoadLevelScene($"{LevelScenePrefix}{postfix}");
             yield return ResolveStartScenes();
+            _loadingProgressText.gameObject.SetActive(false);
         }
 
         public void GoToMainMenu()
