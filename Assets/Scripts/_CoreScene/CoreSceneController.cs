@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
+using Catlike.ObjectManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Svnvav.UberSpace.CoreScene
 {
-    public class CoreSceneController : MonoBehaviour
+    public class CoreSceneController : PersistableObject
     {
         public static CoreSceneController Instance;
         
@@ -20,9 +21,13 @@ namespace Svnvav.UberSpace.CoreScene
         private AsyncOperation _loadingOp;
         private string _levelPostfix;
 
+        private CommonData _commonData;
+
         private void Awake()
         {
             Instance = this;
+            _commonData = new CommonData();
+            PersistentStorage.Instance.Load(this, "CommonSave");//TODO:
         }
 
         private IEnumerator Start()
@@ -33,6 +38,21 @@ namespace Svnvav.UberSpace.CoreScene
 
         private void Update()
         {
+        }
+        
+        public override void Save(GameDataWriter writer)
+        {
+            _commonData.Save(writer);
+        }
+
+        public override void Load(GameDataReader reader)
+        {
+            _commonData.Load(reader);
+        }
+
+        public void SaveData()
+        {
+            PersistentStorage.Instance.Save(this, 0, "CommonSave");
         }
 
         public void ContinueGame()

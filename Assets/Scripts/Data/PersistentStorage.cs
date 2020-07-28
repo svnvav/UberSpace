@@ -7,25 +7,30 @@ namespace Catlike.ObjectManagement
     {
         public static PersistentStorage Instance;
         
-        private string _savePath;
+        private string _saveFolderPath;
 
         private void Awake()
         {
             Instance = this;
-            _savePath = Path.Combine(Application.persistentDataPath, "GameSave");
+            _saveFolderPath = Application.persistentDataPath;
         }
         
-        public void Save (PersistableObject o, int version) {
+        public void Save (PersistableObject o, int version, string filename) 
+        {
+            var path = Path.Combine(_saveFolderPath, filename);
+            
             using (
-                var writer = new BinaryWriter(File.Open(_savePath, FileMode.Create))
+                var writer = new BinaryWriter(File.Open(path, FileMode.Create))
             ) {
                 writer.Write(-version);
                 o.Save(new GameDataWriter(writer));
             }
         }
 
-        public void Load (PersistableObject o) {
-            var data = File.ReadAllBytes(_savePath);
+        public void Load (PersistableObject o, string filename)
+        {
+            var path = Path.Combine(_saveFolderPath, filename);
+            var data = File.ReadAllBytes(path);
             MemoryStream ms = new MemoryStream(data);
             var reader = new BinaryReader(ms);
             o.Load(new GameDataReader(reader, -reader.ReadInt32()));

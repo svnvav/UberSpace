@@ -15,6 +15,11 @@ namespace Catlike.ObjectManagement
             _reader = reader;
             Version = version;
         }
+
+        public string ReadString()
+        {
+            return _reader.ReadString();
+        }
         
         public float ReadFloat () {
             return _reader.ReadSingle();

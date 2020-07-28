@@ -11,6 +11,11 @@ namespace Catlike.ObjectManagement
         {
             _writer = writer;
         }
+
+        public void Write(string value)
+        {
+            _writer.Write(value);
+        }
         
         public void Write (float value) {
             _writer.Write(value);

@@ -88,12 +88,12 @@ namespace Svnvav.UberSpace
             
             if (Input.GetKeyDown(KeyCode.S))
             {
-                PersistentStorage.Instance.Save(this, saveVersion);
+                PersistentStorage.Instance.Save(this, saveVersion, "GameSave");
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
                 Restart();
-                PersistentStorage.Instance.Load(this);
+                PersistentStorage.Instance.Load(this, "GameSave");
             }
         }
 
