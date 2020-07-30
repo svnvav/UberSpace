@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class Taxi : PersistableObject
+    public class Taxi : MonoBehaviour, IPersistable
     {
         [SerializeField] private float _speed;
         [SerializeField] private float _takePassengerRadius;
@@ -65,13 +65,13 @@ namespace Svnvav.UberSpace
             transform.Translate(_speed * deltaTime * transform.forward, Space.World);
         }
 
-        public override void Save(GameDataWriter writer)
+        public void Save(GameDataWriter writer)
         {
             writer.Write(transform.localPosition);
             writer.Write(transform.localRotation);
         }
 
-        public override void Load(GameDataReader reader)
+        public void Load(GameDataReader reader)
         {
             _current = null;
             transform.localPosition = reader.ReadVector3();

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class Scenario : GameLevelObject
+    public class Scenario : LevelObject
     {
         private static float AdditionalDeltaTimeForLastStageUpdate = 0.001f;//to avoid precision error
         

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class TaxiService : PersistableObject
+    public class TaxiService : MonoBehaviour, IPersistable
     {
         [SerializeField] private Taxi _taxi;
         
@@ -81,7 +81,7 @@ namespace Svnvav.UberSpace
             _queue.RemoveAll(order => order.Status == OrderStatus.Completed);
         }
 
-        public override void Save(GameDataWriter writer)
+        public void Save(GameDataWriter writer)
         {
             _taxi.Save(writer);
             
@@ -98,7 +98,7 @@ namespace Svnvav.UberSpace
             }
         }
 
-        public override void Load(GameDataReader reader)
+        public void Load(GameDataReader reader)
         {
             _taxi.Load(reader);
             

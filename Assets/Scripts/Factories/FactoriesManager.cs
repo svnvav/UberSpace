@@ -23,7 +23,7 @@ namespace Svnvav.UberSpace
             _factories.Add(_arrowFactory.TargetType, _arrowFactory);
         }
 
-        public T Get<T>(int prefabId) where T : RecyclablePersistableObject
+        public T Get<T>(int prefabId) where T : RecyclableMonoBehaviour
         {
             PrefabFactory factory;
             if (!_factories.TryGetValue(typeof(T), out factory))

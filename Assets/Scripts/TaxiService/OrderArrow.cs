@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class OrderArrow : RecyclablePersistableObject
+    public class OrderArrow : RecyclableMonoBehaviour
     {
         [SerializeField] private Arrow _arrow;
 

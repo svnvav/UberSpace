@@ -9,11 +9,11 @@ namespace Svnvav.UberSpace
     [CreateAssetMenu]
     public class PrefabFactory : ScriptableObject
     {
-        [SerializeField] private RecyclablePersistableObject[] _prefabs;
+        [SerializeField] private RecyclableMonoBehaviour[] _prefabs;
 
         [SerializeField] private bool _recycle = false;
 
-        [NonSerialized] private List<RecyclablePersistableObject>[] _pools;
+        [NonSerialized] private List<RecyclableMonoBehaviour>[] _pools;
 
         [NonSerialized] private Scene _poolScene;
         
@@ -28,10 +28,10 @@ namespace Svnvav.UberSpace
         
         private void CreatePools()
         {
-            _pools = new List<RecyclablePersistableObject>[_prefabs.Length];
+            _pools = new List<RecyclableMonoBehaviour>[_prefabs.Length];
             for (int i = 0; i < _pools.Length; i++)
             {
-                _pools[i] = new List<RecyclablePersistableObject>();
+                _pools[i] = new List<RecyclableMonoBehaviour>();
             }
 
 #if UNITY_EDITOR
@@ -41,7 +41,7 @@ namespace Svnvav.UberSpace
                 var inactiveObjects = _poolScene
                     .GetRootGameObjects()
                     .Where(go => !go.activeSelf)
-                    .Select(go => go.GetComponent<RecyclablePersistableObject>());
+                    .Select(go => go.GetComponent<RecyclableMonoBehaviour>());
                 foreach (var instances in inactiveObjects)
                 {
                     _pools[instances.PrefabId].Add(instances);
@@ -53,7 +53,7 @@ namespace Svnvav.UberSpace
             _poolScene = SceneManager.CreateScene(name);
         }
         
-        public T Get<T>(int prefabId) where T: RecyclablePersistableObject
+        public T Get<T>(int prefabId) where T: RecyclableMonoBehaviour
         {
             if (typeof(T) != _targetType)
             {
@@ -96,8 +96,14 @@ namespace Svnvav.UberSpace
             return instance;
         }
         
-        public void Reclaim(RecyclablePersistableObject toRecycle)
+        public void Reclaim(RecyclableMonoBehaviour toRecycle)
         {
+            if (toRecycle.OriginFactory != this)
+            {
+                Debug.LogError("Tried to reclaim object with wrong factory.");
+                return;
+            }
+            
             if (_recycle)
             {
                 if (_pools == null)

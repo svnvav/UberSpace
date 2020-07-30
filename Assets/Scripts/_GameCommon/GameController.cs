@@ -1,18 +1,14 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Catlike.ObjectManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace
 {
-    public class GameController : PersistableObject
+    public class GameController : MonoBehaviour, IPersistable
     {
         public static GameController Instance { get; private set; }
         
-        const int saveVersion = 1;
+        private const int _saveVersion = 1;
 
         [SerializeField] private HUD _hud;
         
@@ -88,7 +84,7 @@ namespace Svnvav.UberSpace
             
             if (Input.GetKeyDown(KeyCode.S))
             {
-                PersistentStorage.Instance.Save(this, saveVersion, "GameSave");
+                PersistentStorage.Instance.Save(this, _saveVersion, "GameSave");
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
@@ -198,7 +194,7 @@ namespace Svnvav.UberSpace
             _races.Clear();
         }
         
-        public override void Save(GameDataWriter writer)
+        public void Save(GameDataWriter writer)
         {
             GameLevel.Current.Save(writer);
             
@@ -219,10 +215,10 @@ namespace Svnvav.UberSpace
             _taxiService.Save(writer);
         }
 
-        public override void Load(GameDataReader reader)
+        public void Load(GameDataReader reader)
         {
             var version = reader.Version;
-            if (version > saveVersion)
+            if (version > _saveVersion)
             {
                 Debug.LogError("Unsupported future save version " + version);
                 return;

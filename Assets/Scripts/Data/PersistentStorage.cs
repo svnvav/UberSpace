@@ -15,7 +15,7 @@ namespace Catlike.ObjectManagement
             _saveFolderPath = Application.persistentDataPath;
         }
         
-        public void Save (PersistableObject o, int version, string filename) 
+        public void Save (IPersistable o, int version, string filename) 
         {
             var path = Path.Combine(_saveFolderPath, filename);
             
@@ -27,7 +27,7 @@ namespace Catlike.ObjectManagement
             }
         }
 
-        public void Load (PersistableObject o, string filename)
+        public void Load (IPersistable o, string filename)
         {
             var path = Path.Combine(_saveFolderPath, filename);
             var data = File.ReadAllBytes(path);

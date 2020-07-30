@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class GameLevel : PersistableObject
+    public class GameLevel : MonoBehaviour, IPersistable
     {
         public static GameLevel Current;
         
-        [SerializeField] private GameLevelObject[] _levelObjects;
+        [SerializeField] private LevelObject[] _levelObjects;
 
         private void OnEnable()
         {
             Current = this;
             if (_levelObjects == null)
             {
-                _levelObjects = new GameLevelObject[0];
+                _levelObjects = new LevelObject[0];
             }
         }
 
@@ -26,7 +26,7 @@ namespace Svnvav.UberSpace
             }
         }
         
-        public override void Save(GameDataWriter writer)
+        public void Save(GameDataWriter writer)
         {
             writer.Write(_levelObjects.Length);
             foreach (var levelObject in _levelObjects)
@@ -35,7 +35,7 @@ namespace Svnvav.UberSpace
             }
         }
 
-        public override void Load(GameDataReader reader)
+        public void Load(GameDataReader reader)
         {
             var savedCount = reader.ReadInt();//TODO: is it needed?
             for (int i = 0; i < _levelObjects.Length; i++)

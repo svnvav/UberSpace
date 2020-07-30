@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class RecyclablePersistableObject : PersistableObject
+    public class RecyclableMonoBehaviour : MonoBehaviour
     {
         private PrefabFactory _originFactory;
         public PrefabFactory OriginFactory

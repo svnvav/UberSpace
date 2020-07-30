@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public abstract class Planet : PersistableObject
+    public abstract class Planet : MonoBehaviour, IPersistable, IGameUpdatable
     {
         [SerializeField] protected Vector3 _velocity;
         [SerializeField] private Color _veilColor;
@@ -132,13 +132,13 @@ namespace Svnvav.UberSpace
             OriginFactory.Reclaim(this);
         }
 
-        public override void Save(GameDataWriter writer)
+        public virtual void Save(GameDataWriter writer)
         {
             writer.Write(transform.localPosition);
             writer.Write(_velocity);
         }
 
-        public override void Load(GameDataReader reader)
+        public virtual void Load(GameDataReader reader)
         {
             transform.localPosition = reader.ReadVector3();
             _velocity = reader.ReadVector3();

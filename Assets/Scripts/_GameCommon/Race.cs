@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class Race : PersistableObject
+    public class Race : MonoBehaviour, IPersistable
     {
         #region StaticInfo
 
@@ -82,13 +82,13 @@ namespace Svnvav.UberSpace
             OriginFactory.Reclaim(this);
         }
 
-        public override void Save(GameDataWriter writer)
+        public void Save(GameDataWriter writer)
         {
             writer.Write(PlanetSaveIndex);
             writer.Write(_population);
         }
 
-        public override void Load(GameDataReader reader)
+        public void Load(GameDataReader reader)
         {
             PlanetSaveIndex = reader.ReadInt();
             _population = reader.ReadInt();
