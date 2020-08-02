@@ -30,6 +30,9 @@ namespace Catlike.ObjectManagement
         public void Load (IPersistable o, string filename)
         {
             var path = Path.Combine(_saveFolderPath, filename);
+            
+            if(!File.Exists(path)) return;
+            
             var data = File.ReadAllBytes(path);
             MemoryStream ms = new MemoryStream(data);
             var reader = new BinaryReader(ms);

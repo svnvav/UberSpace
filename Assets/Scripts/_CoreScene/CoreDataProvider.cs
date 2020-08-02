@@ -11,7 +11,7 @@ namespace Svnvav.UberSpace.CoreScene
         
         private string _lastLoadedLevelPostfix;
 
-        private void Awake()
+        private void Start()
         {
             PersistentStorage.Instance.Load(this, _saveFileName);
         }
