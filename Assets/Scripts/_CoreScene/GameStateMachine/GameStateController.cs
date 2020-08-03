@@ -5,6 +5,8 @@ namespace Svnvav.UberSpace.CoreScene
 {
     public class GameStateController : MonoBehaviour
     {
+        private GameStateMachine _stateMachine;
+        
         private void Start()
         {
             DefineStartState();
@@ -12,7 +14,7 @@ namespace Svnvav.UberSpace.CoreScene
 
         private void DefineStartState()
         {
-            
+            _stateMachine = new GameStateMachine(this, );
         }
     }
 }

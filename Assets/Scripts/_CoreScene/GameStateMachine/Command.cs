@@ -2,8 +2,7 @@
 {
     public enum Command
     {
-        LoadLevel,
-        Back,
-        Loaded
+        Play,
+        ToMenu
     }
 }
