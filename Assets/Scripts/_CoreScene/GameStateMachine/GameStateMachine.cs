@@ -11,11 +11,11 @@ namespace Svnvav.UberSpace.CoreScene
         
         private GameState _current;
 
-        public GameStateMachine(GameStateController owner, GameState initialState)
+        public GameStateMachine(GameStateController owner)
         {
             _owner = owner;
             
-            _current = initialState;
+            //_current = initialState;//TODO:
             _current.Enter(_owner);
         }
         
