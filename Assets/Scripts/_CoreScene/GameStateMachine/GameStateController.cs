@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +15,15 @@ namespace Svnvav.UberSpace.CoreScene
         
         private void Start()
         {
+            var levelState = new LevelState();
+            var menuState = new MenuState();
+            var fsmTransitions = new Dictionary<StateTransition, GameState>()
+            {
+                {new StateTransition(levelState, Command.ToMenu), menuState},
+                {new StateTransition(menuState, Command.Play), levelState}
+            };
+            
+            _stateMachine = new GameStateMachine(this, fsmTransitions);
             DefineStartState();
         }
 
@@ -21,7 +31,7 @@ namespace Svnvav.UberSpace.CoreScene
         {
             if (IsLevelSceneLoaded())
             {
-                _stateMachine = new GameStateMachine(this);
+                
             }
             
         }
