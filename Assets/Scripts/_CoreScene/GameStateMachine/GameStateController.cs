@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +14,9 @@ namespace Svnvav.UberSpace.CoreScene
         
         private GameStateMachine _stateMachine;
         
-        private void Start()
+        private AsyncOperation _loadingOp;
+        
+        private IEnumerator Start()
         {
             var levelState = new LevelState();
             var menuState = new MenuState();
@@ -24,16 +27,22 @@ namespace Svnvav.UberSpace.CoreScene
             };
             
             _stateMachine = new GameStateMachine(this, fsmTransitions);
-            DefineStartState();
+            yield return DefineStartState(levelState, menuState);
         }
 
-        private void DefineStartState()
+        private IEnumerator DefineStartState(GameState levelState, GameState menuState)
         {
-            if (IsLevelSceneLoaded())
+            if (SceneManager.GetSceneByName(GameSceneName).IsValid() || IsLevelSceneLoaded())
             {
-                
+                yield return UnloadScene(MainMenuSceneName);
+                _stateMachine.Initialize(levelState);
             }
-            
+            else
+            {
+                yield return UnloadScene(GameSceneName);
+                yield return UnloadScene(FindFirstLoadedLevelSceneName());
+                _stateMachine.Initialize(menuState);
+            }
         }
         
         private bool IsLevelSceneLoaded()
@@ -49,6 +58,33 @@ namespace Svnvav.UberSpace.CoreScene
             }
 
             return false;
+        }
+        
+        private IEnumerator UnloadScene(string sceneName)
+        {
+            var scene = SceneManager.GetSceneByName(sceneName);
+            if(!scene.IsValid()) yield break;
+
+            _loadingOp = SceneManager.UnloadSceneAsync(scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            yield return _loadingOp;
+
+            _loadingOp = Resources.UnloadUnusedAssets();
+            yield return _loadingOp;
+        }
+        
+        private string FindFirstLoadedLevelSceneName()
+        {
+            var sceneCount = SceneManager.sceneCount;
+            for (int i = 0; i < sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (scene.name.StartsWith(LevelScenePrefix))
+                {
+                    return scene.name;
+                }
+            }
+
+            return "";
         }
     }
 }
