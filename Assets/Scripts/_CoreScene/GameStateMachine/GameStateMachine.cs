@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Svnvav.UberSpace.CoreScene
@@ -23,12 +24,11 @@ namespace Svnvav.UberSpace.CoreScene
             _current.Enter(_owner);
         }
         
-        public GameState MoveNext(Command command)
+        public IEnumerator MoveNext(Command command)
         {
-            _current.Exit(_owner);
+            yield return _current.Exit(_owner);
             _current = GetNext(command);
-            _current.Enter(_owner);
-            return _current;
+            yield return _current.Enter(_owner);
         }
         
         private GameState GetNext(Command command)

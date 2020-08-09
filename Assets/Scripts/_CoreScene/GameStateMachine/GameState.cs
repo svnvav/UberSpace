@@ -1,8 +1,10 @@
-﻿namespace Svnvav.UberSpace.CoreScene
+﻿using System.Collections;
+
+namespace Svnvav.UberSpace.CoreScene
 {
     public interface GameState
     {
-        void Enter(GameStateController controller);
-        void Exit(GameStateController controller);
+        IEnumerator Enter(GameStateController controller);
+        IEnumerator Exit(GameStateController controller);
     }
 }

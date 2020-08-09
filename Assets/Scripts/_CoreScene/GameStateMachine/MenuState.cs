@@ -1,15 +1,17 @@
-﻿namespace Svnvav.UberSpace.CoreScene
+﻿using System.Collections;
+
+namespace Svnvav.UberSpace.CoreScene
 {
     public class MenuState : GameState
     {
-        public void Enter(GameStateController controller)
+        public IEnumerator Enter(GameStateController controller)
         {
-            
+            yield break;
         }
 
-        public void Exit(GameStateController controller)
+        public IEnumerator Exit(GameStateController controller)
         {
-            
+            yield break;
         }
     }
 }

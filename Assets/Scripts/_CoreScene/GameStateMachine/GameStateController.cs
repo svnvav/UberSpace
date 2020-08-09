@@ -8,14 +8,18 @@ namespace Svnvav.UberSpace.CoreScene
 {
     public class GameStateController : MonoBehaviour
     {
-        private const string MainMenuSceneName = "MainMenu";
-        private const string GameSceneName = "Game";
-        private const string LevelScenePrefix = "Level";
+        internal /*const*/ string MainMenuSceneName = "MainMenu";
+        internal /*const*/ string GameSceneName = "Game";
+        internal /*const*/ string LevelScenePrefix = "Level";
+
+        private int _currentLevelIndex = 1;
         
         private GameStateMachine _stateMachine;
         
         private AsyncOperation _loadingOp;
-        
+
+        public int CurrentLevelIndex => _currentLevelIndex;
+
         private IEnumerator Start()
         {
             var levelState = new LevelState();
@@ -44,7 +48,7 @@ namespace Svnvav.UberSpace.CoreScene
                 _stateMachine.Initialize(menuState);
             }
         }
-        
+
         private bool IsLevelSceneLoaded()
         {
             var sceneCount = SceneManager.sceneCount;
