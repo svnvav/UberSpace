@@ -67,6 +67,11 @@ namespace Svnvav.UberSpace.CoreScene
         private IEnumerator UnloadScene(string sceneName)
         {
             var scene = SceneManager.GetSceneByName(sceneName);
+            yield return UnloadScene(scene);
+        }
+
+        public IEnumerator UnloadScene(Scene scene)
+        {
             if(!scene.IsValid()) yield break;
 
             _loadingOp = SceneManager.UnloadSceneAsync(scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);

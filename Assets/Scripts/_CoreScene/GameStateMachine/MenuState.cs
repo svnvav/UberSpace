@@ -22,7 +22,7 @@ namespace Svnvav.UberSpace.CoreScene
 
         public IEnumerator Exit(GameStateController controller)
         {
-            yield break;
+            yield return controller.UnloadScene(_menuScene);
         }
     }
 }
