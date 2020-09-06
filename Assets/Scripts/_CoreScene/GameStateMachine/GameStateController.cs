@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -12,6 +13,8 @@ namespace Svnvav.UberSpace.CoreScene
         internal /*const*/ string GameSceneName = "Game";
         internal /*const*/ string LevelScenePrefix = "Level";
 
+        [SerializeField] private Text _loadingProgressText;
+        
         private int _currentLevelIndex = 1;
         
         private GameStateMachine _stateMachine;
@@ -34,18 +37,39 @@ namespace Svnvav.UberSpace.CoreScene
             yield return DefineStartState(levelState, menuState);
         }
 
+        public void GoToLevel(int index)
+        {
+            _currentLevelIndex = index;
+            StartCoroutine(_stateMachine.MoveNext(Command.Play));
+        }
+
+        public void GoToMainMenu()
+        {
+            StartCoroutine(_stateMachine.MoveNext(Command.ToMenu));
+        }
+
+        public void ShowHideLoadingScreen(bool showFlag)
+        {
+            _loadingProgressText.gameObject.SetActive(showFlag);
+        }
+        
+        public void SetProgress(float value)
+        {
+            _loadingProgressText.text = $"Loading {100 * value} %";
+        }
+
         private IEnumerator DefineStartState(GameState levelState, GameState menuState)
         {
             if (SceneManager.GetSceneByName(GameSceneName).IsValid() || IsLevelSceneLoaded())
             {
                 yield return UnloadScene(MainMenuSceneName);
-                _stateMachine.Initialize(levelState);
+                yield return _stateMachine.Initialize(levelState);
             }
             else
             {
                 yield return UnloadScene(GameSceneName);
                 yield return UnloadScene(FindFirstLoadedLevelSceneName());
-                _stateMachine.Initialize(menuState);
+                yield return _stateMachine.Initialize(menuState);
             }
         }
 

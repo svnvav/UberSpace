@@ -18,10 +18,10 @@ namespace Svnvav.UberSpace.CoreScene
             _transitions = transitions;
         }
 
-        public void Initialize(GameState initialState)
+        public IEnumerator Initialize(GameState initialState)
         {
             _current = initialState;
-            _current.Enter(_owner);
+            yield return _current.Enter(_owner);
         }
         
         public IEnumerator MoveNext(Command command)

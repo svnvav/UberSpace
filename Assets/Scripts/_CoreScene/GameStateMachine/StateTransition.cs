@@ -2,8 +2,8 @@
 {
     public class StateTransition
     {
-        readonly GameState CurrentState;
-        readonly Command Command;
+        private readonly GameState CurrentState;
+        private readonly Command Command;
 
         public StateTransition(GameState currentState, Command command)
         {

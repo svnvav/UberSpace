@@ -37,7 +37,7 @@ namespace Svnvav.UberSpace
 
         public void LoadLevel(int index)
         {
-            CoreSceneController.Instance.LoadLevel(index.ToString());
+            CoreSceneController.Instance.LoadLevel(index);
         }
         
         
