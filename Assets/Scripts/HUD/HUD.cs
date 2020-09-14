@@ -1,3 +1,4 @@
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -29,6 +30,11 @@ namespace Svnvav.UberSpace
         public void Unpause()
         {
             GameController.Instance.Unpause();
+        }
+
+        public void GoToMainMenu()
+        {
+            CoreSceneController.Instance.GoToMainMenu();
         }
     }
 }

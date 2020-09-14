@@ -48,10 +48,13 @@ namespace Svnvav.UberSpace.CoreScene
             }
 
             controller.ShowHideLoadingScreen(false);
+            
+            GameController.Instance.Play();
         }
 
         public IEnumerator Exit(GameStateController controller)
         {
+            GameController.Instance.Stop();
             yield return controller.UnloadScene(_levelScene);
             yield return controller.UnloadScene(_gameScene);
         }

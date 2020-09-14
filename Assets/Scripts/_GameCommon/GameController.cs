@@ -100,6 +100,8 @@ namespace Svnvav.UberSpace
         
         public void Stop()
         {
+            Unpause();//To restore game speed
+            Restart();
             _started = false;
         }
         
