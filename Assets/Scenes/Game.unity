@@ -741,6 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _arrow: {fileID: 1449945071}
   _captureMinDistance: 0.75
+  _gameController: {fileID: 1351398479}
 --- !u!4 &1253569812
 Transform:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ namespace Svnvav.UberSpace.CoreScene
                 _gameScene = SceneManager.GetSceneByName(gameSceneName);
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f);//Debug
             
             var levelSceneName = $"{controller.LevelScenePrefix}{controller.CurrentLevelIndex}";
             

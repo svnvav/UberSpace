@@ -27,6 +27,7 @@ namespace Svnvav.UberSpace.CoreScene
         public IEnumerator MoveNext(Command command)
         {
             yield return _current.Exit(_owner);
+            GC.Collect();
             _current = GetNext(command);
             yield return _current.Enter(_owner);
         }

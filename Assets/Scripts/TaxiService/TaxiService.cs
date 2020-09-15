@@ -112,9 +112,11 @@ namespace Svnvav.UberSpace
 
             for (int i = 0; i < count; i++)
             {
+                //TODO: remove singleton calls (mb in the initialize method)
                 var race = GameController.Instance.Races[reader.ReadInt()];
                 var departure = GameController.Instance.Planets[reader.ReadInt()];
                 var destination = GameController.Instance.Planets[reader.ReadInt()];
+                
                 var status = (OrderStatus) reader.ReadInt();
 
                 _queue.Enqueue(_pool.Get(race, departure, destination, status));

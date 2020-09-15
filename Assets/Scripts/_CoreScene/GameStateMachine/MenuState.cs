@@ -25,7 +25,7 @@ namespace Svnvav.UberSpace.CoreScene
             }
             _menuScene = SceneManager.GetSceneByName(menuSceneName);
             
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f);//Debug
             
             controller.ShowHideLoadingScreen(false);
         }

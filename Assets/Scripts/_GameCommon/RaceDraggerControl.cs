@@ -1,5 +1,6 @@
 
 using System;
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -8,6 +9,7 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private Arrow _arrow;
         [SerializeField] private float _captureMinDistance;
+        [SerializeField] private GameController _gameController;
 
         private Race _raceToMove;
         private Planet _departure, _destination;
@@ -31,8 +33,8 @@ namespace Svnvav.UberSpace
 
         private void Start()
         {
-            GameController.Instance.OnAddPlanet.RegisterCallback(OnAddPlanet);
-            GameController.Instance.OnRemovePlanet.RegisterCallback(OnRemovePlanet);
+            _gameController.OnAddPlanet.RegisterCallback(OnAddPlanet);
+            _gameController.OnRemovePlanet.RegisterCallback(OnRemovePlanet);
         }
 
         private void Update()
@@ -86,7 +88,7 @@ namespace Svnvav.UberSpace
         {
             if (_destination != null && _destination != _departure)
             {
-                GameController.Instance.TransferRace(_raceToMove, _departure, _destination);
+                _gameController.TransferRace(_raceToMove, _departure, _destination);
             }
             
             OnControlRelease();
@@ -123,19 +125,17 @@ namespace Svnvav.UberSpace
         {
             _captured = true;
             Time.timeScale = 0.5f;
-            GameController.Instance.GameSpeed = 0.2f;
+            _gameController.GameSpeed = 0.2f;
             SetPlanetsVeiling();
         }
 
         private void OnControlRelease()
         {
             Time.timeScale = 1f;
-            GameController.Instance.GameSpeed = 1f;
+            _gameController.GameSpeed = 1f;
             UnveilPlanets();
             _captured = false;
         }
-
-        
 
         private Planet GetNearestPlanet(Vector3 point, float minDistance, Func<Planet, bool> planetCondition)
         {
@@ -143,7 +143,7 @@ namespace Svnvav.UberSpace
 
             var minSqrDistance = float.MaxValue;
 
-            foreach (var planet in GameController.Instance.Planets)
+            foreach (var planet in _gameController.Planets)
             {
                 if(planetCondition != null && !planetCondition(planet)) continue;
 
@@ -162,7 +162,7 @@ namespace Svnvav.UberSpace
 
         private void SetPlanetsVeiling()
         {
-            foreach (var planet in GameController.Instance.Planets)
+            foreach (var planet in _gameController.Planets)
             {
                 if(planet.IsFull) planet.SetVeiling(true);
             }
@@ -170,7 +170,7 @@ namespace Svnvav.UberSpace
 
         private void UnveilPlanets()
         {
-            foreach (var planet in GameController.Instance.Planets)
+            foreach (var planet in _gameController.Planets)
             {
                 planet.SetVeiling(false);
             }

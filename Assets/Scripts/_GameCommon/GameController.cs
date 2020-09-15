@@ -88,7 +88,7 @@ namespace Svnvav.UberSpace
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
-                Restart();
+                Flush();
                 PersistentStorage.Instance.Load(this, "GameSave");
             }
         }
@@ -101,7 +101,7 @@ namespace Svnvav.UberSpace
         public void Stop()
         {
             Unpause();//To restore game speed
-            Restart();
+            Flush();
             _started = false;
         }
         
@@ -181,7 +181,7 @@ namespace Svnvav.UberSpace
             _taxiService.AddOrder(race, departure, destination);
         }
 
-        public void Restart()
+        public void Flush()
         {
             foreach (var planet in _planets)
             {

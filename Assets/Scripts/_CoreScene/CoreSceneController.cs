@@ -1,5 +1,6 @@
 ﻿
 using System.Collections;
+using Catlike.ObjectManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void SaveData()
         {
-            
+            _coreDataProvider.UpdateSavedData();
         }
 
         public void ContinueGame()
