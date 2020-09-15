@@ -16,12 +16,14 @@ namespace Svnvav.UberSpace.CoreScene
         [SerializeField] private Text _loadingProgressText;
         
         private int _currentLevelIndex = 1;
+        private bool _loadFromSaves = false;
         
         private GameStateMachine _stateMachine;
         
         private AsyncOperation _loadingOp;
 
         public int CurrentLevelIndex => _currentLevelIndex;
+        public bool LoadFromSaves => _loadFromSaves;
 
         private IEnumerator Start()
         {
@@ -37,8 +39,9 @@ namespace Svnvav.UberSpace.CoreScene
             yield return DefineStartState(levelState, menuState);
         }
 
-        public void GoToLevel(int index)
+        public void GoToLevel(int index, bool fromSaves)
         {
+            _loadFromSaves = fromSaves;
             _currentLevelIndex = index;
             StartCoroutine(_stateMachine.MoveNext(Command.Play));
         }

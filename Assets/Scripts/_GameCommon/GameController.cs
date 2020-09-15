@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Catlike.ObjectManagement;
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -89,10 +90,15 @@ namespace Svnvav.UberSpace
             else if (Input.GetKeyDown(KeyCode.L))
             {
                 Flush();
-                PersistentStorage.Instance.Load(this, "GameSave");
+                LoadFromSaves();
             }
         }
 
+        public void LoadFromSaves()
+        {
+            PersistentStorage.Instance.Load(this, "GameSave");
+        }
+        
         public void Play()
         {
             _started = true;

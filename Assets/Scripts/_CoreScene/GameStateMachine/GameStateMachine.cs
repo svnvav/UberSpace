@@ -26,6 +26,7 @@ namespace Svnvav.UberSpace.CoreScene
         
         public IEnumerator MoveNext(Command command)
         {
+            //TODO: mb move loading progress processing from states to here?
             yield return _current.Exit(_owner);
             GC.Collect();
             _current = GetNext(command);

@@ -1,14 +1,22 @@
-﻿using Svnvav.UberSpace.CoreScene;
+﻿using System;
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class MainMenuController : MonoBehaviour
     {
+        [SerializeField] private GameObject _continueButton;
+        
         [SerializeField] private GameObject _mainMenu;
         [SerializeField] private GameObject _levelMenu;
         [SerializeField] private GameObject _settingsMenu;
-        
+
+        private void OnEnable()
+        {
+            _continueButton.SetActive(CoreSceneController.Instance.CoreDataProvider.LastLoadedLevelPostfix != 0);
+        }
+
         public void Continue()
         {
             CoreSceneController.Instance.ContinueGame();

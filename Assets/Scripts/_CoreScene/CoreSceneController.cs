@@ -1,9 +1,4 @@
-﻿
-using System.Collections;
-using Catlike.ObjectManagement;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -14,24 +9,23 @@ namespace Svnvav.UberSpace.CoreScene
         [SerializeField] private CoreDataProvider _coreDataProvider;
         [SerializeField] private GameStateController _gameStateController;
 
+        public CoreDataProvider CoreDataProvider => _coreDataProvider;
+        public GameStateController GameStateController => _gameStateController;
+
         private void Awake()
         {
             Instance = this;
         }
 
-        public void SaveData()
-        {
-            _coreDataProvider.UpdateSavedData();
-        }
-
         public void ContinueGame()
         {
-            
+            _gameStateController.GoToLevel(CoreDataProvider.LastLoadedLevelPostfix, true);
+            //TODO: fix planets veil bug after loading
         }
 
         public void LoadLevel(int index)
         {
-            _gameStateController.GoToLevel(index);
+            _gameStateController.GoToLevel(index, false);
         }
 
         public void GoToMainMenu()

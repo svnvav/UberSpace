@@ -1922,6 +1922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db8ac202efe44f6990cd510b4806149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _continueButton: {fileID: 365061409}
   _mainMenu: {fileID: 1437507839}
   _levelMenu: {fileID: 616800648}
   _settingsMenu: {fileID: 415475905}

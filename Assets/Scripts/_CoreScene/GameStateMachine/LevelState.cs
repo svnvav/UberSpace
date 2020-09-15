@@ -48,7 +48,11 @@ namespace Svnvav.UberSpace.CoreScene
             }
 
             controller.ShowHideLoadingScreen(false);
-            
+
+            if (controller.LoadFromSaves)
+            {
+                GameController.Instance.LoadFromSaves();
+            }
             GameController.Instance.Play();
         }
 

@@ -9,11 +9,26 @@ namespace Svnvav.UberSpace.CoreScene
         private const string _saveFileName = "CommonSave";
         private const int _saveVersion = 0;
         
-        private string _lastLoadedLevelPostfix;
+        private int _lastLoadedLevelPostfix;
 
-        private void Start()
+        public int LastLoadedLevelPostfix
+        {
+            get => _lastLoadedLevelPostfix;
+            set => _lastLoadedLevelPostfix = value;
+        }
+
+        private void Awake()
         {
             PersistentStorage.Instance.Load(this, _saveFileName);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                _lastLoadedLevelPostfix = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
+                PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
+            }
         }
 
         public void Save(GameDataWriter writer)
@@ -30,12 +45,7 @@ namespace Svnvav.UberSpace.CoreScene
                 return;
             }
             
-            _lastLoadedLevelPostfix = reader.ReadString();
-        }
-
-        public void UpdateSavedData()
-        {
-            PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
+            _lastLoadedLevelPostfix = reader.ReadInt();
         }
     }
 }
