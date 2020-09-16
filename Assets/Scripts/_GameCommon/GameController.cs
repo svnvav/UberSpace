@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Catlike.ObjectManagement;
-using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace

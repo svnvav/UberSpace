@@ -7,7 +7,7 @@ namespace Svnvav.UberSpace
     {
         private static float AdditionalDeltaTimeForLastStageUpdate = 0.001f;//to avoid precision error
         
-        [SerializeField] private ScenarioStage[] _stages;
+        [SerializeField] private ScenarioStageBase[] _stages;
 
         private int _currentStageId;
         
@@ -18,12 +18,12 @@ namespace Svnvav.UberSpace
             var dt = deltaTime;
             _progress += dt;
             
-            while (_currentStageId < _stages.Length && _progress > _stages[_currentStageId]._duration)
+            while (_currentStageId < _stages.Length && _progress > _stages[_currentStageId].Duration)
             {
-                var lastDt = _stages[_currentStageId]._duration - (_progress - dt) + AdditionalDeltaTimeForLastStageUpdate;
+                var lastDt = _stages[_currentStageId].Duration - (_progress - dt) + AdditionalDeltaTimeForLastStageUpdate;
                 _stages[_currentStageId].Progress(lastDt);
                 dt -= lastDt;
-                _progress -= _stages[_currentStageId]._duration;
+                _progress -= _stages[_currentStageId].Duration;
                 _currentStageId++;
             }
             
