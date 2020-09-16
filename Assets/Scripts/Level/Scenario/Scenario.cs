@@ -5,13 +5,15 @@ namespace Svnvav.UberSpace
 {
     public class Scenario : LevelObject
     {
-        private static float AdditionalDeltaTimeForLastStageUpdate = 0.001f;//to avoid precision error
+        private const float AdditionalDeltaTimeForLastStageUpdate = 0.001f;//to avoid precision error
         
         [SerializeField] private ScenarioStageBase[] _stages;
 
         private int _currentStageId;
         
         private float _progress;
+
+        public int CurrentStageId => _currentStageId;
 
         public override void GameUpdate(float deltaTime)
         {
@@ -25,6 +27,7 @@ namespace Svnvav.UberSpace
                 dt -= lastDt;
                 _progress -= _stages[_currentStageId].Duration;
                 _currentStageId++;
+                _stages[_currentStageId].Begin();
             }
             
             if(_currentStageId >= _stages.Length) return;

@@ -9,6 +9,10 @@ namespace Svnvav.UberSpace
         
         public override float Duration => _duration;
 
+        public override void Begin()
+        {
+        }
+
         public override void Progress(float deltaTime)
         {
             foreach (var item in _items)

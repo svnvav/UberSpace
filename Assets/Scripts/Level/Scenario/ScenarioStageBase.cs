@@ -6,6 +6,8 @@ namespace Svnvav.UberSpace
     {
         public abstract float Duration { get; }
 
+        public abstract void Begin();
+        
         public abstract void Progress(float deltaTime);
         
         public abstract void SetTime(float progress);

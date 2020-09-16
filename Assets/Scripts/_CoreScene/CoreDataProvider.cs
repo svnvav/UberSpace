@@ -11,11 +11,7 @@ namespace Svnvav.UberSpace.CoreScene
         
         private int _lastLoadedLevelPostfix;
 
-        public int LastLoadedLevelPostfix
-        {
-            get => _lastLoadedLevelPostfix;
-            set => _lastLoadedLevelPostfix = value;
-        }
+        public int LastLoadedLevelPostfix => _lastLoadedLevelPostfix;
 
         private void Awake()
         {
@@ -24,11 +20,11 @@ namespace Svnvav.UberSpace.CoreScene
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            /*if (Input.GetKeyDown(KeyCode.S))
             {
                 _lastLoadedLevelPostfix = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
                 PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
-            }
+            }*/
         }
 
         public void Save(GameDataWriter writer)

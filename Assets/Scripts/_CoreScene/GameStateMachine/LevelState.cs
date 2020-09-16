@@ -49,10 +49,11 @@ namespace Svnvav.UberSpace.CoreScene
 
             controller.ShowHideLoadingScreen(false);
 
-            if (controller.LoadFromSaves)
+            if (!controller.SaveFileName.StartsWith("Begin"))
             {
-                GameController.Instance.LoadFromSaves();
+                GameController.Instance.LoadFromSaves(controller.SaveFileName);
             }
+            
             GameController.Instance.Play();
         }
 

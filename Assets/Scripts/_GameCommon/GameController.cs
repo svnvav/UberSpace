@@ -8,7 +8,8 @@ namespace Svnvav.UberSpace
     {
         public static GameController Instance { get; private set; }
         
-        private const int _saveVersion = 1;
+        public const int SaveVersion = 1;
+        public const string SaveFileName = "GameLevelSave";
 
         [SerializeField] private HUD _hud;
         
@@ -84,18 +85,18 @@ namespace Svnvav.UberSpace
             
             if (Input.GetKeyDown(KeyCode.S))
             {
-                PersistentStorage.Instance.Save(this, _saveVersion, "GameSave");
+                PersistentStorage.Instance.Save(this, SaveVersion, "GameSave");
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
                 Flush();
-                LoadFromSaves();
+                LoadFromSaves("GameSave");
             }
         }
 
-        public void LoadFromSaves()
+        public void LoadFromSaves(string safeFileName)
         {
-            PersistentStorage.Instance.Load(this, "GameSave");
+            PersistentStorage.Instance.Load(this, safeFileName);
         }
         
         public void Play()
@@ -225,7 +226,7 @@ namespace Svnvav.UberSpace
         public void Load(GameDataReader reader)
         {
             var version = reader.Version;
-            if (version > _saveVersion)
+            if (version > SaveVersion)
             {
                 Debug.LogError("Unsupported future save version " + version);
                 return;

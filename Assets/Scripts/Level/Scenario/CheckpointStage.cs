@@ -1,4 +1,5 @@
-﻿using Svnvav.UberSpace.CoreScene;
+﻿using Catlike.ObjectManagement;
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -8,19 +9,20 @@ namespace Svnvav.UberSpace
         [SerializeField] private float _duration;
         public override float Duration => _duration;
 
-        private bool _saved;
-        
+        public override void Begin()
+        {
+            var levelIndex = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
+            var stageId = GameLevel.Current.CurrentScenarioStageIndex;
+            var fileName = $"{GameController.SaveFileName}_{levelIndex}_{stageId}";
+            PersistentStorage.Instance.Save(GameController.Instance, GameController.SaveVersion, fileName);
+        }
+
         public override void Progress(float deltaTime)
         {
-            if (!_saved)
-            {
-                //TODO: GameController.Instance
-            }
         }
 
         public override void SetTime(float progress)
         {
-            
         }
     }
 }

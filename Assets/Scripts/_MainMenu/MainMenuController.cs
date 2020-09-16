@@ -1,11 +1,12 @@
-﻿using System;
-using Svnvav.UberSpace.CoreScene;
+﻿using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class MainMenuController : MonoBehaviour
     {
+        [SerializeField] private GameObject _levelStagePrefab;
+        
         [SerializeField] private GameObject _continueButton;
         
         [SerializeField] private GameObject _mainMenu;
@@ -29,6 +30,11 @@ namespace Svnvav.UberSpace
             _levelMenu.SetActive(true);
         }
 
+        public void ShowLevelStages(int levelIndex)
+        {
+            
+        }
+
         public void ShowMainMenu()
         {
             _mainMenu.SetActive(true);
@@ -43,9 +49,9 @@ namespace Svnvav.UberSpace
             _levelMenu.SetActive(false);
         }
 
-        public void LoadLevel(int index)
+        public void LoadLevel(string saveFileName)
         {
-            CoreSceneController.Instance.LoadLevel(index);
+            CoreSceneController.Instance.LoadLevel(saveFileName);
         }
         
         
