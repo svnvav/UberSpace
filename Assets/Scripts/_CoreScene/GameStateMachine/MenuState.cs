@@ -27,6 +27,8 @@ namespace Svnvav.UberSpace.CoreScene
             
             yield return new WaitForSeconds(1f);//For Debug
             
+            
+            
             controller.ShowHideLoadingScreen(false);
         }
 

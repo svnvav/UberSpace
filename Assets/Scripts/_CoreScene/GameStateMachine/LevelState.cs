@@ -47,12 +47,12 @@ namespace Svnvav.UberSpace.CoreScene
                 _levelScene = SceneManager.GetSceneByName(levelSceneName);
             }
 
-            controller.ShowHideLoadingScreen(false);
-
             if (!controller.SaveFileName.StartsWith("Begin"))
             {
                 GameController.Instance.LoadFromSaves(controller.SaveFileName);
             }
+            
+            controller.ShowHideLoadingScreen(false);
             
             GameController.Instance.Play();
         }

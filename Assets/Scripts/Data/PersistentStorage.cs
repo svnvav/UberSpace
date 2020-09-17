@@ -9,6 +9,8 @@ namespace Catlike.ObjectManagement
         
         private string _saveFolderPath;
 
+        public string SaveFolderPath => _saveFolderPath;
+
         private void Awake()
         {
             Instance = this;

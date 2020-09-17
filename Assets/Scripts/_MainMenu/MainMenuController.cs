@@ -1,10 +1,14 @@
-﻿using Svnvav.UberSpace.CoreScene;
+﻿using System.IO;
+using System.Linq;
+using Catlike.ObjectManagement;
+using Svnvav.UberSpace.CoreScene;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class MainMenuController : MonoBehaviour
     {
+        [SerializeField] private RectTransform _levelStagesContainer;
         [SerializeField] private GameObject _levelStagePrefab;
         
         [SerializeField] private GameObject _continueButton;
@@ -28,11 +32,30 @@ namespace Svnvav.UberSpace
             _mainMenu.SetActive(false);
             _settingsMenu.SetActive(false);
             _levelMenu.SetActive(true);
+            ShowLevelStages(1);
         }
 
         public void ShowLevelStages(int levelIndex)
         {
+            var fileNames = Directory.EnumerateFiles(PersistentStorage.Instance.SaveFolderPath)
+                .Select(filePath => filePath.Substring(PersistentStorage.Instance.SaveFolderPath.Length + 1))
+                .Where(fileName => fileName.StartsWith($"{GameController.SaveFileName}_{levelIndex}"))
+                .ToArray();
+
+            foreach (var levelStageMenuItem in _levelStagesContainer.GetComponentsInChildren<LevelStageMenuItem>())
+            {
+                DestroyImmediate(levelStageMenuItem);
+            }
             
+            _levelStagesContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100 * fileNames.Length);
+
+            for (int i = 0; i < fileNames.Length; i++)
+            {
+                var stageGO = Instantiate(_levelStagePrefab, _levelStagesContainer);
+                var levelStage = stageGO.GetComponent<LevelStageMenuItem>();
+                levelStage.Initialize(this, fileNames[i]);
+            }
+
         }
 
         public void ShowMainMenu()
