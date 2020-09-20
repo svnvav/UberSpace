@@ -15,7 +15,7 @@ namespace Svnvav.UberSpace.CoreScene
 
         [SerializeField] private Text _loadingProgressText;
         
-        private int _currentLevelIndex = 1;
+        private int _currentLevelIndex = 0;
         private string _saveFileName;
         
         private GameStateMachine _stateMachine;

@@ -9,7 +9,7 @@ namespace Svnvav.UberSpace.CoreScene
         private const string _saveFileName = "CommonSave";
         private const int _saveVersion = 0;
         
-        private int _lastLoadedLevelPostfix;
+        private int _lastLoadedLevelPostfix = -1;
 
         public int LastLoadedLevelPostfix => _lastLoadedLevelPostfix;
 
