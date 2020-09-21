@@ -67,7 +67,13 @@ namespace Svnvav.UberSpace.CoreScene
 
         private IEnumerator DefineStartState(GameState levelState, GameState menuState)
         {
-            if (SceneManager.GetSceneByName(GameSceneName).IsValid() || IsLevelSceneLoaded())
+            var loadedLevelSceneIndex = LoadedLevelSceneIndex();
+            if (loadedLevelSceneIndex != -1)
+            {
+                _currentLevelIndex = loadedLevelSceneIndex;
+                _saveFileName = $"Begin_{_currentLevelIndex}";
+            }
+            if (SceneManager.GetSceneByName(GameSceneName).IsValid() || loadedLevelSceneIndex != -1)
             {
                 yield return UnloadScene(MainMenuSceneName);
                 yield return _stateMachine.Initialize(levelState);
@@ -80,7 +86,7 @@ namespace Svnvav.UberSpace.CoreScene
             }
         }
 
-        private bool IsLevelSceneLoaded()
+        private int LoadedLevelSceneIndex()
         {
             var sceneCount = SceneManager.sceneCount;
             for (int i = 0; i < sceneCount; i++)
@@ -88,11 +94,11 @@ namespace Svnvav.UberSpace.CoreScene
                 var scene = SceneManager.GetSceneAt(i);
                 if (scene.name.StartsWith(LevelScenePrefix))
                 {
-                    return true;
+                    return Int32.Parse(scene.name.Replace(LevelScenePrefix, ""));
                 }
             }
 
-            return false;
+            return -1;
         }
         
         private IEnumerator UnloadScene(string sceneName)

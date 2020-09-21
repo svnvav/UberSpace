@@ -48,13 +48,16 @@ namespace Svnvav.UberSpace
                 DestroyImmediate(levelStageMenuItem.gameObject);
             }
 
-            _levelStagesContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100 * fileNames.Length);
+            _levelStagesContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100 * (fileNames.Length + 1));
             _levelStagesContainer.SetSiblingIndex(levelIndex + 1);
             
+            var beginStageGO = Instantiate(_levelStagePrefab, _levelStagesContainer);
+            var levelStage = beginStageGO.GetComponent<LevelStageMenuItem>();
+            levelStage.Initialize(this, $"Begin_{levelIndex}");
             for (int i = 0; i < fileNames.Length; i++)
             {
                 var stageGO = Instantiate(_levelStagePrefab, _levelStagesContainer);
-                var levelStage = stageGO.GetComponent<LevelStageMenuItem>();
+                levelStage = stageGO.GetComponent<LevelStageMenuItem>();
                 levelStage.Initialize(this, fileNames[i]);
             }
         }

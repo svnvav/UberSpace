@@ -17,6 +17,8 @@ namespace Svnvav.UberSpace
 
         public override void GameUpdate(float deltaTime)
         {
+            if(_currentStageId >= _stages.Length) return;
+            
             var dt = deltaTime;
             _progress += dt;
             
@@ -27,11 +29,12 @@ namespace Svnvav.UberSpace
                 dt -= lastDt;
                 _progress -= _stages[_currentStageId].Duration;
                 _currentStageId++;
+                if(_currentStageId >= _stages.Length) return;
+                
                 _stages[_currentStageId].Begin();
             }
             
-            if(_currentStageId >= _stages.Length) return;
-            
+
             _stages[_currentStageId].Progress(dt);
         }
 
