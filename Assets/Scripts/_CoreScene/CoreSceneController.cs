@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Catlike.ObjectManagement;
+using UnityEngine;
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -19,6 +20,9 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void ContinueGame()
         {
+            var saveFileName = 
+                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevelPostfix}_{CoreDataProvider.LastLoadedLevelStage}";
+            LoadLevel(saveFileName);
             //TODO: fix planets veil bug after loading
         }
 

@@ -15,6 +15,7 @@ namespace Svnvav.UberSpace
             var stageId = GameLevel.Current.CurrentScenarioStageIndex;
             var fileName = $"{GameController.SaveFileName}_{levelIndex}_{stageId}";
             PersistentStorage.Instance.Save(GameController.Instance, GameController.SaveVersion, fileName);
+            CoreSceneController.Instance.CoreDataProvider.UpdateData(levelIndex, stageId);
         }
 
         public override void Progress(float deltaTime)

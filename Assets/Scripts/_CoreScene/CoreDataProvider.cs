@@ -10,26 +10,27 @@ namespace Svnvav.UberSpace.CoreScene
         private const int _saveVersion = 0;
         
         private int _lastLoadedLevelPostfix = -1;
+        private int _lastLoadedLevelStage = -1;
 
         public int LastLoadedLevelPostfix => _lastLoadedLevelPostfix;
+        public int LastLoadedLevelStage => _lastLoadedLevelStage;
 
         private void Awake()
         {
             PersistentStorage.Instance.Load(this, _saveFileName);
         }
 
-        private void Update()
+        public void UpdateData(int levelId, int stageId)
         {
-            /*if (Input.GetKeyDown(KeyCode.S))
-            {
-                _lastLoadedLevelPostfix = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
-                PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
-            }*/
+            _lastLoadedLevelPostfix = levelId;
+            _lastLoadedLevelStage = stageId;
+            PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
         }
 
         public void Save(GameDataWriter writer)
         {
             writer.Write(_lastLoadedLevelPostfix);
+            writer.Write(_lastLoadedLevelStage);
         }
 
         public void Load(GameDataReader reader)
@@ -42,6 +43,7 @@ namespace Svnvav.UberSpace.CoreScene
             }
             
             _lastLoadedLevelPostfix = reader.ReadInt();
+            _lastLoadedLevelStage = reader.ReadInt();
         }
     }
 }
