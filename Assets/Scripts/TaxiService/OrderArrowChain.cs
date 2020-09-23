@@ -22,9 +22,6 @@ namespace Svnvav.UberSpace
 
         public void GameUpdate()
         {
-            if(_orders.Count == 0)
-                return;
-
             var lastPosition = _taxiTransform.position;
             var betweenIndex = 0;
             var index = 0;
