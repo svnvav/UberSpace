@@ -1,28 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class SpaceShip : Planet
     {
+        [SerializeField] private List<Race> _races;
         [SerializeField] private int _capacity;
+
+        [SerializeField] private SpriteRenderer _defaultSprite;
+        
+        private List<Race> _racesToArrive, _racesToDeparture;
 
         public override int Capacity => _capacity;
 
-        private List<Race> _racesOnBoard;
+        private int _saveIndex;
+        public override int SaveIndex
+        {
+            get => _saveIndex;
+            set
+            {
+                _saveIndex = value;
+                foreach (var race in _races)
+                {
+                    race.PlanetSaveIndex = _saveIndex;
+                }
+            }
+        }
+        
+        public override float Radius => 0.5f * _defaultSprite.transform.lossyScale.x;
+        public override bool IsFull => _races.Count + _racesToArrive.Count >= Capacity;
+        public override bool IsEmpty => _races.Count + _racesToArrive.Count == 0 || _racesToDeparture.Count == _races.Count;
 
-        public override float Radius { get; }
-        public override int SaveIndex { get; set; }
-        public override bool IsFull { get; }
-        public override bool IsEmpty { get; }
+        private void Awake()
+        {
+            _racesToArrive = new List<Race>();
+            _racesToDeparture = new List<Race>();
+            
+            base.Awake();
+        }
+
         public override Race GetRaceByTouchPos(Vector3 touchPos)
         {
-            throw new System.NotImplementedException();
+            return _races[0];
         }
 
         public override void AddRace(Race race, bool hard = false)
         {
-            throw new System.NotImplementedException();
+            if (!_racesToArrive.Contains(race) && !hard)
+            {
+                Debug.LogError("RaceToArrive and actual race are different");
+            }
+
+            _racesToArrive.Remove(race);
+            _races.Add(race);
+            race.PlanetSaveIndex = SaveIndex;
+            RefreshView();
         }
 
         public override void DepartureRace(Race race)
@@ -38,6 +72,11 @@ namespace Svnvav.UberSpace
         public override void RemoveRaceToDeparture(Race race)
         {
             throw new System.NotImplementedException();
+        }
+
+        private void RefreshView()
+        {
+            
         }
     }
 }
