@@ -61,7 +61,19 @@ namespace Svnvav.UberSpace
 
         public override void DepartureRace(Race race)
         {
-            throw new System.NotImplementedException();
+            if (!_races.Contains(race))
+            {
+                Debug.LogError("There is no that race to departure");
+            }
+            if (!_racesToDeparture.Contains(race))
+            {
+                Debug.LogError("RaceToDeparture and actual race are different");
+            }
+            
+            _races.Remove(race);
+            _racesToDeparture.Remove(race);
+            
+            RefreshView();
         }
 
         public override void RemoveRaceToArrive(Race race)
