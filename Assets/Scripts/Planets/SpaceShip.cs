@@ -8,8 +8,10 @@ namespace Svnvav.UberSpace
     {
         [SerializeField] private List<Race> _races;
         [SerializeField] private int _capacity;
-
-        [SerializeField] private SpriteRenderer _defaultSprite;
+        
+        [SerializeField] private SpriteRenderer _shipSpriteRenderer;
+        [SerializeField] private Sprite _defaultSeatSprite;
+        [SerializeField] private SpriteRenderer[] _seatSpriteRenderers;
         
         private List<Race> _racesToArrive, _racesToDeparture;
 
@@ -29,7 +31,7 @@ namespace Svnvav.UberSpace
             }
         }
         
-        public override float Radius => 0.5f * _defaultSprite.transform.lossyScale.x;
+        public override float Radius => 0.5f * _shipSpriteRenderer.transform.lossyScale.x;
         public override bool IsFull => _races.Count + _racesToArrive.Count >= Capacity;
         public override bool IsEmpty => _races.Count + _racesToArrive.Count == 0 || _racesToDeparture.Count == _races.Count;
 
@@ -78,17 +80,34 @@ namespace Svnvav.UberSpace
 
         public override void RemoveRaceToArrive(Race race)
         {
-            throw new System.NotImplementedException();
+            if (!_racesToArrive.Contains(race))
+            {
+                Debug.LogError("_racesToArrive list does not contains that race");
+            }
+            _racesToArrive.Remove(race);
+            RefreshView();
         }
 
         public override void RemoveRaceToDeparture(Race race)
         {
-            throw new System.NotImplementedException();
+            if (!_racesToDeparture.Contains(race))
+            {
+                Debug.LogError("_racesToDeparture list does not contains that race");
+            }
+            _racesToDeparture.Remove(race);
         }
 
         private void RefreshView()
         {
-            
+            for (int i = 0; i < _races.Count; i++)
+            {
+                _seatSpriteRenderers[i].sprite = _races[i].PlanetSprite;
+            }
+
+            for (int i = _races.Count; i < _seatSpriteRenderers.Length; i++)
+            {
+                _seatSpriteRenderers[i].sprite = _defaultSeatSprite;
+            }
         }
     }
 }
