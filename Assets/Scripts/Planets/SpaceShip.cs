@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Catlike.ObjectManagement;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -11,7 +12,8 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private SpriteRenderer _shipSpriteRenderer;
         [SerializeField] private Sprite _defaultSeatSprite;
-        [SerializeField] private SpriteRenderer[] _seatSpriteRenderers;
+        [SerializeField] private SpriteRenderer[] _racesSpriteRenderers;
+        [SerializeField] private SpriteRenderer[] _racesToArriveSpriteRenderers;
         
         private List<Race> _racesToArrive, _racesToDeparture;
 
@@ -43,11 +45,23 @@ namespace Svnvav.UberSpace
             base.Awake();
         }
 
+        public override void GameUpdate(float deltaTime)
+        {
+            transform.Translate(deltaTime * _velocity.x * transform.up, Space.World);
+        }
+
         public override Race GetRaceByTouchPos(Vector3 touchPos)
         {
             return _races[0];
         }
 
+        public override void AddRaceToArrive(Race race)
+        {
+            base.AddRaceToArrive(race);
+            _racesToArrive.Add(race);
+            RefreshView();
+        }
+        
         public override void AddRace(Race race, bool hard = false)
         {
             if (!_racesToArrive.Contains(race) && !hard)
@@ -59,6 +73,15 @@ namespace Svnvav.UberSpace
             _races.Add(race);
             race.PlanetSaveIndex = SaveIndex;
             RefreshView();
+        }
+        
+        public override void AddRaceToDeparture(Race race)
+        {
+            if (!_races.Contains(race))
+            {
+                Debug.LogError("There is no that RaceToDeparture");
+            }
+            _racesToDeparture.Add(race);
         }
 
         public override void DepartureRace(Race race)
@@ -99,15 +122,60 @@ namespace Svnvav.UberSpace
 
         private void RefreshView()
         {
-            for (int i = 0; i < _races.Count; i++)
+            for (int i = 0; i < _racesToArrive.Count; i++)
             {
-                _seatSpriteRenderers[i].sprite = _races[i].PlanetSprite;
+                _racesToArriveSpriteRenderers[i].gameObject.SetActive(true);
+                _racesToArriveSpriteRenderers[i].sprite = _racesToArrive[i].PlanetSprite;
             }
 
-            for (int i = _races.Count; i < _seatSpriteRenderers.Length; i++)
+            for (int i = _racesToArrive.Count; i < _racesToArriveSpriteRenderers.Length; i++)
             {
-                _seatSpriteRenderers[i].sprite = _defaultSeatSprite;
+                _racesToArriveSpriteRenderers[i].gameObject.SetActive(false);
+                _racesToArriveSpriteRenderers[i].sprite = _defaultSeatSprite;
             }
+            
+            for (int i = 0; i < _races.Count; i++)
+            {
+                _racesSpriteRenderers[i].gameObject.SetActive(true);
+                _racesSpriteRenderers[i].sprite = _races[i].PlanetSprite;
+            }
+
+            for (int i = _races.Count; i < _racesSpriteRenderers.Length; i++)
+            {
+                _racesSpriteRenderers[i].gameObject.SetActive(false);
+                _racesSpriteRenderers[i].sprite = _defaultSeatSprite;
+            }
+
+            if (_veiling && IsFull && !_veil.Veiled)
+            {
+                _veil.Veil();
+            }
+            else
+            {
+                _veil.Unveil();
+            }
+        }
+        
+        public override void Die()
+        {
+            foreach (var race in _races)
+            {
+                //TODO: score race save
+            }
+            base.Die();
+        }
+        public override void Recycle()
+        {
+            base.Recycle();
+            _races.Clear();
+            _racesToArrive.Clear();
+            _racesToDeparture.Clear();
+        }
+
+        public override void Load(GameDataReader reader)
+        {
+            base.Load(reader);
+            RefreshView();
         }
     }
 }
