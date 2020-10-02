@@ -77,6 +77,12 @@ namespace Svnvav.UberSpace
             Recycle();
         }
 
+        public void Survive()
+        {
+            GameController.Instance.OnRaceSurvived(this);
+            Recycle();
+        }
+
         public void Recycle()
         {
             OriginFactory.Reclaim(this);

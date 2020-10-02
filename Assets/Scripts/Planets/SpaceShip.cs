@@ -160,7 +160,7 @@ namespace Svnvav.UberSpace
         {
             foreach (var race in _races)
             {
-                //TODO: score race save
+                
             }
             base.Die();
         }

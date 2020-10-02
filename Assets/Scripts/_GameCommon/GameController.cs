@@ -168,7 +168,7 @@ namespace Svnvav.UberSpace
             _hud.AddRaceInfo(race);
         }
 
-        public void RemoveRace(Race race)
+        public void RemoveRace(Race race) //TODO: mb rename to OnRaceDead
         {
             var index = race.SaveIndex;
             var last = _races.Count - 1;
@@ -180,6 +180,12 @@ namespace Svnvav.UberSpace
             
             _races.RemoveAt(last);
             //TODO: remove race ui
+        }
+
+        public void OnRaceSurvived(Race race)
+        {
+            Debug.Log($"{race.Name} survived");
+            //TODO: 
         }
 
         public void TransferRace(Race race, Planet departure, Planet destination)
