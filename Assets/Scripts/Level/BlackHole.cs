@@ -18,11 +18,6 @@ namespace Svnvav.UberSpace
             }
         }
 
-        private void Update()
-        {
-            
-        }
-
         public void OnTap()
         {
             GameController.Instance.Pause();

@@ -73,7 +73,7 @@ namespace Svnvav.UberSpace
 
         public void Die()
         {
-            GameController.Instance.RemoveRace(this);
+            GameController.Instance.OnRaceDead(this);
             Recycle();
         }
 

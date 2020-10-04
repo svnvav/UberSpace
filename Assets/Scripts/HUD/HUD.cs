@@ -14,6 +14,11 @@ namespace Svnvav.UberSpace
         {
             _racesInfoCanvas.AddRaceInfo(race);
         }
+        
+        public void RemoveRaceInfo(Race race)
+        {
+            _racesInfoCanvas.RemoveRaceInfo(race);
+        }
 
         public void OnPause()
         {

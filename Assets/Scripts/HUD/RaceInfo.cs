@@ -9,6 +9,8 @@ namespace Svnvav.UberSpace
 
         private Race _race;
 
+        public Race Race => _race;
+
         public void Initialize(Race race)
         {
             _race = race;
