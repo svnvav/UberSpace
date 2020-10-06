@@ -2,11 +2,12 @@
 
 namespace Svnvav.UberSpace
 {
-    public class UberStars : MonoBehaviour
+    public class UberStarsCanvas : MonoBehaviour
     {
         [SerializeField] private UberStar _starPrefab;
-        [SerializeField] private readonly int _count;
+        [SerializeField] private int _count;
         [SerializeField] private int _currentScore;
+        [SerializeField] private RectTransform _panel;
 
         private UberStar[] _stars;
 
@@ -15,13 +16,15 @@ namespace Svnvav.UberSpace
             _stars = new UberStar[_count];
             for (int i = 0; i < _count; i++)
             {
-                _stars[i] = Instantiate(_starPrefab, transform);
+                _stars[i] = Instantiate(_starPrefab, _panel);
             }
             RefreshView();
         }
 
         public void Decrease()
         {
+            if(_currentScore == 0) return;
+            
             _currentScore--;
             RefreshView();
         }

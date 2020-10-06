@@ -172,6 +172,7 @@ namespace Svnvav.UberSpace
         {
             Debug.Log($"{race.Name} dead");
             RemoveRace(race);
+            _hud.DecreaseStar();
             //TODO:
         }
 

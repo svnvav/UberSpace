@@ -6,6 +6,7 @@ namespace Svnvav.UberSpace
     public class HUD : MonoBehaviour
     {
         [SerializeField] private RacesInfoCanvas _racesInfoCanvas;
+        [SerializeField] private UberStarsCanvas _uberStarsCanvas;
 
         [SerializeField] private GameObject _pausePanel;
         [SerializeField] private GameObject _veil;
@@ -18,6 +19,11 @@ namespace Svnvav.UberSpace
         public void RemoveRaceInfo(Race race)
         {
             _racesInfoCanvas.RemoveRaceInfo(race);
+        }
+
+        public void DecreaseStar()
+        {
+            _uberStarsCanvas.Decrease();
         }
 
         public void OnPause()
