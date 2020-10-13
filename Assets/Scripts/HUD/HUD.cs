@@ -21,9 +21,9 @@ namespace Svnvav.UberSpace
             _racesInfoCanvas.RemoveRaceInfo(race);
         }
 
-        public void DecreaseStar()
+        public void RefreshStarsView()
         {
-            _uberStarsCanvas.Decrease();
+            _uberStarsCanvas.RefreshView();
         }
 
         public void OnPause()

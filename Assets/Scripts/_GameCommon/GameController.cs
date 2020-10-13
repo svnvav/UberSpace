@@ -102,6 +102,7 @@ namespace Svnvav.UberSpace
         public void Play()
         {
             _started = true;
+            _hud.RefreshStarsView();
         }
         
         public void Stop()
@@ -168,11 +169,12 @@ namespace Svnvav.UberSpace
             _hud.AddRaceInfo(race);
         }
 
-        public void OnRaceDead(Race race) //TODO: mb rename to OnRaceDead
+        public void OnRaceDead(Race race)
         {
             Debug.Log($"{race.Name} dead");
             RemoveRace(race);
-            _hud.DecreaseStar();
+            GameLevel.Current.DecreaseUberStar();
+            _hud.RefreshStarsView();
             //TODO:
         }
 

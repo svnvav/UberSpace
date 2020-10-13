@@ -350,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scenario: {fileID: 1424119126}
   _levelObjects: []
+  _maxStarsCount: 5
 --- !u!4 &362407746
 Transform:
   m_ObjectHideFlags: 0

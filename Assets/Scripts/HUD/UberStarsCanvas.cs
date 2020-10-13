@@ -5,37 +5,34 @@ namespace Svnvav.UberSpace
     public class UberStarsCanvas : MonoBehaviour
     {
         [SerializeField] private UberStar _starPrefab;
-        [SerializeField] private int _count;
-        [SerializeField] private int _currentScore;
         [SerializeField] private RectTransform _panel;
 
         private UberStar[] _stars;
 
-        private void Awake()
+        public void RefreshView()
         {
-            _stars = new UberStar[_count];
-            for (int i = 0; i < _count; i++)
+            if (_stars == null || _stars.Length != GameLevel.Current.MaxStarsCount)
             {
-                _stars[i] = Instantiate(_starPrefab, _panel);
+                if (_stars != null)
+                {
+                    foreach (var uberStar in _stars)
+                    {
+                        Destroy(uberStar.gameObject);
+                    }
+                }
+                _stars = new UberStar[GameLevel.Current.MaxStarsCount];
+                for (int i = 0; i < GameLevel.Current.MaxStarsCount; i++)
+                {
+                    _stars[i] = Instantiate(_starPrefab, _panel);
+                }
             }
-            RefreshView();
-        }
-
-        public void Decrease()
-        {
-            if(_currentScore == 0) return;
             
-            _currentScore--;
-            RefreshView();
-        }
-
-        private void RefreshView()
-        {
-            for (int i = 0; i < _currentScore; i++)
+            for (int i = 0; i < GameLevel.Current.CurrentStarsCount; i++)
             {
                 _stars[i].SetFilled(true);
             }
-            for (int i = _currentScore; i < _count; i++)
+            
+            for (int i = GameLevel.Current.CurrentStarsCount; i < GameLevel.Current.MaxStarsCount; i++)
             {
                 _stars[i].SetFilled(false);
             }
