@@ -74,7 +74,12 @@ namespace Svnvav.UberSpace
             }
 
             var deltaTime = _gameSpeed * Time.deltaTime;
+            
             GameLevel.Current.GameUpdate(deltaTime);
+            if (GameLevel.Current.CurrentStarsCount <= 0)
+            {
+                GameOver();
+            }
 
             foreach (var planet in _planets)
             {
@@ -138,6 +143,11 @@ namespace Svnvav.UberSpace
             _hud.OnUnpause();
             GameSpeed = _beforePauseGameSpeed;
             Time.timeScale = _beforePauseTimeScale;
+        }
+
+        public void GameOver()
+        {
+            //TODO:
         }
         
         public void AddPlanet(Planet planet)
