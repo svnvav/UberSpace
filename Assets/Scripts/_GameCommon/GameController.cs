@@ -147,7 +147,9 @@ namespace Svnvav.UberSpace
 
         public void GameOver()
         {
-            //TODO:
+            Time.timeScale = 0.3f;
+            GameSpeed = 0.1f;
+            _hud.OnGameOver();
         }
         
         public void AddPlanet(Planet planet)

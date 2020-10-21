@@ -9,6 +9,7 @@ namespace Svnvav.UberSpace
         [SerializeField] private UberStarsCanvas _uberStarsCanvas;
 
         [SerializeField] private GameObject _pausePanel;
+        [SerializeField] private GameObject _gameOverPanel;
         [SerializeField] private GameObject _veil;
 
         public void AddRaceInfo(Race race)
@@ -38,9 +39,19 @@ namespace Svnvav.UberSpace
             _veil.SetActive(false);
         }
         
+        public void OnGameOver()
+        {
+            _gameOverPanel.SetActive(true);
+            _veil.SetActive(false);
+        }
         public void Unpause()
         {
             GameController.Instance.Unpause();
+        }
+        
+        public void LoadLastCheckpoint()
+        {
+            //TODO:
         }
 
         public void GoToMainMenu()
