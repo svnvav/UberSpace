@@ -51,7 +51,7 @@ namespace Svnvav.UberSpace
         
         public void LoadLastCheckpoint()
         {
-            CoreSceneController.Instance.ContinueGame();
+            CoreSceneController.Instance.LoadLastCheckpoint();
         }
 
         public void GoToMainMenu()

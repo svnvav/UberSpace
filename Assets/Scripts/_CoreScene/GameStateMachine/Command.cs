@@ -3,6 +3,7 @@
     public enum Command
     {
         Play,
+        LoadLast,
         ToMenu
     }
 }

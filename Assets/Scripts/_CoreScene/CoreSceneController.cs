@@ -26,6 +26,11 @@ namespace Svnvav.UberSpace.CoreScene
             //TODO: fix planets veil bug after loading
         }
 
+        public void LoadLastCheckpoint()
+        {
+            _gameStateController.LoadLast();
+        }
+
         public void LoadLevel(string saveFileName)
         {
             _gameStateController.GoToLevel(saveFileName);

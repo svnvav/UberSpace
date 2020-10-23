@@ -32,6 +32,7 @@ namespace Svnvav.UberSpace.CoreScene
             var fsmTransitions = new Dictionary<StateTransition, GameState>()
             {
                 {new StateTransition(levelState, Command.ToMenu), menuState},
+                {new StateTransition(levelState, Command.LoadLast), levelState},
                 {new StateTransition(menuState, Command.Play), levelState}
             };
             
@@ -48,6 +49,11 @@ namespace Svnvav.UberSpace.CoreScene
             _currentLevelIndex = Int32.Parse(split[1]);
 
             StartCoroutine(_stateMachine.MoveNext(Command.Play));
+        }
+
+        public void LoadLast()
+        {
+            StartCoroutine(_stateMachine.MoveNext(Command.LoadLast));
         }
 
         public void GoToMainMenu()
