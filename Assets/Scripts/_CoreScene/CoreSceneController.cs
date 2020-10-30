@@ -28,7 +28,9 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void LoadLastCheckpoint()
         {
-            _gameStateController.LoadLast();
+            var saveFileName = 
+                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevelPostfix}_{CoreDataProvider.LastLoadedLevelStage}";
+            _gameStateController.LoadLast(saveFileName);
         }
 
         public void LoadLevel(string saveFileName)

@@ -51,8 +51,14 @@ namespace Svnvav.UberSpace.CoreScene
             StartCoroutine(_stateMachine.MoveNext(Command.Play));
         }
 
-        public void LoadLast()
+        public void LoadLast(string saveFileName)
         {
+            _saveFileName = saveFileName;
+            
+            var split = _saveFileName.Split('_');
+            
+            _currentLevelIndex = Int32.Parse(split[1]);
+            
             StartCoroutine(_stateMachine.MoveNext(Command.LoadLast));
         }
 
