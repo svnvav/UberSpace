@@ -150,10 +150,10 @@ namespace Svnvav.UberSpace
 
         public override void Recycle()
         {
-            base.Recycle();
             _race = null;
             _raceToArrive = null;
             _raceToDeparture = null;
+            base.Recycle();
         }
 
         public override void Load(GameDataReader reader)

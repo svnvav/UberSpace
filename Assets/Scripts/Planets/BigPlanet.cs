@@ -176,14 +176,15 @@ namespace Svnvav.UberSpace
             {
                 race.Die();
             }
+
             base.Die();
         }
         public override void Recycle()
         {
-            base.Recycle();
             _races.Clear();
             _racesToArrive.Clear();
             _racesToDeparture.Clear();
+            base.Recycle();
         }
 
         public override void Load(GameDataReader reader)

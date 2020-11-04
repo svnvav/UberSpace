@@ -107,6 +107,7 @@ namespace Svnvav.UberSpace
         public void Play()
         {
             _started = true;
+            Time.timeScale = 1f;
             _hud.RefreshStarsView();
         }
         
@@ -156,7 +157,6 @@ namespace Svnvav.UberSpace
         {
             planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
-            //planet.OnDie += RemovePlanet;
             _onAddPlanet.Execute(planet);
         }
 
@@ -208,7 +208,6 @@ namespace Svnvav.UberSpace
             
             _races.RemoveAt(last);
             _hud.RemoveRaceInfo(race);
-            //TODO: remove race ui
         }
 
         public void TransferRace(Race race, Planet departure, Planet destination)
