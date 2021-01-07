@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7971773986106199018}
   - component: {fileID: 7971773986106199017}
   m_Layer: 0
-  m_Name: Zuzu
+  m_Name: Yuy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,10 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5db74b8b0f74f798a0971a1f042bd90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Zuzu
-  _tagline: Bzz
+  _name: Yuy
+  _tagline: Suka
   _isAggressive: 0
-  _planetSprite: {fileID: 21300000, guid: ac3083d0148972949aa523bf896e5f47, type: 3}
-  _hudInfoSprite: {fileID: 21300000, guid: 59d532a3bdafae2458dff8d15208201b, type: 3}
+  _planetSprite: {fileID: 21300000, guid: 0c5ebbeae5f516c4f8a2e447ae4eb9dd, type: 3}
+  _hudInfoSprite: {fileID: 21300000, guid: f88f87ee23c52e249b1b9d170b4de573, type: 3}
   _loadingSprite: {fileID: 0}
   _population: 100

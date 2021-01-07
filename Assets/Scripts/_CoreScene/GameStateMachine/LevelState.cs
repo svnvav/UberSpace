@@ -31,7 +31,7 @@ namespace Svnvav.UberSpace.CoreScene
 
             yield return new WaitForSeconds(1f);//For Debug
             
-            var levelSceneName = $"{controller.LevelScenePrefix}{controller.CurrentLevelIndex}";
+            var levelSceneName = controller.CurrentLevel.SceneName;
             
             _levelScene = SceneManager.GetSceneByName(levelSceneName);
 

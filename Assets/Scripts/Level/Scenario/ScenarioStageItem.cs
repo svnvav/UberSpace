@@ -10,7 +10,8 @@ namespace Svnvav.UberSpace
 
         public float ActivationDelay;
         public int QuantityLimit;
-        [Range(0f, 64f)] public float Speed;
+        [SerializeField, Range(0f, 64f)] private float _spawnCooldown;
+        [SerializeField, Range(0f, 64f)] private float _planetSpeed;
         
         private bool _activated;
         private float _progress;
@@ -20,14 +21,16 @@ namespace Svnvav.UberSpace
 
         public void Progress(float deltaTime, bool last = false)
         {
-            _progress += deltaTime * Speed;
+            _progress += deltaTime;
 
             if (!_activated)
             {
-                if (_progress > ActivationDelay * Speed)
+                if (_progress > ActivationDelay)
                 {
+                    Spawner.Spawn(_planetSpeed);
+                    _count++;
                     _activated = true;
-                    _progress -= ActivationDelay * Speed;
+                    _progress -= ActivationDelay;
                 }
                 else
                 {
@@ -35,10 +38,10 @@ namespace Svnvav.UberSpace
                 }
             }
             
-            while (!LimitExceeded && _progress > 1f)
+            while (!LimitExceeded && _progress > _spawnCooldown)
             {
-                _progress -= 1f;
-                Spawner.Spawn();
+                _progress -= _spawnCooldown;
+                Spawner.Spawn(_planetSpeed);
                 _count++;
             }
         }
@@ -46,11 +49,11 @@ namespace Svnvav.UberSpace
         public void SetTime(float time)
         {
             _count = 0;
-            _progress = time * Speed;
-            _activated = _progress > ActivationDelay * Speed;
+            _progress = time * _spawnCooldown;
+            _activated = _progress > ActivationDelay;
             if (_activated)
             {
-                _progress -= ActivationDelay * Speed;
+                _progress -= ActivationDelay;
                 _count = Mathf.FloorToInt(_progress);
                 _count = Mathf.Max(_count, QuantityLimit);
                 _progress -= _count;

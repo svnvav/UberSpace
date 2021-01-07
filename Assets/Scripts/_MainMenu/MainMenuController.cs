@@ -20,7 +20,7 @@ namespace Svnvav.UberSpace
 
         private void OnEnable()
         {
-            _continueButton.SetActive(CoreSceneController.Instance.CoreDataProvider.LastLoadedLevelPostfix != -1);
+            _continueButton.SetActive(CoreSceneController.Instance.CoreDataProvider.LastLoadedLevel != -1);
         }
 
         public void Continue()

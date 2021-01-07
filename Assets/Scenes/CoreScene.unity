@@ -236,6 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c4fe0b4a8d4503a94566dc9bab108b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuSceneName: MainMenu
+  _gameSceneName: Game
+  _levelsInfo: {fileID: 11400000, guid: 6bc2eab6fa25860498d4a29f402081c2, type: 2}
   _loadingProgressText: {fileID: 1040055665}
 --- !u!4 &672293427
 Transform:

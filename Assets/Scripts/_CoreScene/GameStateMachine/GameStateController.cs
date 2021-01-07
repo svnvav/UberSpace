@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,9 +10,16 @@ namespace Svnvav.UberSpace.CoreScene
 {
     public class GameStateController : MonoBehaviour
     {
-        internal /*const*/ string MainMenuSceneName = "MainMenu";
-        internal /*const*/ string GameSceneName = "Game";
-        internal /*const*/ string LevelScenePrefix = "Level";
+        public string SaveFileName => _saveFileName;
+        public string MainMenuSceneName => _mainMenuSceneName;
+        public string GameSceneName => _gameSceneName;
+        public LevelInfo CurrentLevel => _levelsInfo.Levels[_currentLevelIndex];
+        public int CurrentLevelIndex => _currentLevelIndex;
+
+
+        [SerializeField] private string _mainMenuSceneName = "MainMenu";
+        [SerializeField] private string _gameSceneName = "Game";
+        [SerializeField] private LevelsInfoSO _levelsInfo;
 
         [SerializeField] private Text _loadingProgressText;
         
@@ -21,9 +29,6 @@ namespace Svnvav.UberSpace.CoreScene
         private GameStateMachine _stateMachine;
         
         private AsyncOperation _loadingOp;
-
-        public int CurrentLevelIndex => _currentLevelIndex;
-        public string SaveFileName => _saveFileName;
 
         private IEnumerator Start()
         {
@@ -79,21 +84,22 @@ namespace Svnvav.UberSpace.CoreScene
 
         private IEnumerator DefineStartState(GameState levelState, GameState menuState)
         {
-            var loadedLevelSceneIndex = LoadedLevelSceneIndex();
-            if (loadedLevelSceneIndex != -1)
+            var loadedLevelIndex = LoadedLevelSceneIndex();
+            if (loadedLevelIndex != -1)
             {
-                _currentLevelIndex = loadedLevelSceneIndex;
+                _currentLevelIndex = loadedLevelIndex;
                 _saveFileName = $"Begin_{_currentLevelIndex}";
             }
-            if (SceneManager.GetSceneByName(GameSceneName).IsValid() || loadedLevelSceneIndex != -1)
+            if (SceneManager.GetSceneByName(_gameSceneName).IsValid() || loadedLevelIndex != -1)
             {
-                yield return UnloadScene(MainMenuSceneName);
+                yield return UnloadScene(_mainMenuSceneName);
                 yield return _stateMachine.Initialize(levelState);
             }
             else
             {
-                yield return UnloadScene(GameSceneName);
-                yield return UnloadScene(FindFirstLoadedLevelSceneName());
+                yield return UnloadScene(_gameSceneName);
+                if(_currentLevelIndex != -1)
+                    yield return UnloadScene(_levelsInfo.Levels[_currentLevelIndex].SceneName);
                 yield return _stateMachine.Initialize(menuState);
             }
         }
@@ -104,10 +110,9 @@ namespace Svnvav.UberSpace.CoreScene
             for (int i = 0; i < sceneCount; i++)
             {
                 var scene = SceneManager.GetSceneAt(i);
-                if (scene.name.StartsWith(LevelScenePrefix))
-                {
-                    return Int32.Parse(scene.name.Replace(LevelScenePrefix, ""));
-                }
+                var index = Array.FindIndex(_levelsInfo.Levels, info => info.SceneName == scene.name);
+                
+                if (index != -1) return index;
             }
 
             return -1;
@@ -124,25 +129,9 @@ namespace Svnvav.UberSpace.CoreScene
             if(!scene.IsValid()) yield break;
 
             _loadingOp = SceneManager.UnloadSceneAsync(scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-            yield return _loadingOp;
 
             _loadingOp = Resources.UnloadUnusedAssets();
             yield return _loadingOp;
-        }
-        
-        private string FindFirstLoadedLevelSceneName()
-        {
-            var sceneCount = SceneManager.sceneCount;
-            for (int i = 0; i < sceneCount; i++)
-            {
-                var scene = SceneManager.GetSceneAt(i);
-                if (scene.name.StartsWith(LevelScenePrefix))
-                {
-                    return scene.name;
-                }
-            }
-
-            return "";
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Svnvav.UberSpace
 
         public override void Begin()
         {
-            var levelIndex = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
+            var levelId = CoreSceneController.Instance.GameStateController.CurrentLevelIndex;
             var stageId = GameLevel.Current.CurrentScenarioStageIndex;
-            var fileName = $"{GameController.SaveFileName}_{levelIndex}_{stageId}";
+            var fileName = $"{GameController.SaveFileName}_{levelId}_{stageId}";
             PersistentStorage.Instance.Save(GameController.Instance, GameController.SaveVersion, fileName);
-            CoreSceneController.Instance.CoreDataProvider.UpdateData(levelIndex, stageId);
+            CoreSceneController.Instance.CoreDataProvider.UpdateData(levelId, stageId);
         }
 
         public override void Progress(float deltaTime)

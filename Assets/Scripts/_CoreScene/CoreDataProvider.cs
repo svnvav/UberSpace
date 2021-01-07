@@ -1,5 +1,4 @@
-﻿using System;
-using Catlike.ObjectManagement;
+﻿using Catlike.ObjectManagement;
 using UnityEngine;
 
 namespace Svnvav.UberSpace.CoreScene
@@ -9,10 +8,10 @@ namespace Svnvav.UberSpace.CoreScene
         private const string _saveFileName = "CommonSave";
         private const int _saveVersion = 0;
         
-        private int _lastLoadedLevelPostfix = -1;
+        private int _lastLoadedLevel = -1;
         private int _lastLoadedLevelStage = -1;
 
-        public int LastLoadedLevelPostfix => _lastLoadedLevelPostfix;
+        public int LastLoadedLevel => _lastLoadedLevel;
         public int LastLoadedLevelStage => _lastLoadedLevelStage;
 
         private void Awake()
@@ -22,14 +21,14 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void UpdateData(int levelId, int stageId)
         {
-            _lastLoadedLevelPostfix = levelId;
+            _lastLoadedLevel = levelId;
             _lastLoadedLevelStage = stageId;
             PersistentStorage.Instance.Save(this, _saveVersion, _saveFileName);
         }
 
         public void Save(GameDataWriter writer)
         {
-            writer.Write(_lastLoadedLevelPostfix);
+            writer.Write(_lastLoadedLevel);
             writer.Write(_lastLoadedLevelStage);
         }
 
@@ -42,7 +41,7 @@ namespace Svnvav.UberSpace.CoreScene
                 return;
             }
             
-            _lastLoadedLevelPostfix = reader.ReadInt();
+            _lastLoadedLevel = reader.ReadInt();
             _lastLoadedLevelStage = reader.ReadInt();
         }
     }

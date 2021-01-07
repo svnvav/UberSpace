@@ -12,7 +12,7 @@ namespace UnityCarouselUI
 
         public float CurrentTransparency => _dot.color.a;
 
-        private void Start()
+        private void Awake()
         {
             _initialTransparency = _dot.color.a;
         }

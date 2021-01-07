@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq;
-using UnityCarouselUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,7 +18,7 @@ namespace UnityCarouselUI
         private int _pageCount;
         private int _currentPage;
 
-        private float PageWidth => _pagesContainer.rect.width;
+        private float PageWidth => Screen.width;
 
         void Start()
         {

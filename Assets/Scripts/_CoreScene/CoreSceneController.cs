@@ -21,7 +21,7 @@ namespace Svnvav.UberSpace.CoreScene
         public void ContinueGame()
         {
             var saveFileName = 
-                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevelPostfix}_{CoreDataProvider.LastLoadedLevelStage}";
+                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevel}_{CoreDataProvider.LastLoadedLevelStage}";
             LoadLevel(saveFileName);
             //TODO: fix planets veil bug after loading
         }
@@ -29,7 +29,7 @@ namespace Svnvav.UberSpace.CoreScene
         public void LoadLastCheckpoint()
         {
             var saveFileName = 
-                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevelPostfix}_{CoreDataProvider.LastLoadedLevelStage}";
+                $"{GameController.SaveFileName}_{CoreDataProvider.LastLoadedLevel}_{CoreDataProvider.LastLoadedLevelStage}";
             _gameStateController.LoadLast(saveFileName);
         }
 
