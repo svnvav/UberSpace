@@ -20,7 +20,17 @@ namespace UnityCarouselUI
 
         private float PageWidth => Screen.width;
 
-        void Start()
+        public void AddToPages(Transform content)
+        {
+            content.SetParent(_pagesContainer);
+        }
+
+        public void AddToIndicators(Transform content)
+        {
+            content.SetParent(_indicatorsContainer);
+        }
+
+        public void Initialize()
         {
             _locationAnchorMinX = _pagesContainer.anchorMin.x;
             _locationAnchorMaxX = _pagesContainer.anchorMax.x;

@@ -17,6 +17,12 @@ namespace UnityCarouselUI
             _initialTransparency = _dot.color.a;
         }
 
+        public void SetDotColor(Color color)
+        {
+            _dot.color = color;
+            _initialTransparency = _dot.color.a;
+        }
+
         public void SetTransparency(float value)
         {
             var color = _dot.color;

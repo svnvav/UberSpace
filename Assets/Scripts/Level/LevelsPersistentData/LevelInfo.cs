@@ -12,8 +12,11 @@ namespace Svnvav.UberSpace
 
         public Sprite Preview => _preview;
 
+        public Color Color => _color;
+
         [SerializeField] private string _name;
         [SerializeField] private string _sceneName;
         [SerializeField] private Sprite _preview;
+        [SerializeField] private Color _color;
     }
 }
