@@ -22,6 +22,7 @@ namespace Svnvav.UberSpace
                 var pageInstance = Instantiate(_levelPagePrefab);
                 _carousel.AddToPages(pageInstance.transform);
                 var indicator = Instantiate(_indicatorPrefab);
+                _carousel.AddToIndicators(indicator.transform);
                 indicator.GetComponent<CarouselIndicator>().SetDotColor(levelInfo.Color);
 
                 var levelPage = pageInstance.GetComponent<LevelPage>();
@@ -35,7 +36,10 @@ namespace Svnvav.UberSpace
 
         private void UpdateLevels()
         {
-            
+            foreach (var levelPage in _levelPages)
+            {
+                levelPage.UpdateUserData();
+            }
         }
     }
 }

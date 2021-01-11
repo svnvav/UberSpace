@@ -22,12 +22,15 @@ namespace UnityCarouselUI
 
         public void AddToPages(Transform content)
         {
-            content.SetParent(_pagesContainer);
+            content.SetParent(_pagesContainer, false);
+            var contentRectTransform = content as RectTransform;
+            contentRectTransform.anchorMin = new Vector2(_pagesContainer.childCount - 1, contentRectTransform.anchorMin.y);
+            contentRectTransform.anchorMax = new Vector2(_pagesContainer.childCount, contentRectTransform.anchorMax.y);
         }
 
         public void AddToIndicators(Transform content)
         {
-            content.SetParent(_indicatorsContainer);
+            content.SetParent(_indicatorsContainer, false);
         }
 
         public void Initialize()

@@ -15,7 +15,10 @@ MonoBehaviour:
   _levels:
   - _name: Test
     _sceneName: Level0
-    _preview: {fileID: 0}
+    _preview: {fileID: 21300000, guid: c7f3196b66d67fd4bac56d52e0ec56c7, type: 3}
+    _color: {r: 0.27095318, g: 0, b: 1, a: 0.7019608}
   - _name: BlackHole
     _sceneName: Level1
-    _preview: {fileID: 0}
+    _preview: {fileID: 7331382121829414646, guid: 1e0853f20a079cd49b6af2121e93efb0,
+      type: 3}
+    _color: {r: 0, g: 1, b: 0.96936965, a: 0.7372549}
