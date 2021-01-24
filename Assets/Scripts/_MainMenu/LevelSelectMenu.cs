@@ -34,7 +34,7 @@ namespace Svnvav.UberSpace
             UpdateLevels();
         }
 
-        private void UpdateLevels()
+        public void UpdateLevels()
         {
             foreach (var levelPage in _levelPages)
             {
