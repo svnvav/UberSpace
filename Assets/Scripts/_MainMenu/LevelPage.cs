@@ -14,9 +14,11 @@ namespace Svnvav.UberSpace
         [SerializeField] private LevelPageStarsContainer _starsContainer;
 
         private LevelInfo _levelInfo;
+        private int _levelIndex;
 
-        public void Initialize(LevelInfo levelInfo)
+        public void Initialize(LevelInfo levelInfo, int levelIndex)
         {
+            _levelIndex = levelIndex;
             _levelInfo = levelInfo;
             _preview.sprite = _levelInfo.Preview;
         }
@@ -31,7 +33,7 @@ namespace Svnvav.UberSpace
         {
             var fileNames = Directory.EnumerateFiles(PersistentStorage.Instance.SaveFolderPath)
                 .Select(filePath => filePath.Substring(PersistentStorage.Instance.SaveFolderPath.Length + 1))
-                .Where(fileName => fileName.StartsWith($"{GameController.SaveFileName}_{_levelInfo.Name}"))
+                .Where(fileName => fileName.StartsWith($"{GameController.SaveFileName}_{_levelIndex}"))
                 .ToArray();
 
             foreach (var levelStageMenuItem in _stagesContainer.GetComponentsInChildren<LevelStageMenuItem>())

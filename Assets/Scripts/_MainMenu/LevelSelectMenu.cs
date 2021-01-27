@@ -26,7 +26,7 @@ namespace Svnvav.UberSpace
                 indicator.GetComponent<CarouselIndicator>().SetDotColor(levelInfo.Color);
 
                 var levelPage = pageInstance.GetComponent<LevelPage>();
-                levelPage.Initialize(levelInfo);
+                levelPage.Initialize(levelInfo, i);
                 _levelPages[i] = levelPage;
             }
 

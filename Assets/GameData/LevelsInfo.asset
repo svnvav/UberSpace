@@ -17,8 +17,22 @@ MonoBehaviour:
     _sceneName: Level0
     _preview: {fileID: 21300000, guid: c7f3196b66d67fd4bac56d52e0ec56c7, type: 3}
     _color: {r: 0.27095318, g: 0, b: 1, a: 0.7019608}
+    _levelStageSprites:
+    - {fileID: 21300000, guid: affdcfb569a053c4d848c40f76380d7d, type: 3}
+    - {fileID: 21300000, guid: 7d9558427f55a674eb04dbac4262e156, type: 3}
+    - {fileID: 21300000, guid: 38d26203c93ebac4c82aaa779d5bc54f, type: 3}
+    - {fileID: 21300000, guid: 89909d53491ce304991e49ac78da8c74, type: 3}
+    - {fileID: 21300000, guid: ffa85d9ef4c74054f9ffae0bc69aacde, type: 3}
+    - {fileID: 21300000, guid: f3e2e518b334265499734f68114fdfc9, type: 3}
   - _name: BlackHole
     _sceneName: Level1
     _preview: {fileID: 7331382121829414646, guid: 1e0853f20a079cd49b6af2121e93efb0,
       type: 3}
     _color: {r: 0, g: 1, b: 0.96936965, a: 0.7372549}
+    _levelStageSprites:
+    - {fileID: 21300000, guid: affdcfb569a053c4d848c40f76380d7d, type: 3}
+    - {fileID: 21300000, guid: 7d9558427f55a674eb04dbac4262e156, type: 3}
+    - {fileID: 21300000, guid: 38d26203c93ebac4c82aaa779d5bc54f, type: 3}
+    - {fileID: 21300000, guid: 89909d53491ce304991e49ac78da8c74, type: 3}
+    - {fileID: 21300000, guid: ffa85d9ef4c74054f9ffae0bc69aacde, type: 3}
+    - {fileID: 21300000, guid: f3e2e518b334265499734f68114fdfc9, type: 3}
