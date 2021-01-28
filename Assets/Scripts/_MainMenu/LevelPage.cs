@@ -26,7 +26,6 @@ namespace Svnvav.UberSpace
         public void UpdateUserData()
         {
             UpdateStages();
-            UpdateStars();
         }
 
         private void UpdateStages()
