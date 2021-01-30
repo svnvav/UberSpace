@@ -12,7 +12,7 @@ namespace Svnvav.UberSpace
 
         private LevelPage[] _levelPages;
 
-        private void Start()
+        private void Awake()
         {
             _levelPages = new LevelPage[_levelsInfo.Levels.Length];
             for (var i = 0; i < _levelsInfo.Levels.Length; i++)
