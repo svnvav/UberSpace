@@ -14,12 +14,15 @@ namespace Svnvav.UberSpace
 
         public Color Color => _color;
 
+        public int StarsCount => _starsCount;
+
         public Sprite[] LevelStageSprites => _levelStageSprites;
         
         [SerializeField] private string _name;
         [SerializeField] private string _sceneName;
         [SerializeField] private Sprite _preview;
         [SerializeField] private Color _color;
+        [SerializeField] private int _starsCount;
         [SerializeField] private Sprite[] _levelStageSprites;
     }
 }

@@ -15,6 +15,8 @@ namespace Svnvav.UberSpace
             var stageId = GameLevel.Current.CurrentScenarioStageIndex;
             var fileName = $"{GameController.SaveFileName}_{levelId}_{stageId}";
             PersistentStorage.Instance.Save(GameController.Instance, GameController.SaveVersion, fileName);
+            PlayerPrefs.SetInt(fileName, GameLevel.Current.CurrentStarsCount);
+            PlayerPrefs.Save();
             CoreSceneController.Instance.CoreDataProvider.UpdateData(levelId, stageId);
         }
 

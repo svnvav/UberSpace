@@ -18,6 +18,8 @@ namespace UnityCarouselUI
         private int _pageCount;
         private int _currentPage;
 
+        public int CurrentPage => _currentPage;
+
         private float PageWidth => Screen.width;
 
         public void AddToPages(Transform content)

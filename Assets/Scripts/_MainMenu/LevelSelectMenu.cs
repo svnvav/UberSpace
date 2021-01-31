@@ -5,6 +5,7 @@ namespace Svnvav.UberSpace
 {
     public class LevelSelectMenu : MonoBehaviour
     {
+        [SerializeField] private MainMenuController _mainMenuController;
         [SerializeField] private LevelsInfoSO _levelsInfo;
         [SerializeField] private GameObject _levelPagePrefab;
         [SerializeField] private GameObject _indicatorPrefab;
@@ -44,7 +45,7 @@ namespace Svnvav.UberSpace
 
         public void PlaySelected()
         {
-            //TODO:
+            _mainMenuController.LoadLevel(_levelPages[_carousel.CurrentPage].SelectedStage.SaveFileName);
         }
     }
 }

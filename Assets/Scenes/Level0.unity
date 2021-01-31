@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9577912052649dbbd6a363afb5870ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _planetSpeed: 1.5
   _planetIndex: 1
   _raceIndex: 0
 --- !u!1 &62597373
@@ -303,7 +302,8 @@ MonoBehaviour:
   - Spawner: {fileID: 666819169}
     ActivationDelay: 0
     QuantityLimit: 0
-    Speed: 2
+    _spawnCooldown: 3.4
+    _planetSpeed: 1.9
 --- !u!4 &197728293
 Transform:
   m_ObjectHideFlags: 0
@@ -501,7 +501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9577912052649dbbd6a363afb5870ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _planetSpeed: 1.5
   _planetIndex: 1
   _raceIndex: -1
 --- !u!1 &713256986
@@ -765,7 +764,8 @@ MonoBehaviour:
   - Spawner: {fileID: 666819169}
     ActivationDelay: 0
     QuantityLimit: 0
-    Speed: 2
+    _spawnCooldown: 3.6
+    _planetSpeed: 3.2
 --- !u!1 &2059039713
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,4 +858,5 @@ MonoBehaviour:
   - Spawner: {fileID: 32922793}
     ActivationDelay: 0
     QuantityLimit: 0
-    Speed: 1
+    _spawnCooldown: 1.1
+    _planetSpeed: 1.2

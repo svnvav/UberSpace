@@ -4,9 +4,13 @@ namespace Svnvav.UberSpace
 {
     public class LevelPageStarsContainer : MonoBehaviour
     {
-        public void SetStars(int value, int max)
+        [SerializeField] private UberStar[] _stars;
+        public void SetStars(int value)
         {
-            
+            for (int i = 0; i < _stars.Length; i++)
+            {
+                _stars[i].SetFilled(i < value);
+            }
         }
     }
 }

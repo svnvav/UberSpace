@@ -10,8 +10,8 @@ namespace Svnvav.UberSpace
 
         public float ActivationDelay;
         public int QuantityLimit;
-        [SerializeField, Range(0f, 64f)] private float _spawnCooldown;
-        [SerializeField, Range(0f, 64f)] private float _planetSpeed;
+        [SerializeField, Range(0.1f, 64f)] private float _spawnCooldown;
+        [SerializeField, Range(0.1f, 64f)] private float _planetSpeed;
         
         private bool _activated;
         private float _progress;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +22,8 @@ namespace Svnvav.UberSpace
         private List<LevelStageMenuItem> _stages;
         private int _pickedStage;
         private Coroutine _pickerRoutine;
+
+        public LevelStageMenuItem SelectedStage => _stages[_pickedStage];
 
         public void Initialize(LevelInfo levelInfo, int levelIndex)
         {
@@ -70,7 +71,8 @@ namespace Svnvav.UberSpace
 
         private void UpdateStars()
         {
-            
+            var starsCount = _pickedStage == 0 ? 5 : PlayerPrefs.GetInt(_stages[_pickedStage].SaveFileName);
+            _starsContainer.SetStars(starsCount);
         }
 
         private void PickStage(int i)
