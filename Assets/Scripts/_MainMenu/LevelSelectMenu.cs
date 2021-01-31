@@ -41,5 +41,10 @@ namespace Svnvav.UberSpace
                 levelPage.UpdateUserData();
             }
         }
+
+        public void PlaySelected()
+        {
+            //TODO:
+        }
     }
 }

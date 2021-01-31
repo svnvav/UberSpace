@@ -79,6 +79,7 @@ namespace Svnvav.UberSpace
             if(_pickerRoutine != null)
                 StopCoroutine(_pickerRoutine);
             _pickerRoutine = StartCoroutine(PickerMove(_pickerSwipeTime));
+            UpdateStars();
         }
 
         private IEnumerator PickerMove(float seconds)
