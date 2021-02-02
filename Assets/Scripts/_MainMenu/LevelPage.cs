@@ -39,6 +39,15 @@ namespace Svnvav.UberSpace
             UpdateStages();
         }
 
+        public void DestroyDestroyOldSavesAfterSelected()
+        {
+            for (int i = _pickedStage + 1; i < _stages.Count; i++)
+            {
+                var filePath = Path.Combine(PersistentStorage.Instance.SaveFolderPath, _stages[i].SaveFileName);
+                File.Delete(filePath);
+            }
+        }
+        
         private void UpdateStages()
         {
             var fileNames = Directory.EnumerateFiles(PersistentStorage.Instance.SaveFolderPath)

@@ -45,6 +45,7 @@ namespace Svnvav.UberSpace
 
         public void PlaySelected()
         {
+            _levelPages[_carousel.CurrentPage].DestroyDestroyOldSavesAfterSelected();
             _mainMenuController.LoadLevel(_levelPages[_carousel.CurrentPage].SelectedStage.SaveFileName);
         }
     }
