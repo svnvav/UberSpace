@@ -2,6 +2,6 @@
 {
     public interface IGameUpdatable
     {
-        void GameUpdate(float deltaTIme);
+        void GameUpdate(float deltaTime);
     }
 }

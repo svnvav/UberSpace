@@ -5,7 +5,7 @@ namespace Svnvav.UberSpace
 {
     public abstract class LevelObject : MonoBehaviour, IGameUpdatable, IPersistable
     {
-        public abstract void GameUpdate(float deltaTIme);
+        public abstract void GameUpdate(float deltaTime);
 
         public abstract void Save(GameDataWriter writer);
 
