@@ -6,10 +6,18 @@ namespace Svnvav.UberSpace
     public class Comet : MonoBehaviour, IPersistable, IGameUpdatable
     {
         [SerializeField] private Vector3 _velocity;
+
+        private int _id;
+
+        public void Initialize(int id, Vector3 velocity)
+        {
+            _id = id;
+            _velocity = velocity;
+        }
         
         public void GameUpdate(float deltaTime)
         {
-            transform.Translate(deltaTime * _velocity);
+            transform.Translate(deltaTime * _velocity);//TODO:
         }
         
         public void Save(GameDataWriter writer)
