@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
-    public class Comet : MonoBehaviour, IPersistable, IGameUpdatable
+    public class Comet : MonoBehaviour, IPersistable
     {
+        [SerializeField] private float _touchRadius;
         [SerializeField] private Vector3 _velocity;
 
         private int _id;
@@ -15,11 +16,17 @@ namespace Svnvav.UberSpace
             _velocity = velocity;
         }
         
-        public void GameUpdate(float deltaTime)
+        private void Update()
         {
-            transform.Translate(deltaTime * _velocity);//TODO:
+            var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if ((transform.position - touchPos).sqrMagnitude < _touchRadius * _touchRadius)
+            {
+                Debug.LogWarning("Comet touched!");
+            }
+            
+            transform.Translate(Time.deltaTime * _velocity);//TODO:
         }
-        
+
         public void Save(GameDataWriter writer)
         {
             writer.Write(transform.localPosition);

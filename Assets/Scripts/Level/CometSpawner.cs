@@ -9,6 +9,7 @@ namespace Svnvav.UberSpace
 
         public override void Spawn(float speed)
         {
+            _comet.transform.position = transform.position;
             _comet.Initialize(_cometId, Vector3.Normalize(transform.up) * speed);
             _comet.gameObject.SetActive(true);
         }
