@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Svnvav.UberSpace.CoreScene;
+using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
@@ -9,6 +10,8 @@ namespace Svnvav.UberSpace
 
         public override void Spawn(float speed)
         {
+            if(CoreSceneController.Instance.CoreDataProvider.IsCometCaught(_cometId)) return;
+            
             _comet.transform.position = transform.position;
             _comet.Initialize(_cometId, Vector3.Normalize(transform.up) * speed);
             _comet.gameObject.SetActive(true);

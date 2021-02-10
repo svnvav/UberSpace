@@ -318,6 +318,28 @@ Transform:
   m_Father: {fileID: 1424119127}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &217312162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6676661147368868118, guid: 68f9a5fc23c77fc4c86bea4b56e2ab6f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2023159619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &217312165
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217312162}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.15
 --- !u!1 &362407744
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,11 +834,6 @@ MonoBehaviour:
     QuantityLimit: 0
     _spawnCooldown: 3.6
     _planetSpeed: 3.2
-  - Spawner: {fileID: 1770067033}
-    ActivationDelay: 0
-    QuantityLimit: 1
-    _spawnCooldown: 1.9
-    _planetSpeed: 3
 --- !u!1001 &2023159619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -887,7 +904,7 @@ PrefabInstance:
     - target: {fileID: 6676661147368868118, guid: 68f9a5fc23c77fc4c86bea4b56e2ab6f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68f9a5fc23c77fc4c86bea4b56e2ab6f, type: 3}
@@ -897,7 +914,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 2023159619}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 217312162}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 974e82f7fe9746389b2e70175fce2c1f, type: 3}
@@ -997,3 +1014,8 @@ MonoBehaviour:
     QuantityLimit: 0
     _spawnCooldown: 1.1
     _planetSpeed: 1.2
+  - Spawner: {fileID: 1770067033}
+    ActivationDelay: 1
+    QuantityLimit: 0
+    _spawnCooldown: 1.1
+    _planetSpeed: 2.5

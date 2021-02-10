@@ -17,7 +17,7 @@ namespace Svnvav.UberSpace
             PersistentStorage.Instance.Save(GameController.Instance, GameController.SaveVersion, fileName);
             PlayerPrefs.SetInt(fileName, GameLevel.Current.CurrentStarsCount);
             PlayerPrefs.Save();
-            CoreSceneController.Instance.CoreDataProvider.UpdateData(levelId, stageId);
+            CoreSceneController.Instance.CoreDataProvider.UpdateStageData(levelId, stageId);
         }
 
         public override void Progress(float deltaTime)

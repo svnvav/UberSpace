@@ -1,4 +1,8 @@
-﻿using Catlike.ObjectManagement;
+﻿using System;
+using System.Collections;
+using Catlike.ObjectManagement;
+using Svnvav.UberSpace.CoreScene;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -9,22 +13,38 @@ namespace Svnvav.UberSpace
         [SerializeField] private Vector3 _velocity;
 
         private int _id;
+        private bool _touched;
 
         public void Initialize(int id, Vector3 velocity)
         {
             _id = id;
             _velocity = velocity;
+            _touched = false;
         }
         
         private void Update()
         {
-            var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if ((transform.position - touchPos).sqrMagnitude < _touchRadius * _touchRadius)
+            /*if (Input.GetMouseButtonDown(0))
             {
-                Debug.LogWarning("Comet touched!");
-            }
+                var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touchPos.z = 0;
+                if ((transform.position - touchPos).sqrMagnitude < _touchRadius * _touchRadius)
+                {
+                    StartCoroutine(OnMouseDown());
+                }
+            }*/
+
+            transform.Translate(Time.deltaTime * _velocity);
+        }
+
+        private IEnumerator OnMouseDown()
+        {
+            if (_touched) yield break;
+            _touched = true;
+
+            CoreSceneController.Instance.CoreDataProvider.OnCometCaught(_id);
             
-            transform.Translate(Time.deltaTime * _velocity);//TODO:
+            gameObject.SetActive(false);//TODO: animation event
         }
 
         public void Save(GameDataWriter writer)
