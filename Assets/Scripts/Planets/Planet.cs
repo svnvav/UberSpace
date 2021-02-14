@@ -19,7 +19,7 @@ namespace Svnvav.UberSpace
         
         public abstract int Capacity { get; }
         public abstract bool IsFull { get; }
-        public abstract bool IsEmpty { get; }//TODO: change name or departure logic
+        public abstract bool IsEmpty { get; }//TODO: change name or departure logic, fix arriving race departure
         
         #region Factory
 

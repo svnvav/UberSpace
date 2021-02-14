@@ -52,6 +52,9 @@ namespace Svnvav.UberSpace
 
         public override Race GetRaceByTouchPos(Vector3 touchPos)
         {
+            if (_racesToDeparture.Count == 1)
+                return _races.Find(race => race != _racesToDeparture[0]);
+            
             var id = _races.Count == 1 ? 
                 0 : 
                 touchPos.x - transform.position.x < 0 ? 0 : 1;//0 for left and 1 for right
