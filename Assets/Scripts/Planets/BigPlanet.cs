@@ -54,7 +54,7 @@ namespace Svnvav.UberSpace
         {
             var id = _races.Count == 1 ? 
                 0 : 
-                (touchPos.x - transform.position.x < 0 ? 0 : 1);//0 for left and 1 for right
+                touchPos.x - transform.position.x < 0 ? 0 : 1;//0 for left and 1 for right
             
             return _races[id];
         }
