@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Svnvav.UberSpace.CoreScene
 {
-    public class LevelState : GameState
+    public class LevelState : IGameState
     {
         private AsyncOperation _loadingOp;
         private Scene _gameScene;

@@ -34,7 +34,7 @@ namespace Svnvav.UberSpace.CoreScene
         {
             var levelState = new LevelState();
             var menuState = new MenuState();
-            var fsmTransitions = new Dictionary<StateTransition, GameState>()
+            var fsmTransitions = new Dictionary<StateTransition, IGameState>()
             {
                 {new StateTransition(levelState, Command.ToMenu), menuState},
                 {new StateTransition(levelState, Command.LoadLast), levelState},
@@ -82,7 +82,7 @@ namespace Svnvav.UberSpace.CoreScene
             _loadingProgressText.text = $"Loading {100 * value} %";
         }
 
-        private IEnumerator DefineStartState(GameState levelState, GameState menuState)
+        private IEnumerator DefineStartState(IGameState levelState, IGameState menuState)
         {
             var loadedLevelIndex = LoadedLevelSceneIndex();
             if (loadedLevelIndex != -1)

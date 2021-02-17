@@ -8,17 +8,17 @@ namespace Svnvav.UberSpace.CoreScene
     {
         private GameStateController _owner;
         
-        private Dictionary<StateTransition, GameState> _transitions;
+        private Dictionary<StateTransition, IGameState> _transitions;
         
-        private GameState _current;
+        private IGameState _current;
 
-        public GameStateMachine(GameStateController owner, Dictionary<StateTransition, GameState> transitions)
+        public GameStateMachine(GameStateController owner, Dictionary<StateTransition, IGameState> transitions)
         {
             _owner = owner;
             _transitions = transitions;
         }
 
-        public IEnumerator Initialize(GameState initialState)
+        public IEnumerator Initialize(IGameState initialState)
         {
             _current = initialState;
             yield return _current.Enter(_owner);
@@ -33,10 +33,10 @@ namespace Svnvav.UberSpace.CoreScene
             yield return _current.Enter(_owner);
         }
         
-        private GameState GetNext(Command command)
+        private IGameState GetNext(Command command)
         {
             StateTransition transition = new StateTransition(_current, command);
-            GameState nextState;
+            IGameState nextState;
             if (!_transitions.TryGetValue(transition, out nextState))
                 throw new Exception("Invalid transition: " + _current + " -> " + command);
             return nextState;

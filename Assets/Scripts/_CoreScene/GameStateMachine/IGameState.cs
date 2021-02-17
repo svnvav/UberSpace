@@ -2,7 +2,7 @@
 
 namespace Svnvav.UberSpace.CoreScene
 {
-    public interface GameState
+    public interface IGameState
     {
         IEnumerator Enter(GameStateController controller);
         IEnumerator Exit(GameStateController controller);
