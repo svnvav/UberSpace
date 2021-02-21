@@ -7,6 +7,7 @@ namespace Svnvav.UberSpace
 {
     public class SpaceShip : Planet
     {
+        [Header("Self")]
         [SerializeField] private List<Race> _races;
         [SerializeField] private int _capacity;
         

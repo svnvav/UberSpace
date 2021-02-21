@@ -6,6 +6,7 @@ namespace Svnvav.UberSpace
 {
     public sealed class BigPlanet : Planet
     {
+        [Header("Self")]
         [SerializeField] private List<Race> _races;
         [SerializeField] private SpriteRenderer _defaultSprite, _leftRaceSprite, _rightRaceSprite, _leftRaceToArriveSprite, _rightRaceToArriveSprite;
         [SerializeField] private GameObject _rightRaceMask, _rightRaceToArriveMask;
@@ -80,6 +81,8 @@ namespace Svnvav.UberSpace
             _races.Add(race);
             race.PlanetSaveIndex = SaveIndex;
             RefreshView();
+            
+            Poof(race);
         }
 
         public override void AddRaceToDeparture(Race race)

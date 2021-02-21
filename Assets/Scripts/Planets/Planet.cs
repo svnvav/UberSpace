@@ -5,8 +5,10 @@ namespace Svnvav.UberSpace
 {
     public abstract class Planet : MonoBehaviour, IPersistable, IGameUpdatable
     {
+        [Header("Base Planet")]
         [SerializeField] protected Vector3 _velocity;
         [SerializeField] private Color _veilColor;
+        [SerializeField] private ParticleSystem _raceEffect;
         protected SpriteRendererVeil _veil;
 
         protected bool _veiling;
@@ -94,6 +96,12 @@ namespace Svnvav.UberSpace
             }
         }
 
+        public void Poof(Race race)
+        {
+            _raceEffect.textureSheetAnimation.SetSprite(0, race.PlanetSprite);
+            _raceEffect.Play();
+        }
+        
         public abstract Race GetRaceByTouchPos(Vector3 touchPos);
 
         public virtual void AddRaceToArrive(Race race)

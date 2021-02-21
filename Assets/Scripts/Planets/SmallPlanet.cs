@@ -5,6 +5,7 @@ namespace Svnvav.UberSpace
 {
     public class SmallPlanet : Planet
     {
+        [Header("Self")]
         [SerializeField] private Race _race;
         [SerializeField] private SpriteRenderer _defaultSprite, _raceSprite, _raceToArriveSprite;
         
@@ -68,6 +69,7 @@ namespace Svnvav.UberSpace
             _race = race;
             race.PlanetSaveIndex = SaveIndex;
             RefreshView();
+            Poof(race);
         }
         
         public override void AddRaceToDeparture(Race race)
