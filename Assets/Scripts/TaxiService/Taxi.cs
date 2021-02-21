@@ -7,13 +7,15 @@ namespace Svnvav.UberSpace
     public class Taxi : MonoBehaviour, IPersistable
     {
         [SerializeField] private float _speed;
+        [SerializeField] private AnimationCurve _speedBoost;
         [SerializeField] private float _takePassengerRadius;
 
         public bool IsIdle => _current == null;
         
         private Order _current;
         private Action _onCurrentComplete;
-        
+        private float _speedBoostTime;
+
         public void ExecuteOrder(Order order, Action onComplete)
         {
             _current = order;
@@ -22,6 +24,14 @@ namespace Svnvav.UberSpace
 
         public void GameUpdate(float deltaTime)
         {
+            if (_speedBoostTime > 0f)
+            {
+                _speedBoostTime -= deltaTime;
+            }
+            else
+            {
+                _speedBoostTime = 0f;
+            }
             if (IsIdle)
             {
                 Idle();
@@ -38,6 +48,7 @@ namespace Svnvav.UberSpace
                         _takePassengerRadius * _takePassengerRadius)
                     {
                         _current.StartExecuting();
+                        _speedBoostTime = 1;
                     }
 
                     break;
@@ -48,6 +59,7 @@ namespace Svnvav.UberSpace
                     {
                         _current.Complete();
                         _onCurrentComplete?.Invoke();
+                        _speedBoostTime = 1;
                     }
 
                     break;
@@ -62,7 +74,8 @@ namespace Svnvav.UberSpace
         private void MoveTo(Vector3 destination, float deltaTime)
         {
             transform.LookAt(destination, Vector3.forward);
-            transform.Translate(_speed * deltaTime * transform.forward, Space.World);
+            var boost = 1 + _speedBoost.Evaluate(1 - _speedBoostTime);
+            transform.Translate(boost * _speed  * deltaTime * transform.forward, Space.World);
         }
 
         public void Save(GameDataWriter writer)
