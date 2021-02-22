@@ -30,13 +30,13 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Planet
-  m_Speed: 1.6
+  m_Speed: 1.666667
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -44,10 +44,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 30d45f48aca22e049b4fa01ed821f6cc, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: motionTime
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: motionTime
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0

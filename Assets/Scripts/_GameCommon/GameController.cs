@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Catlike.ObjectManagement;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ namespace Svnvav.UberSpace
         private float _beforePauseGameSpeed;
         private float _beforePauseTimeScale;
         private float _gameSpeed = 1f;
+        private float _timeSinceStart;
         public float GameSpeed
         {
             get => _gameSpeed;
@@ -55,9 +57,15 @@ namespace Svnvav.UberSpace
             _onRemovePlanet = new ActionContainer<Planet>();
         }
 
+        private void Start()
+        {
+            _timeSinceStart = 0;
+        }
+
         private void Update()
         {
             if(!_started) return;
+            _timeSinceStart += Time.deltaTime;
             
             if (Input.GetMouseButtonDown(0))
             {
@@ -155,6 +163,9 @@ namespace Svnvav.UberSpace
         
         public void AddPlanet(Planet planet)
         {
+            var animator = planet.GetComponent<Animator>();
+            animator.Update(_timeSinceStart);
+            
             planet.SaveIndex = _planets.Count;
             _planets.Add(planet);
             _onAddPlanet.Execute(planet);
