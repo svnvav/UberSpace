@@ -50,7 +50,6 @@ namespace Svnvav.UberSpace
                         _current.StartExecuting();
                         _speedBoostTime = 1;
                     }
-
                     break;
                 case OrderStatus.Executing:
                     MoveTo(_current.GetCurrentPointToMove(), deltaTime);
@@ -61,7 +60,9 @@ namespace Svnvav.UberSpace
                         _onCurrentComplete?.Invoke();
                         _speedBoostTime = 1;
                     }
-
+                    break;
+                case OrderStatus.Completed:
+                    _current = null;
                     break;
             }
         }
