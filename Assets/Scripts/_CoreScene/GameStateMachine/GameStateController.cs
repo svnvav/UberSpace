@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 namespace Svnvav.UberSpace.CoreScene
 {
@@ -21,7 +20,7 @@ namespace Svnvav.UberSpace.CoreScene
         [SerializeField] private string _gameSceneName = "Game";
         [SerializeField] private LevelsInfoSO _levelsInfo;
 
-        [SerializeField] private Text _loadingProgressText;
+        [SerializeField] private LoadingScreen _loadingScreen;
         
         private int _currentLevelIndex = 0;
         private string _saveFileName = "Begin_0";
@@ -74,12 +73,12 @@ namespace Svnvav.UberSpace.CoreScene
 
         public void ShowHideLoadingScreen(bool showFlag)
         {
-            _loadingProgressText.gameObject.SetActive(showFlag);
+            _loadingScreen.gameObject.SetActive(showFlag);
         }
         
         public void SetProgress(float value)
         {
-            _loadingProgressText.text = $"Loading {100 * value} %";
+            _loadingScreen.SetProgress(value);
         }
 
         private IEnumerator DefineStartState(IGameState levelState, IGameState menuState)
