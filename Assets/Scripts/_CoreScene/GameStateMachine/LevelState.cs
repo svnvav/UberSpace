@@ -12,7 +12,7 @@ namespace Svnvav.UberSpace.CoreScene
         
         public IEnumerator Enter(GameStateController controller)
         {
-            controller.ShowHideLoadingScreen(true);
+            controller.StartLoading();
             
             var gameSceneName = controller.GameSceneName;
             
@@ -52,9 +52,7 @@ namespace Svnvav.UberSpace.CoreScene
                 GameController.Instance.LoadFromSaves(controller.SaveFileName);
             }
             
-            controller.ShowHideLoadingScreen(false);
-            
-            GameController.Instance.Play();
+            controller.FinishLoading(GameController.Instance.Play);
         }
 
         public IEnumerator Exit(GameStateController controller)

@@ -71,9 +71,14 @@ namespace Svnvav.UberSpace.CoreScene
             StartCoroutine(_stateMachine.MoveNext(Command.ToMenu));
         }
 
-        public void ShowHideLoadingScreen(bool showFlag)
+        public void StartLoading()
         {
-            _loadingScreen.gameObject.SetActive(showFlag);
+            _loadingScreen.Show();
+        }
+
+        public void FinishLoading(Action onComplete)
+        {
+            _loadingScreen.Hide(onComplete);
         }
         
         public void SetProgress(float value)

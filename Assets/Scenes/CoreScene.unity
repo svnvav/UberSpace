@@ -323,7 +323,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.386
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -587,7 +587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -733,7 +733,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1775829527
 RectTransform:
@@ -769,6 +769,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _progressBar: {fileID: 100979192}
+  _background: {fileID: 1596894736}
+  _animDuration: 0.5
 --- !u!1 &2012777809
 GameObject:
   m_ObjectHideFlags: 0

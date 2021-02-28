@@ -10,12 +10,17 @@ namespace Svnvav.UberSpace.CoreScene
         private Scene _menuScene;
         
         public IEnumerator Enter(GameStateController controller)
-        {
+        { 
+            controller.StartLoading();
             var menuSceneName = controller.MainMenuSceneName;
             _menuScene = SceneManager.GetSceneByName(menuSceneName);
-            if(_menuScene.IsValid() && _menuScene.isLoaded) yield break;
+            if (_menuScene.IsValid() && _menuScene.isLoaded)
+            {
+                controller.FinishLoading(null);
+                yield break;
+            }
             
-            controller.ShowHideLoadingScreen(true);
+            
 
             _loadingOp = SceneManager.LoadSceneAsync(menuSceneName, LoadSceneMode.Additive);
             while (!_loadingOp.isDone)
@@ -26,10 +31,8 @@ namespace Svnvav.UberSpace.CoreScene
             _menuScene = SceneManager.GetSceneByName(menuSceneName);
             
             yield return new WaitForSeconds(1f);//For Debug
-            
-            
-            
-            controller.ShowHideLoadingScreen(false);
+
+            controller.FinishLoading(null);
         }
 
         public IEnumerator Exit(GameStateController controller)
