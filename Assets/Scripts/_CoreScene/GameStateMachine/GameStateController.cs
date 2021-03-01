@@ -71,14 +71,14 @@ namespace Svnvav.UberSpace.CoreScene
             StartCoroutine(_stateMachine.MoveNext(Command.ToMenu));
         }
 
-        public void StartLoading()
+        public IEnumerator StartLoading()
         {
-            _loadingScreen.Show();
+            return _loadingScreen.ShowRoutine();
         }
 
-        public void FinishLoading(Action onComplete)
+        public IEnumerator FinishLoading()
         {
-            _loadingScreen.Hide(onComplete);
+            return _loadingScreen.HideRoutine();
         }
         
         public void SetProgress(float value)

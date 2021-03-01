@@ -25,40 +25,29 @@ namespace Svnvav.UberSpace.CoreScene
             _sliderBackgroundImageAlpha = _sliderBackgroundImage.color.a;
         }
 
-        public void Show()
-        {
-            StartCoroutine(ShowRoutine(_animDuration));
-        }
-
-        public void Hide(Action onFinish)
-        {
-            StartCoroutine(HideRoutine(_animDuration, onFinish));
-        }
-        
-        private IEnumerator ShowRoutine(float duration)
+        public IEnumerator ShowRoutine()
         {
             _background.SetActive(true);
             _slider.gameObject.SetActive(true);
             var t = 0f;
             while (t <= 1f)
             {
-                t += Time.deltaTime / duration;
+                t += Time.deltaTime / _animDuration;
                 SetAlpha(t);
                 yield return null;
             }
         }
-        private IEnumerator HideRoutine(float duration, Action onComplete)
+        public IEnumerator HideRoutine()
         {
             var t = 1f;
             while (t >= 0f)
             {
-                t -= Time.deltaTime / duration;
+                t -= Time.deltaTime / _animDuration;
                 SetAlpha(t);
                 yield return null;
             }
             _background.SetActive(false);
             _slider.gameObject.SetActive(false);
-            onComplete?.Invoke();
         }
 
         private void SetAlpha(float value)

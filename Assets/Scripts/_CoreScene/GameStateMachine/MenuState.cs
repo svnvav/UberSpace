@@ -11,12 +11,12 @@ namespace Svnvav.UberSpace.CoreScene
         
         public IEnumerator Enter(GameStateController controller)
         { 
-            controller.StartLoading();
+            yield return controller.StartLoading();
             var menuSceneName = controller.MainMenuSceneName;
             _menuScene = SceneManager.GetSceneByName(menuSceneName);
             if (_menuScene.IsValid() && _menuScene.isLoaded)
             {
-                controller.FinishLoading(null);
+                yield return controller.FinishLoading();
                 yield break;
             }
             
@@ -32,7 +32,7 @@ namespace Svnvav.UberSpace.CoreScene
             
             yield return new WaitForSeconds(1f);//For Debug
 
-            controller.FinishLoading(null);
+            yield return controller.FinishLoading();
         }
 
         public IEnumerator Exit(GameStateController controller)
