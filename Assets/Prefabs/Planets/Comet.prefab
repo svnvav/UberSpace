@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6272616849904890372}
   - component: {fileID: 1196998597367183005}
   - component: {fileID: 5905846246705277494}
+  - component: {fileID: 3279227517037214021}
   m_Layer: 0
   m_Name: Comet
   m_TagString: Untagged
@@ -94,5 +95,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974e82f7fe9746389b2e70175fce2c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _touchRadius: 1
   _velocity: {x: 0, y: 0, z: 0}
+  _animator: {fileID: 3279227517037214021}
+--- !u!95 &3279227517037214021
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6676661147368868118}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1ad6f472d9dff8c4fa891c60956c0ff8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

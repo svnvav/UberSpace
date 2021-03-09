@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Catlike.ObjectManagement;
 using Svnvav.UberSpace.CoreScene;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
 {
     public class Comet : MonoBehaviour, IPersistable
     {
-        [SerializeField] private float _touchRadius;
         [SerializeField] private Vector3 _velocity;
+        [SerializeField] private Animator _animator;
 
+        private int _deathAnimHash = Animator.StringToHash("Death");
+        
         private int _id;
         private bool _touched;
 
@@ -24,27 +24,22 @@ namespace Svnvav.UberSpace
         
         private void Update()
         {
-            /*if (Input.GetMouseButtonDown(0))
-            {
-                var touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                touchPos.z = 0;
-                if ((transform.position - touchPos).sqrMagnitude < _touchRadius * _touchRadius)
-                {
-                    StartCoroutine(OnMouseDown());
-                }
-            }*/
-
             transform.Translate(Time.deltaTime * _velocity);
         }
 
-        private IEnumerator OnMouseDown()
+        private void OnMouseDown()
         {
-            if (_touched) yield break;
+            if (_touched) return;
             _touched = true;
 
             CoreSceneController.Instance.CoreDataProvider.OnCometCaught(_id);
             
-            gameObject.SetActive(false);//TODO: animation event
+            _animator.Play(_deathAnimHash);
+        }
+
+        public void SwitchOff()
+        {
+            gameObject.SetActive(false);
         }
 
         public void Save(GameDataWriter writer)

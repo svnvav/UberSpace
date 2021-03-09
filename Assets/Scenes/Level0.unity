@@ -356,7 +356,7 @@ MonoBehaviour:
     _planetSpeed: 1
   - Spawner: {fileID: 988525607}
     ActivationDelay: 0
-    QuantityLimit: 0
+    QuantityLimit: 1
     _spawnCooldown: 2
     _planetSpeed: 2.5
 --- !u!4 &197728293
@@ -1169,6 +1169,6 @@ MonoBehaviour:
     _planetSpeed: 1
   - Spawner: {fileID: 1770067033}
     ActivationDelay: 1
-    QuantityLimit: 0
+    QuantityLimit: 1
     _spawnCooldown: 1.1
     _planetSpeed: 2.5
