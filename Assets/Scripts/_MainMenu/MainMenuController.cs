@@ -10,6 +10,7 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private GameObject _mainMenu;
         [SerializeField] private LevelSelectMenu _levelMenu;
+        [SerializeField] private Statistics _statistics;
         [SerializeField] private GameObject _settingsMenu;
 
         private void OnEnable()
@@ -27,6 +28,7 @@ namespace Svnvav.UberSpace
             _mainMenu.SetActive(false);
             _settingsMenu.SetActive(false);
             _levelMenu.gameObject.SetActive(true);
+            _statistics.gameObject.SetActive(false);
             _levelMenu.UpdateLevels();
         }
 
@@ -35,6 +37,15 @@ namespace Svnvav.UberSpace
             _mainMenu.SetActive(true);
             _settingsMenu.SetActive(false);
             _levelMenu.gameObject.SetActive(false);
+            _statistics.gameObject.SetActive(false);
+        }
+        
+        public void ShowStatisticsMenu()
+        {
+            _mainMenu.SetActive(false);
+            _settingsMenu.SetActive(true);
+            _levelMenu.gameObject.SetActive(false);
+            _statistics.gameObject.SetActive(true);
         }
         
         public void ShowSettingsMenu()
@@ -42,6 +53,7 @@ namespace Svnvav.UberSpace
             _mainMenu.SetActive(false);
             _settingsMenu.SetActive(true);
             _levelMenu.gameObject.SetActive(false);
+            _statistics.gameObject.SetActive(false);
         }
 
         public void LoadLevel(string saveFileName)
