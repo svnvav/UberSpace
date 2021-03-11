@@ -29,7 +29,7 @@ namespace Svnvav.UberSpace
         {
             _levelIndex = levelIndex;
             _levelInfo = levelInfo;
-            _preview.sprite = _levelInfo.Preview;
+            //TODO:_preview.sprite = _levelInfo.Preview;
             
             _stages = new List<LevelStageMenuItem>(8);
         }

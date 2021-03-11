@@ -10,7 +10,7 @@ namespace Svnvav.UberSpace
 
         public string SceneName => _sceneName;
 
-        public Sprite Preview => _preview;
+        public LevelPreview Preview => _preview;
 
         public Color Color => _color;
 
@@ -20,7 +20,7 @@ namespace Svnvav.UberSpace
         
         [SerializeField] private string _name;
         [SerializeField] private string _sceneName;
-        [SerializeField] private Sprite _preview;
+        [SerializeField] private LevelPreview _preview;
         [SerializeField] private Color _color;
         [SerializeField] private int _starsCount;
         [SerializeField] private Sprite[] _levelStageSprites;
