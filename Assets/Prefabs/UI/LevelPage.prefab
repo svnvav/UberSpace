@@ -126,11 +126,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stagesContainer: {fileID: 2035214634144180452}
-  _stagesPicker: {fileID: 3303072098732435715}
-  _pickerSwipeTime: 0.3
+  _stagePicker: {fileID: 3303072098732435715}
+  _stagePickerSwipeTime: 0.3
   _levelStagePrefab: {fileID: 5241097708855380542, guid: 4551b76232d30b24193eb2252c05f0ff,
     type: 3}
-  _preview: {fileID: 2035214635247465941}
+  _previewContainer: {fileID: 2035214635247465940}
   _starsContainer: {fileID: 2964401964345681994}
 --- !u!1 &2035214634144180455
 GameObject:
@@ -288,9 +288,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2035214635247465940}
   - component: {fileID: 2035214635247465946}
-  - component: {fileID: 2035214635247465941}
   m_Layer: 5
-  m_Name: Image
+  m_Name: PreviewContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,35 +322,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035214635247465943}
   m_CullTransparentMesh: 0
---- !u!114 &2035214635247465941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035214635247465943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &9091592428510113413
 GameObject:
   m_ObjectHideFlags: 0

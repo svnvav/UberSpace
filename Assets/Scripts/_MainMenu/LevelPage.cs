@@ -11,14 +11,16 @@ namespace Svnvav.UberSpace
     public class LevelPage : MonoBehaviour
     {
         [SerializeField] private Transform _stagesContainer;
-        [SerializeField] private RectTransform _stagesPicker;
-        [SerializeField] private float _pickerSwipeTime;
+        [SerializeField] private RectTransform _stagePicker;
+        [SerializeField] private float _stagePickerSwipeTime = 0.3f;
         [SerializeField] private GameObject _levelStagePrefab;
-        [SerializeField] private Image _preview;
+        [SerializeField] private Transform _previewContainer;
         [SerializeField] private LevelPageStarsContainer _starsContainer;
 
         private LevelInfo _levelInfo;
         private int _levelIndex;
+        private LevelPreview _levelPreviewInstance;
+        
         private List<LevelStageMenuItem> _stages;
         private int _pickedStage;
         private Coroutine _pickerRoutine;
@@ -29,7 +31,7 @@ namespace Svnvav.UberSpace
         {
             _levelIndex = levelIndex;
             _levelInfo = levelInfo;
-            //TODO:_preview.sprite = _levelInfo.Preview;
+            _levelPreviewInstance = Instantiate(levelInfo.Preview, _previewContainer);
             
             _stages = new List<LevelStageMenuItem>(8);
         }
@@ -89,21 +91,21 @@ namespace Svnvav.UberSpace
             _pickedStage = i;
             if(_pickerRoutine != null)
                 StopCoroutine(_pickerRoutine);
-            _pickerRoutine = StartCoroutine(PickerMove(_pickerSwipeTime));
+            _pickerRoutine = StartCoroutine(PickerMove(_stagePickerSwipeTime));
             UpdateStars();
         }
 
         private IEnumerator PickerMove(float seconds)
         {
-            var startX = _stagesPicker.anchoredPosition.x;
+            var startX = _stagePicker.anchoredPosition.x;
             var finishX = _pickedStage * 128f;
-            var position = new Vector2(0f, _stagesPicker.anchoredPosition.y);
+            var position = new Vector2(0f, _stagePicker.anchoredPosition.y);
             var t = 0f;
             while (t <= 1.0f)
             {
                 t += Time.deltaTime / seconds;
                 position.x = Mathf.Lerp(startX, finishX, t);
-                _stagesPicker.anchoredPosition = position;
+                _stagePicker.anchoredPosition = position;
                 yield return null;
             }
         }
