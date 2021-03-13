@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Catlike.ObjectManagement;
+using UnityCarouselUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,16 +33,21 @@ namespace Svnvav.UberSpace
             _levelIndex = levelIndex;
             _levelInfo = levelInfo;
             _levelPreviewInstance = Instantiate(levelInfo.Preview, _previewContainer);
-            
+
             _stages = new List<LevelStageMenuItem>(8);
         }
 
+        public void PassPageRelativePosition(float value)
+        {
+            _levelPreviewInstance.SetTransparency(1f - value);
+        }
+        
         public void UpdateUserData()
         {
             UpdateStages();
         }
 
-        public void DestroyDestroyOldSavesAfterSelected()
+        public void DestroyOldSavesAfterSelected()
         {
             for (int i = _pickedStage + 1; i < _stages.Count; i++)
             {

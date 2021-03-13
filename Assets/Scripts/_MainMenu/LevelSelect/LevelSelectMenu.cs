@@ -1,4 +1,5 @@
-﻿using UnityCarouselUI;
+﻿using System;
+using UnityCarouselUI;
 using UnityEngine;
 
 namespace Svnvav.UberSpace
@@ -31,6 +32,7 @@ namespace Svnvav.UberSpace
                 _levelPages[i] = levelPage;
             }
 
+            _carousel.OnPositionChange += OnCarouselPositionChange;
             _carousel.Initialize();
             UpdateLevels();
         }
@@ -45,8 +47,21 @@ namespace Svnvav.UberSpace
 
         public void PlaySelected()
         {
-            _levelPages[_carousel.CurrentPage].DestroyDestroyOldSavesAfterSelected();
+            _levelPages[_carousel.CurrentPage].DestroyOldSavesAfterSelected();
             _mainMenuController.LoadLevel(_levelPages[_carousel.CurrentPage].SelectedStage.SaveFileName);
+        }
+
+        private void OnCarouselPositionChange(float pagePosition)
+        {
+            var page = (int) pagePosition;
+            var shift = pagePosition - page;
+            
+            if(0 <= page && page < _levelPages.Length)
+                _levelPages[page].PassPageRelativePosition(shift);
+            
+            page++;
+            if(0 <= page && page < _levelPages.Length)
+                _levelPages[page].PassPageRelativePosition(1f - shift);
         }
     }
 }

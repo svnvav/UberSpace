@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5016906561016481127}
   - component: {fileID: 6025101959755088897}
   m_Layer: 5
-  m_Name: LevelPreview
+  m_Name: Level0Preview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,6 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efae81664b6406bab7bbac3c8389948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cometSlots:
+  - {fileID: 3710784819513441747}
 --- !u!1001 &4574419380513335047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -213,3 +215,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4574419380513335047}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3710784819513441747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 866029308331317972, guid: 30bfeb885d843e046b92db964c6afae0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4574419380513335047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38dd09f36acf42e196efad01f78560a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

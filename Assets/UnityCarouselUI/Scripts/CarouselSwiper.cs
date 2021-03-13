@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,6 +19,8 @@ namespace UnityCarouselUI
         private int _pageCount;
         private int _currentPage;
 
+        public event Action<float> OnPositionChange;
+        
         public int CurrentPage => _currentPage;
 
         private float PageWidth => Screen.width;
@@ -48,6 +51,7 @@ namespace UnityCarouselUI
             }
 
             _indicators[_currentPage].SetTransparency(1);
+            OnPositionChange?.Invoke(_currentPage);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -66,6 +70,8 @@ namespace UnityCarouselUI
                 _indicators[_currentPage].SetTransparency(1 + difference);
                 _indicators[_currentPage - 1].SetTransparency(-difference);
             }
+            
+            OnPositionChange?.Invoke(_currentPage + difference);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -120,6 +126,8 @@ namespace UnityCarouselUI
                     _pagesContainer.anchorMin.y);
                 _pagesContainer.anchorMax = new Vector2(Mathf.Lerp(startAnchorMaxX, _locationAnchorMaxX, t),
                     _pagesContainer.anchorMax.y);
+                
+                OnPositionChange?.Invoke(_currentPage - 1f + t);//TODO:
                 yield return null;
             }
         }
