@@ -71,7 +71,7 @@ namespace UnityCarouselUI
                 _indicators[_currentPage - 1].SetTransparency(-difference);
             }
             
-            OnPositionChange?.Invoke(_currentPage + difference);
+            OnPositionChange?.Invoke(-_pagesContainer.anchorMin.x);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -127,7 +127,7 @@ namespace UnityCarouselUI
                 _pagesContainer.anchorMax = new Vector2(Mathf.Lerp(startAnchorMaxX, _locationAnchorMaxX, t),
                     _pagesContainer.anchorMax.y);
                 
-                OnPositionChange?.Invoke(_currentPage - 1f + t);//TODO:
+                OnPositionChange?.Invoke(-_pagesContainer.anchorMin.x);
                 yield return null;
             }
         }

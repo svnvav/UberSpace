@@ -53,7 +53,7 @@ namespace Svnvav.UberSpace
 
         private void OnCarouselPositionChange(float pagePosition)
         {
-            var page = (int) pagePosition;
+            var page = (int) (pagePosition + 1) - 1;
             var shift = pagePosition - page;
             
             if(0 <= page && page < _levelPages.Length)
