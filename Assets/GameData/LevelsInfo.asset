@@ -28,7 +28,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f3e2e518b334265499734f68114fdfc9, type: 3}
   - _name: BlackHole
     _sceneName: Level1
-    _preview: {fileID: 6025101959755088897, guid: 728bfcc18c5679a46acee64991d8c44d,
+    _preview: {fileID: 6025101959755088897, guid: d6757d97d19e7474ab7ef3c05c6f9163,
       type: 3}
     _color: {r: 0, g: 1, b: 0.96936965, a: 0.7372549}
     _starsCount: 0

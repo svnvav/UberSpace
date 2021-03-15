@@ -39,7 +39,9 @@ namespace Svnvav.UberSpace
 
         public void PassPageRelativePosition(float value)
         {
-            _levelPreviewInstance.SetTransparency(1f - value);
+            var t = 1f - value;
+            
+            _levelPreviewInstance.SetTransparency(Mathf.Pow(t, 16));
         }
         
         public void UpdateUserData()
